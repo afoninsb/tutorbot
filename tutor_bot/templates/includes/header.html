@@ -23,7 +23,7 @@
                           <li class="notification-item">
                     <div>
                       <p><a class="nav-link nav-icon" href="{% url 'tasks:category_tasks' bot category %}">
-                        категория {{ category }}: <span class="badge bg-warning text-dark">{{ count }}</span>
+                        {{ cat_names|get_item:category }}: <span class="badge bg-warning text-dark">{{ count }}</span>
                       </a></p>
                     </div>
                   </li>

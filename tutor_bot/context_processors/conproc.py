@@ -69,11 +69,13 @@ def alerts_endtask(request):
     for bot in bots:
         tasks = bot.task.filter(time__isnull=True)
         categories = {}
+        cat_names = {}
         for task in tasks:
             if categories.get(task.category.id):
                 categories[task.category.id] += 1
             else:
                 categories[task.category.id] = 1
+                cat_names[task.category.id] = task.category.name
         alert = False
         temp_cat = dict(categories)
         for category, count in categories.items():
@@ -81,8 +83,10 @@ def alerts_endtask(request):
                 alert = True
             else:
                 temp_cat.pop(category, None)
+                cat_names.pop(category, None)
         if alert:
             alerts_count_endtask[bot.id] = temp_cat
     return {
         'alerts_count_endtask': alerts_count_endtask,
+        'cat_names': cat_names,
     }
