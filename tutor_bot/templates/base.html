@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'includes/head.html' %}
+</head>
+
+<body>
+
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    {% include 'includes/header.html' %}
+  </header>
+
+  <aside id="sidebar" class="sidebar">
+    {% include 'includes/aside.html' %}
+  </aside>
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>{% block pagehead %}{% endblock  %}</h1>
+    </div>
+
+    <section class="section profile">
+      <div class="row">
+
+        <div class="col-xl-9">
+
+          {% block column %}{% endblock  %}
+
+        </div>
+
+        <div class="col-xl-3">
+
+          {% include 'includes/widget.html' %}
+
+          {% include 'includes/bot_widget.html' %}
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  {% include 'includes/footer.html' %}
+  {% include 'includes/sweetalert2.html' %}
+
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+{% extends 'base-1c.html' %}
+{% load static %}
+
+{% block pagehead %}
+    Выберите бота или создайте нового
+{% endblock  %}
+
+{% block content %}
+  <div class="list-group">
+    {% for bot in bots %}
+      <a href="{% url 'bots:bot_page' bot.id %}" class="list-group-item list-group-item-action" aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ bot.name }}</h5>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+{% endblock  %}

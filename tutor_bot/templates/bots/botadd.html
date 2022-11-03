@@ -1,0 +1,43 @@
+{% extends 'base-1c.html' %}
+{% load static %}
+
+{% block pagehead %}
+  {% if is_new %}
+    Добавляем бота
+  {% else %}
+    Редактируем бота
+  {% endif %}
+{% endblock  %}
+
+{% block doptext %}
+  {% if is_new %}
+    Сначала вам необходимо создать чат-бот Телеграм и получить его токен.
+    Выполните, пожалуйста, несколько простых шагов согласно
+    <a href='{% static 'files/getbot.pdf' %}' target='_blank'>инструкции</a>
+  {% endif %}
+{% endblock  %}
+
+{% block content %}
+  <form action='' method='post'>{% csrf_token %}
+    <div style='text-align: center; margin-left: 100px;'>
+      {% for field in form %}
+      <div class="row">
+        <div class="col-md-10">
+          {{field.label_tag}}<br>
+          {% if field.help_text %}
+            {{field.help_text}}<br>
+          {% endif %}
+          {{field}}<br>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="row">
+        <div class="col-md-10">
+          <input type='submit' 
+            value='{% if is_new %}Д О Б А В И Т Ь{% else %}С О Х Р А Н И Т Ь{% endif %}'
+            class='btn btn-primary'>
+        </div>
+      </div>
+    </div>
+  </form>
+{% endblock  %}

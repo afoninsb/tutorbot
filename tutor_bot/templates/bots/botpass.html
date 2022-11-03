@@ -1,0 +1,32 @@
+{% extends 'base-1c.html' %}
+{% load static %}
+
+{% block pagehead %}Добавляем/изменяем пароль бота{% endblock  %}
+
+{% block doptext %}
+  Этот пароль будут вводить ученики,
+  чтобы получить доступ к вашему боту
+{% endblock  %}
+
+{% block content %}
+  <form action='' method='post'>{% csrf_token %}
+    <div style='text-align: center; margin-left: 100px;'>
+      {% for field in form %}
+        <div class="row">
+          <div class="col-md-10">
+            {{field.label_tag}}<br>
+            {% if field.help_text %}
+            {{field.help_text}}<br>
+            {% endif %}
+            {{field}}<br>
+          </div>
+        </div>
+      {% endfor %}
+      <div class="row">
+        <div class="col-md-10">
+          <input type='submit' value='Д О Б А В И Т Ь' class='btn btn-primary'>
+        </div>
+      </div>
+    </div>
+  </form>
+{% endblock  %}

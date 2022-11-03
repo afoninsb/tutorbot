@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block column %}
+  <div class="row">
+    <div class="col-xl-6">
+      <div class="card">
+        <div class="card-body pt-3 main">
+          {% block content_1 %}{% endblock  %}
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6">
+      <div class="card">
+        <div class="card-body pt-3 main">
+          {% block content_2 %}{% endblock  %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
