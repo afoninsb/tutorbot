@@ -45,16 +45,16 @@
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
           {% for botid, botname, cur_count in alerts_count_newuser %}
-            <li class="notification-item">
-              <div>
-                <p><a class="nav-link nav-icon" href="{% url 'users:index' botid %}">
-                  {{ botname }}: <span class="badge bg-warning text-dark">{{ cur_count }}</span>
-                </a></p>
-              </div>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+              <li class="notification-item">
+                <div>
+                  <p><a class="nav-link nav-icon" href="{% url 'users:index' botid %}">
+                    {{ botname }}: <span class="badge bg-warning text-dark">{{ cur_count }}</span>
+                  </a></p>
+                </div>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
           {% endfor %}
         </ul>
       </li>

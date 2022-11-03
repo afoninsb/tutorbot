@@ -116,6 +116,19 @@ class LocalData(DataClass):
         try:
             get_object_or_404(AdminBot, tgid=self.chat_id)
         except Exception:
+            return False
+        return True
+
+    @property
+    def temp_admin_create(self) -> bool:
+        """Открываем запись о потенциальном админе.
+        Returns:
+            bool: Истина, если админ новый,
+                  Ложь, если этот chat_id уже админ.
+        """
+        try:
+            get_object_or_404(Temp, tgid=self.chat_id)
+        except Exception:
             Temp.objects.get_or_create(
                 tgid=self.chat_id,
                 first_name='fn',
@@ -125,8 +138,8 @@ class LocalData(DataClass):
                 why='why',
                 state='start',
             )
-            return False
-        return True
+            return True
+        return False
 
     def temp_admin_edit(self, **kwargs) -> None:
         """Меняем информацию о потенциальном админе."""
@@ -153,7 +166,7 @@ class LocalData(DataClass):
         try:
             cur_user = get_object_or_404(AdminBot, tgid=self.chat_id)
         except Exception:
-            return ''
+            return False
         return cur_user.state
 
     @property
