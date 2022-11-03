@@ -11,7 +11,11 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 BIG_BOSS_ID = os.getenv('BIG_BOSS_ID')
 REGBOT_TOKEN = str(os.getenv('REGBOT_TOKEN'))
 
-BASE_URL = 'http://127.0.0.1:8000'
+if DEBUG:
+    BASE_URL = 'http://127.0.0.1:8000'
+else:
+    BASE_URL = 'http://studybot.fun'
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ALERT_MIN_TASKS = 10
@@ -30,8 +34,9 @@ INSTALLED_APPS = [
     'users',
     'bots',
     'tasks',
-    'main_bot',
     'login',
+    'edubot',
+    'regbot',
 ]
 
 MIDDLEWARE = [

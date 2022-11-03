@@ -5,7 +5,7 @@ import hashlib
 
 from bots.forms import BotForm, BotFormEdit, BotPass, BotSchedule
 from bots.models import Bot
-from main_bot.main_classes import BotData
+from edubot.main_classes import BotData
 from users.models import AdminBot
 
 

@@ -18,10 +18,6 @@ class BotData(DataClass):
         self.url = f'https://api.telegram.org/bot{self.token}/'
         self.commands = [
             {
-                'command': 'signup_to_group',
-                'description': 'Присоединиться к группе'
-            },
-            {
                 'command': 'change_name',
                 'description': 'Изменить Имя и/или Фамилию'
             },
@@ -119,10 +115,8 @@ class BotData(DataClass):
             str: контент обновления.
         """
         contents = ['text', 'document', 'photo']
-        for content in contents:
-            if content in message:
-                return content
-        return ''
+        return next(
+            (content for content in contents if content in message), '')
 
     @staticmethod
     def get_data_type(data: dict) -> str:
