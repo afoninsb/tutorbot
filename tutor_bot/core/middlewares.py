@@ -1,31 +1,45 @@
 from typing import Callable
 
-from bots.models import Bot, BotAdmin
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse
-from groups.models import Group
-from kr.models import KR
-from plans.models import Plan
 
-# print(request.resolver_match.kwargs)  #
+from bots.models import Bot
+from tasks.models import Category, Task
+from users.models import AdminBot
+
 
 def is_yours(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
 
     def middleware(request: HttpRequest) -> HttpResponse:
-        data = {'/plan/': Plan, '/group/': Group, '/kr/': KR}
-        for small, big in data.items():
-            if small in request.path and '/webhook/' not in request.path:
-                txt = request.path.split('/')
-                bot = txt[2]
-                if txt[4].isdigit():
-                    id = txt[4]
-                    try:
-                        big.objects.get(id=id, bot=bot)
-                    except ObjectDoesNotExist:
-                        mess = '<center><h2>Это не ваш контент!</h2></center>'
-                        response = HttpResponse(mess)
-                        return response
-        response = get_response(request)
+        if (request.path in ('/', '/bots/add/')
+                or '/admin/' in request.path
+                or '/login/' in request.path
+                or '/webhook/' in request.path):
+            response = get_response(request)
+            return response
+        tgid = request.COOKIES.get('chatid')
+        name_model = {
+            'bot': Bot,
+            'category': Category,
+            'task': Task,
+        }
+        get_ids = request.path.split('/')
+        name_id = {}
+        for name in name_model:
+            if name in get_ids:
+                name_id[name] = get_ids[get_ids.index(name) + 1]
+        botid = name_id['bot']
+        for name, id in name_id.items():
+            try:
+                if name == 'bot':
+                    Bot.objects.get(id=botid, admin__tgid=tgid)
+                else:
+                    name_model[name].objects.get(id=id, bot__id=botid)
+            except ObjectDoesNotExist:
+                mess = '<center><h2>У вас нет доступа к этому контенту</h2></center>'
+                response = HttpResponse(mess)
+            else:
+                response = get_response(request)
         return response
 
     return middleware
@@ -34,49 +48,24 @@ def is_yours(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
 def is_admin(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
 
     def middleware(request: HttpRequest) -> HttpResponse:
-        if (
-            '/admin/' not in request.path
-            and '/enter/' not in request.path
-            and '/webhook/' not in request.path
-            and '/works/' not in request.path
+        if not (
+            '/admin/' in request.path
+            or '/login/' in request.path
+            or '/webhook/' in request.path
         ):
             if request.COOKIES.get('chatid'):
                 try:
-                    chat = request.COOKIES.get('chatid')
-                    BotAdmin.objects.get(chat=chat)
-                    response = get_response(request)
+                    AdminBot.objects.get(tgid=request.COOKIES.get('chatid'))
                 except ObjectDoesNotExist:
                     mess = '<center><h2>Неизвестный пользователь</h2></center>'
                     response = HttpResponse(mess)
+                else:
+                    response = get_response(request)
             else:
                 mess = '<center><h2>Неизвестный пользователь</h2></center>'
                 response = HttpResponse(mess)
         else:
             response = get_response(request)
-        return response
-
-    return middleware
-
-
-def is_admin_bot(
-    get_response: Callable[[HttpRequest], HttpResponse]
-                ) -> Callable:
-
-    def middleware(request: HttpRequest) -> HttpResponse:
-        response = get_response(request)
-        if '/del/' not in request.path:
-            chat = request.COOKIES.get('chatid')
-            bots = Bot.objects.filter(admins__chat=chat)
-            txt = request.path.split('/')
-            if txt[1] == 'bot' and txt[2].isdigit():
-                yes = False
-                for bot in bots:
-                    if bot.id == int(txt[2]):
-                        yes = True
-                        break
-                if not yes:
-                    mess = '<center><h2>Это не ваш бот!!!</h2></center>'
-                    response = HttpResponse(mess)
         return response
 
     return middleware

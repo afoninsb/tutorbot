@@ -1,7 +1,6 @@
 from django.conf import settings
 from bots.models import Bot
 from users.models import AdminBot
-    # data = request.resolver_match.kwargs
 
 
 def get_admin(request):
