@@ -21,7 +21,11 @@ class AdminBot(models.Model):
         verbose_name='Last login time',
         auto_now=True
     )
-    pin = models.SlugField(
+    pin = models.CharField(
+        max_length=50,
+        blank=True
+    )
+    state = models.CharField(
         max_length=50,
         blank=True
     )
@@ -64,6 +68,10 @@ class Student(models.Model):
     is_activated = models.BooleanField(
         verbose_name='Активирован?',
         default=False
+    )
+    state = models.CharField(
+        max_length=50,
+        blank=True
     )
 
     class Meta:

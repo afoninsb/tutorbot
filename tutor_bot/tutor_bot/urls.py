@@ -8,6 +8,8 @@ urlpatterns = [
     path('bot/<int:botid>/users/', include('users.urls', namespace='users')),
     path('admin/', admin.site.urls),
     path('login/', include('login.urls', namespace='login')),
+    path('webhook/reg/', include('regbot.urls', namespace='regbot')),
+    path('webhook/', include('edubot.urls', namespace='edubot')),
     path('', include('bots.urls', namespace='bots')),
 ]
 
