@@ -1,0 +1,28 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'includes/head.html' %}
+</head>
+
+<body>
+
+  <main>
+    <div class="container">
+
+      <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+        <h1>404</h1>
+            <p>Запрашиваемый контент отсутствует в вашем профиле</p>
+            <p>Вернитесь назад и нажмите необходимую ссылку снова</p>
+        <a class="btn" href="/">Back to home</a>
+        <img src="img/not-found.svg" class="img-fluid py-5" alt="Page Not Found">
+      </section>
+
+    </div>
+  </main>
+
+</body>
+
+</html>

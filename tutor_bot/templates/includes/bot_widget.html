@@ -1,0 +1,26 @@
+<div class="card">
+  <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+    {% if botid %}
+      <h2>Бот "{{ bot_name }}"</h2>
+      <div class="social-links mt-2 run">
+        {% if not is_active %}
+          <a href="{% url 'bots:bot_runstop' botid %}" class="run"><i class="ri-play-circle-fill ri-2x" style="cursor: pointer; color: green;" data-bs-toggle="tooltip" data-bs-placement="top" title="Включить бота"></i></a>
+        {% else %}
+          <a href="{% url 'bots:bot_runstop' botid %}" class="stop"><i class="ri-pause-circle-fill ri-2x" style="cursor: pointer; color: red;" data-bs-toggle="tooltip" data-bs-placement="top" title="Остановить бота"></i></a>
+          <p>{{ days }}: {{ hours }}</p>
+          {% endif %}
+      </div>
+      <div class="social-links mt-2">
+        <a href="https://t.me/{{ bot_login }}" class="telegram" target="_blank"><i class="ri-telegram-fill ri-xl" data-bs-toggle="tooltip" data-bs-placement="top" title="Открыть бота в Telegram"></i></a>
+        <a href="{% url 'bots:bot_schedule' botid %}" class="settings"><i class="ri-calendar-2-fill ri-xl" data-bs-toggle="tooltip" data-bs-placement="top" title="Настроить расписание бота"></i></a>
+        <a href="{% url 'bots:bot_pass' botid %}" class="password"><i class="ri-lock-password-fill ri-xl" data-bs-toggle="tooltip" data-bs-placement="top" title="Установить/Изменить пароль на бота"></i></a>
+        <a href="{% url 'bots:bot_edit' botid %}" class="edit"><i class="ri-edit-2-fill ri-xl" data-bs-toggle="tooltip" data-bs-placement="top" title="Переименовать бота"></i></a>
+        <a href="#" class="delete"><i class="ri-delete-bin-2-fill del_bot ri-xl" style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить бота"></i></a>
+    {% else %}
+      <h3>Добавьте бота</h3>
+      <div class="social-links mt-2">
+        <a href="{% url 'bots:bot_add' %}" class="add"><i class="ri-add-box-fill ri-xl" data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить бота"></i></a>
+    {% endif %}
+      </div>
+  </div>
+</div>

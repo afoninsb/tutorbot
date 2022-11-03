@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block column %}
+  <div class="card">
+    <div class="card-body pt-3 main">
+      <div class="doptext">
+          {% block doptext %}{% endblock  %}
+      </div>
+      {% block content %}{% endblock  %}
+    </div>
+  </div>
+{% endblock %}

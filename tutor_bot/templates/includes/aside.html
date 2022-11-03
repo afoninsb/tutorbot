@@ -1,0 +1,27 @@
+{% if botid %}
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'bots:index' %}">
+          <i class="ri-robot-fill ri-1x"></i>
+          <span>Боты</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'users:index' botid %}">
+          <i class="ri-team-fill ri-1x"></i>
+          <span>Учащиеся</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'tasks:category' botid %}">
+          <i class="ri-file-text-fill ri-1x"></i>
+          <span>Контент</span>
+        </a>
+      </li>
+
+    </ul>
+
+{% else %}
+    выберите бота<br />или<br />создайте нового
+{% endif %}
