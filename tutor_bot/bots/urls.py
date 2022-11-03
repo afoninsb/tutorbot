@@ -11,6 +11,6 @@ urlpatterns = [
     path('bot/<int:botid>/edit/', views.botedit, name='bot_edit'),
     path('bot/<int:botid>/pass/', views.botpass, name='bot_pass'),
     path('bot/<int:botid>/', views.bot, name='bot_page'),
-    path('bot/add/', views.botadd, name='bot_add'),
+    path('bots/add/', views.botadd, name='bot_add'),
     path('', views.index, name='index'),
 ]

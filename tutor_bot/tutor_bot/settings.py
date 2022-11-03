@@ -42,6 +42,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middlewares.is_yours',
+    'core.middlewares.is_admin',
 ]
 
 ROOT_URLCONF = 'tutor_bot.urls'

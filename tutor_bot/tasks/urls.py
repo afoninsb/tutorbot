@@ -5,11 +5,11 @@ from . import views
 app_name = 'tasks'
 
 urlpatterns = [
-    path('category/<int:categoryid>/tasks/<int:taskid>/del/', views.taskdel,
+    path('category/<int:categoryid>/task/<int:taskid>/del/', views.taskdel,
          name='task_del'),
-    path('category/<int:categoryid>/tasks/<int:taskid>/edit/', views.taskedit,
+    path('category/<int:categoryid>/task/<int:taskid>/edit/', views.taskedit,
          name='task_edit'),
-    path('category/<int:categoryid>/tasks/<int:taskid>/', views.task,
+    path('category/<int:categoryid>/task/<int:taskid>/', views.task,
          name='task'),
     path('category/<int:categoryid>/tasks/add/', views.taskadd,
          name='task_add'),
@@ -21,6 +21,6 @@ urlpatterns = [
          name='category_edit'),
     path('category/<int:categoryid>/runstop/', views.categoryrunstop,
          name='category_runstop'),
-    path('category/add/', views.categoryadd, name='category_add'),
-    path('category/', views.category, name='category'),
+    path('categories/add/', views.categoryadd, name='category_add'),
+    path('categories/', views.category, name='category'),
 ]
