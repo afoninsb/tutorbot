@@ -97,7 +97,8 @@ def reg_webhook(request, bot_tg):
 
     # Если юзера нет в базе, добавляем в базу и запускаем регистрацию
     is_admin = local.temp_admin_new  # Новый - False, Существует - True
-
+    local.temp_admin_create
+    
     text = ''
     answer = {
         'chat_id': local.chat_id,
@@ -122,7 +123,7 @@ def reg_webhook(request, bot_tg):
             answer['reply_markup'] = main_kbrd(local.chat_id)
             local.user_edit(state='')
         else:
-            local.user_edit(state='get_admin_first_name')
+            local.temp_admin_edit(state='get_admin_first_name')
             text = '''Приветствую вас!
                 Вы беседуете с ботом платформы StudyBot.Fun.
                 Для отправки заявки надо пройти 5 простых шагов.

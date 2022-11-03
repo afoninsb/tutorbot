@@ -12,7 +12,7 @@ class RegbotConfig(AppConfig):
         if settings.DEBUG:
             data = {
                 'url':
-                f'https://76d7-95-72-27-229.eu.ngrok.io/webhook/reg/{settings.REGBOT_TOKEN}/'
+                f'https://c601-95-72-155-198.eu.ngrok.io/webhook/reg/{settings.REGBOT_TOKEN}/'
             }
         else:
             data = {

@@ -22,7 +22,7 @@ ALERT_MIN_TASKS = 10
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','c601-95-72-155-198.eu.ngrok.io']
 
 INSTALLED_APPS = [
     'django.contrib.admin',

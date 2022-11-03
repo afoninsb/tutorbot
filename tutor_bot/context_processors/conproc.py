@@ -48,8 +48,9 @@ def alerts_newuser(request):
         admin__tgid=admin['tgid']).prefetch_related('student')
     for bot in bots:
         cur_count = bot.student.filter(is_activated=False).count()
-        alerts_newuser += cur_count
-        alerts_count_newuser.append((bot.id, bot.name, cur_count))
+        if cur_count > 0:
+            alerts_newuser += cur_count
+            alerts_count_newuser.append((bot.id, bot.name, cur_count))
     return {
         'alerts_count_newuser': alerts_count_newuser,
         'alerts_newuser': alerts_newuser,
