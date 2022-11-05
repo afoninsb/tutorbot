@@ -98,7 +98,7 @@ def reg_webhook(request, bot_tg):
     # Если юзера нет в базе, добавляем в базу и запускаем регистрацию
     is_admin = local.temp_admin_new  # Новый - False, Существует - True
     local.temp_admin_create
-    
+
     text = ''
     answer = {
         'chat_id': local.chat_id,

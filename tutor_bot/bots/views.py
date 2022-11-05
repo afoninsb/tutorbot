@@ -79,7 +79,7 @@ def botrunstop(request, botid):
         return redirect('bots:bot_schedule', botid=botid)
     if not active_categories:
         messages.error(request, 'Необходимо включить хотя бы одну категорию.')
-        return redirect('tasks:category', botid=botid)
+        return redirect('content:category', botid=botid)
 
     Bot.objects.filter(id=botid).update(is_active=not cur_bot.is_active)
     if cur_bot.is_active:
