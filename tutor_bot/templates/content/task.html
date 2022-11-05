@@ -22,9 +22,9 @@
         {% endif %}
     </div>
     <div class="card-footer">
-        <span class="left"><a href="{% url 'tasks:category_tasks' botid categoryid %}"><< обратно в категорию</a></span>
+        <span class="left"><a href="{% url 'content:category_tasks' botid categoryid %}"><< обратно в категорию</a></span>
         <span class="badge right" >
-          <a href="{% url 'tasks:task_edit' botid categoryid task.id %}" title="Редактировать задачу">
+          <a href="{% url 'content:task_edit' botid categoryid task.id %}" title="Редактировать задачу">
             <i class="ri-edit-line ri-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать задачу"></i></a>
         </span>
         <span class="badge right">&nbsp;</span>
@@ -40,7 +40,7 @@
                 cancelButtonText: 'Нет! Я передумал...'
             }).then(function(inputvalue){
                 if(inputvalue.isConfirmed){
-                    window.location.href = '{% url 'tasks:task_del' botid categoryid task.id %}';
+                    window.location.href = '{% url 'content:task_del' botid categoryid task.id %}';
                 } else {
                     Swal.fire('Хорошо. Оставляем.', '', 'success')
                 }

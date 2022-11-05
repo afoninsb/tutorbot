@@ -4,7 +4,8 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('bot/<int:botid>/content/', include('content.urls', namespace='content')),
+    path('bot/<int:botid>/content/',
+         include('content.urls', namespace='content')),
     path('bot/<int:botid>/users/', include('users.urls', namespace='users')),
     path('admin/', admin.site.urls),
     path('login/', include('login.urls', namespace='login')),

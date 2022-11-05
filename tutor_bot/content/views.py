@@ -17,7 +17,6 @@ def category(request, botid):
     return render(request, 'content/categories.html', context)
 
 
-# ЭТА РАБОТАЕТ КАК ПОЛОЖЕНО
 def categoryadd(request, botid):
     form = CategoryForm(request.POST or None)
     if form.is_valid():
@@ -71,7 +70,7 @@ def categorytasks(request, botid, categoryid):
     return render(request, 'content/category_tasks.html', context)
 
 
-# ЭТА СРАБАТЫВАЕТ ДВАЖДЫ  :(
+
 def taskadd(request, botid, categoryid):
     form = TaskForm(request.POST, request.FILES or None)
     if not form.is_valid():
@@ -137,24 +136,16 @@ def taskdel(request, botid, categoryid, taskid):
         'content:category_tasks', botid=botid, categoryid=categoryid)
 
 
-# ЭТА СРАБАТЫВАЕТ ДВАЖДЫ  :(
 def catrunstop(request, botid, categoryid):
-
-    print(1111111111111111111)
-
     cur_category = get_object_or_404(Category, id=categoryid)
-
     if (not cur_category.task.filter(time__isnull=True).exists()
             and not cur_category.is_active):
         messages.error(request, 'В категории нет задач.')
         return redirect('content:category', botid=botid)
-
     Category.objects.filter(id=categoryid).update(
         is_active=not cur_category.is_active)
-
     if cur_category.is_active:
         messages.success(request, 'Категория остановлена.')
     else:
         messages.success(request, 'Категория запущена.')
-
     return redirect('content:category', botid=botid)
