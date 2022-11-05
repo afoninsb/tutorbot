@@ -24,8 +24,8 @@ def botdel(request, botid):
     bot = BotData(cur_bot.token)
     bot.delete_webhook()
     cur_bot.delete()
-    messages.success(request, 'Бот удалён')
     del_dir(botid=botid, type_dir='bot')
+    messages.success(request, 'Бот удалён')
     return redirect('bots:index')
 
 
@@ -62,9 +62,16 @@ def botadd(request):
         return render(request, 'bots/botadd.html', context)
     new_bot = form.save(commit=False)
     new_bot.id = int((request.POST['token'].split(':'))[0])
-    new_bot.admin = get_object_or_404(
-        AdminBot, tgid=request.COOKIES.get('chatid'))
+    tgid=request.COOKIES.get('chatid')
+    admin = get_object_or_404(AdminBot, tgid=tgid)
+    new_bot.admin = admin
     form.save()
+    new_bot.student.create(
+        tgid = tgid,
+        first_name = admin.first_name,
+        last_name = admin.last_name,
+        is_activated = True,
+    )
     add_dir(botid=new_bot.id)
     messages.success(request, 'Бот добавлен.')
     return redirect('bots:bot_page', botid=new_bot.id)
@@ -99,11 +106,3 @@ def botschedule(request, botid):
     if request.method == "POST":
         messages.error(request, ' ')
     return render(request, 'bots/botschedule.html', {'form': form, })
-
-
-# Работает как надо. А в content она работает дважды :(
-def a123(request, botid):
-
-    print(1111111111111111111)
-    print(222222222222222)
-    return redirect('content:category', botid=botid)
