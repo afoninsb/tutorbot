@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from core.utils import add_dir, del_dir
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
@@ -6,7 +7,7 @@ import hashlib
 from bots.forms import BotForm, BotFormEdit, BotPass, BotSchedule
 from bots.models import Bot
 from edubot.main_classes import BotData
-from users.models import AdminBot
+from users.models import AdminBot, Student
 
 
 def index(request):
@@ -66,12 +67,15 @@ def botadd(request):
     admin = get_object_or_404(AdminBot, tgid=tgid)
     new_bot.admin = admin
     form.save()
-    new_bot.student.create(
-        tgid = tgid,
-        first_name = admin.first_name,
-        last_name = admin.last_name,
-        is_activated = True,
-    )
+    try:
+        new_bot.student.create(
+            tgid = tgid,
+            first_name = admin.first_name,
+            last_name = admin.last_name,
+            is_activated = True,
+        )
+    except IntegrityError:
+        new_bot.student.add(Student.objects.get(tgid=tgid))
     add_dir(botid=new_bot.id)
     messages.success(request, 'Бот добавлен.')
     return redirect('bots:bot_page', botid=new_bot.id)
