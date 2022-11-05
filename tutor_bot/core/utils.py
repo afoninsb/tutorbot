@@ -1,14 +1,13 @@
 import os
 import shutil
-from faker import Faker
+import uuid
 from django.conf import settings
 
 
 def handle_uploaded_file(f):
     if not os.path.exists(settings.TEMP_ROOT):
         os.mkdir(settings.TEMP_ROOT, mode=0o777)
-    fake = Faker()
-    new_name = ''.join(fake.words(nb=5))
+    new_name = uuid.uuid1()
     _, file_extension = os.path.splitext(f._name)
     file = f'{settings.TEMP_ROOT}/{new_name}{file_extension}'
     with open(file, 'wb+') as destination:

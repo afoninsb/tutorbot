@@ -63,6 +63,7 @@ def alerts_endtask(request):
             or '/admin' in request.path):
         return {}
     alerts_count_endtask = {}
+    cat_names = {}
     admin = get_admin(request)
     bots = Bot.objects.filter(
         admin__tgid=admin['tgid']).prefetch_related('task')

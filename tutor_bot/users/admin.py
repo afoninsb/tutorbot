@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from bots.admin import BotkInline
 from users.models import AdminBot, Student
 
 
@@ -18,6 +19,7 @@ class UserAdmin(admin.ModelAdmin):
     )
     list_filter = ('time',)
     search_fields = ('tgid',)
+    inlines = (BotkInline, )
 
 
 @admin.register(Student)

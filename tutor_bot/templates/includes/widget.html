@@ -5,12 +5,12 @@
       {% if widget == 'category' %}
         <h3>Добавить категорию</h3>
         <div class="social-links mt-2">
-          <a href="{% url 'tasks:category_add' botid %}" class="add"><i class="ri-add-box-fill ri-xl" data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить категорию (тему)"></i></a>
+          <a href="{% url 'content:category_add' botid %}" class="add"><i class="ri-add-box-fill ri-xl" data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить категорию (тему)"></i></a>
 
           {% elif widget == 'task' %}
           <h3>Добавить задание</h3>
           <div class="social-links mt-2">
-            <a href="{% url 'tasks:task_add' botid category_id %}" class="add"><i class="ri-add-box-fill ri-xl" data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить задание"></i></a>
+            <a href="{% url 'content:task_add' botid category_id %}" class="add"><i class="ri-add-box-fill ri-xl" data-bs-toggle="tooltip" data-bs-placement="top" title="Добавить задание"></i></a>
         
       {% endif %}
     

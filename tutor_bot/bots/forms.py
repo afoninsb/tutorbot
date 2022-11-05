@@ -86,8 +86,10 @@ class BotSchedule(forms.ModelForm):
     def clean_hours(self):
         data = self.cleaned_data['hours']
         hours = data.split()
-        for hour in hours:
+        for count, hour in enumerate(hours):
             if not hour.isdigit() or int(hour) > 24:
                 raise ValidationError(
                     'Должны быть только целые числа от 0 до 24 и пробел.')
-        return data
+            if len(hour) == 1:
+                hours[count] = f'0{hour}'
+        return ' '.join(hours)

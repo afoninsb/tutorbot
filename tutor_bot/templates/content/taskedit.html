@@ -1,0 +1,56 @@
+{% extends 'base-1c.html' %}
+{% load static %}
+
+
+{% block pagehead %}
+  Редактируем задание
+{% endblock  %}
+
+{% block content %}
+  <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div style='text-align: center; margin-left: 100px;'>
+        <div class="row">
+            <div class="col-md-10">
+              <label for="id_title">Заголовок:</label><br>
+              
+              <input type="text" name="title" class="form-control" maxlength="50" required id="id_title" value="{{ task.title }}"><br>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-10">
+              <label for="id_text">Текст задания:</label><br>
+              
+              <textarea name="text" cols="40" rows="10" class="form-control" required id="id_text">{{ task.text }}</textarea><br>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-10">
+              <label for="id_answer">Ответ:</label><br>
+              
+              <input type="text" name="answer" class="form-control" maxlength="100" required id="id_answer" value="{{ task.answer }}"><br>
+            </div>
+          </div>
+      <div class="row">
+        <div class="col-md-10">
+          <label for="id_img">Изображение:</label><br>
+          {% if task.img %}
+            На данный момент:<br>
+            <img src="{{ MEDIA_URL }}{{ task.img }}" class="img-fluid rounded-start">
+            <p><input type="checkbox" name="img-clear" id="img-clear_id">
+            <label for="img-clear_id">Очистить</label></p>
+            <p>Изменить:</p>
+          {% endif %}
+          <input type="file" name="img" accept="image/*" id="id_img">
+          <p class="help">Загрузите изображение .jpg, .png</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10">
+          <br><input type='submit' value='С О Х Р А Н И Т Ь' class='btn btn-primary'>
+        </div>
+      </div>
+    </div>
+  </form>
+{% endblock  %}

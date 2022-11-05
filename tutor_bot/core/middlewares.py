@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse
 
 from bots.models import Bot
-from tasks.models import Category, Task
+from content.models import Category, Task
 from users.models import AdminBot
 
 
@@ -12,11 +12,14 @@ def is_yours(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
 
     def middleware(request: HttpRequest) -> HttpResponse:
         if (request.path in ('/', '/bots/add/')
+                or '/favicon.ico' in request.path
                 or '/admin/' in request.path
+                or '/del/' in request.path
                 or '/login/' in request.path
+                or '/media/' in request.path
                 or '/webhook/' in request.path):
-            response = get_response(request)
-            return response
+            return get_response(request)
+
         tgid = request.COOKIES.get('chatid')
         name_model = {
             'bot': Bot,
@@ -28,7 +31,7 @@ def is_yours(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
         for name in name_model:
             if name in get_ids:
                 name_id[name] = get_ids[get_ids.index(name) + 1]
-        botid = name_id['bot']
+        botid = name_id.get('bot')
         for name, id in name_id.items():
             try:
                 if name == 'bot':
@@ -50,6 +53,9 @@ def is_admin(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
     def middleware(request: HttpRequest) -> HttpResponse:
         if not (
             '/admin/' in request.path
+            or '/favicon.ico' in request.path
+            or '/media/' in request.path
+            or '/del/' in request.path
             or '/login/' in request.path
             or '/webhook/' in request.path
         ):

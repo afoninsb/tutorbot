@@ -1,0 +1,46 @@
+{% extends 'base-1c.html' %}
+{% load static %}
+
+{% block pagehead %}
+    Категории (темы)
+{% endblock  %}
+
+{% block content %}
+    <ul class="list-group">
+        {% for category in categories %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="ms-2 me-auto"><a href="{% url 'content:category_tasks' botid category.id %}">{{ category }}</a></div>
+            <span class="badge">
+                {% if not category.is_active %}
+                    <a href="{% url 'content:category_runstop' botid category.id %}" class="run"><i class="ri-play-circle-fill ri-2x" style="cursor: pointer; color: green;" data-bs-toggle="tooltip" data-bs-placement="top" title="Включить категорию"></i></a>
+                {% else %}
+                    <a href="{% url 'content:category_runstop' botid category.id %}" class="stop"><i class="ri-pause-circle-fill ri-2x" style="cursor: pointer; color: red;" data-bs-toggle="tooltip" data-bs-placement="top" title="Остановить категорию"></i></a>
+                {% endif %}
+            </span>
+            <span class="badge">
+                <a href="{% url 'content:category_edit' botid category.id %}" class="edit"><i class="ri-edit-2-fill ri-xl" style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="Переименовать категорию"></i></a>
+            </span>
+            <span class="badge">
+                <a href='#' title='Удалить категорию' onclick="
+                  Swal.fire({
+                      icon: 'warning',
+                      title: 'Вы точно хотите удалить категорию из бота? Удалятся все задания и вся статистика по этой категории.',
+                      showCancelButton: true,
+                      confirmButtonColor: '#d33',
+                      cancelButtonColor: '#3085d6',
+                      confirmButtonText: 'Да! Удаляем!',
+                      cancelButtonText: 'Нет! Я передумал...'
+                  }).then(function(inputvalue){
+                      if(inputvalue.isConfirmed){
+                          window.location.href = '{% url 'content:category_del' botid category.id %}';
+                      } else {
+                          Swal.fire('Хорошо. Оставляем.', '', 'success')
+                      }
+                  });">
+                  <i class="ri-delete-bin-5-fill ri-xl" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить категорию {{ category }} из бота" style="cursor: pointer;"></i>
+                </a>
+              </span>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock  %}
