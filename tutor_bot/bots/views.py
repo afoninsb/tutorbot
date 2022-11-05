@@ -99,3 +99,11 @@ def botschedule(request, botid):
     if request.method == "POST":
         messages.error(request, ' ')
     return render(request, 'bots/botschedule.html', {'form': form, })
+
+
+# Работает как надо. А в content она работает дважды :(
+def a123(request, botid):
+
+    print(1111111111111111111)
+    print(222222222222222)
+    return redirect('content:category', botid=botid)
