@@ -17,19 +17,18 @@
                 <span class="badge bg-danger text-light badge-number"><i class="bi bi-exclamation-octagon me-1"></i></span>
               </a>
 
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 {% for bot, categories in alerts_count_endtask.items %} 
                   {% for category, count in categories.items %}
                           <li class="notification-item">
-                    <div>
-                      <p><a class="nav-link nav-icon" href="{% url 'content:category_tasks' bot category %}">
-                        {{ cat_names|get_item:category }}: <span class="badge bg-warning text-dark">{{ count }}</span>
-                      </a></p>
-                    </div>
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
+                            <li>
+                              <a class="dropdown-item d-flex align-items-center" href="{% url 'content:category_tasks' bot category %}">
+                                {{ cat_names|get_item:category }}: <span class="badge bg-warning text-dark">{{ count }}</span>
+                              </a>
+                            </li>
+                            <li>
+                              <hr class="dropdown-divider">
+                            </li>
                   {% endfor %}
                 {% endfor %}
               </ul>
@@ -43,18 +42,17 @@
           <span class="badge bg-warning text-dark badge-number">{{ alerts_newuser }}</span>
         </a>
 
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
           {% for botid, botname, cur_count in alerts_count_newuser %}
-              <li class="notification-item">
-                <div>
-                  <p><a class="nav-link nav-icon" href="{% url 'users:index' botid %}">
-                    {{ botname }}: <span class="badge bg-warning text-dark">{{ cur_count }}</span>
-                  </a></p>
-                </div>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'users:index' botid %}">
+                {{ botname }}: <span class="badge bg-warning text-dark">{{ cur_count }}</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
           {% endfor %}
         </ul>
       </li>
