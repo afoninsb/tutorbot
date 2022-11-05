@@ -63,21 +63,22 @@ def botadd(request):
         return render(request, 'bots/botadd.html', context)
     new_bot = form.save(commit=False)
     new_bot.id = int((request.POST['token'].split(':'))[0])
-    tgid=request.COOKIES.get('chatid')
+    tgid = request.COOKIES.get('chatid')
     admin = get_object_or_404(AdminBot, tgid=tgid)
     new_bot.admin = admin
     form.save()
     try:
         new_bot.student.create(
-            tgid = tgid,
-            first_name = admin.first_name,
-            last_name = admin.last_name,
-            is_activated = True,
+            tgid=tgid,
+            first_name=admin.first_name,
+            last_name=admin.last_name,
+            is_activated=True,
         )
     except IntegrityError:
         new_bot.student.add(Student.objects.get(tgid=tgid))
     add_dir(botid=new_bot.id)
-    messages.success(request, 'Бот добавлен.')
+    messages.success(request,
+                     'Бот добавлен. Вы также добавлены в учащихся этого бота.')
     return redirect('bots:bot_page', botid=new_bot.id)
 
 
