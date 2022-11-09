@@ -1,7 +1,7 @@
 from typing import Callable
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
 
 from bots.models import Bot
 from content.models import Category, Task
@@ -24,8 +24,7 @@ def is_yours(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
         try:
             AdminBot.objects.get(tgid=tgid)
         except ObjectDoesNotExist:
-            mess = '<center><h2>Неизвестный пользователь</h2></center>'
-            response = HttpResponse(mess)
+            return HttpResponseForbidden()
         else:
             name_model = {
                 'bot': Bot,
@@ -45,8 +44,7 @@ def is_yours(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
                     else:
                         name_model[name].objects.get(id=obj_id, bot__id=botid)
             except ObjectDoesNotExist:
-                mess = '<center><h2>У вас нет доступа к этому контенту</h2></center>'
-                response = HttpResponse(mess)
+                return HttpResponseForbidden()
             else:
                 response = get_response(request)
             return response

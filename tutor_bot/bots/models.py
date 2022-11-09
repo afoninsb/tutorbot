@@ -48,6 +48,14 @@ class Bot(models.Model):
         max_length=100,
         blank=True
     )
+    is_show_wrong_right = models.BooleanField(
+        verbose_name='Показывать Правильно-Неправильно?',
+        default=True
+    )
+    is_show_answer = models.BooleanField(
+        verbose_name='Показывать правильный ответ?',
+        default=True
+    )
 
     class Meta:
         verbose_name = 'Бот'

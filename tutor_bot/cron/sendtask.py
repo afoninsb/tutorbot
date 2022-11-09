@@ -14,25 +14,21 @@ def get_students_tgids(bot):
 
 
 def send_task(bot_tg):
+    from edubot.keyboards.inline import push_answer_kbrd
+
     cur_bot = get_object_or_404(Bot, token=bot_tg)
-    print(bot_tg)
     task = get_task(cur_bot)
-    line = '-'*70
-    message_head = {
-        'text': f'<b>Задание № {task.id}</b>\n{line}',
+    message_text = {
+        'text': f'<b>Задание № {task.id}</b>\n\n{task.text}',
         'parse_mode': 'HTML'
     }
     if task.img:
         message_img = {
             'photo': f'{settings.BASE_URL}{settings.MEDIA_URL}{task.img}',
         }
-    message_text = {
-        'text': task.text,
-        'parse_mode': 'HTML'
-    }
     message_button = {
         'text': 'Для ответа нажмите на кнопку:',
-        # 'reply_markup': push_answer_kbrd(task.id),
+        'reply_markup': push_answer_kbrd(task.id),
     }
 
     users_tgids = get_students_tgids(cur_bot)
@@ -41,15 +37,12 @@ def send_task(bot_tg):
 
     for user_tgid in users_tgids:
 
-        message_head['chat_id'] = user_tgid
-        bot.send_answer(message_head)
+        message_text['chat_id'] = user_tgid
+        bot.send_answer(message_text)
 
         if task.img:
             message_img['chat_id'] = user_tgid
             bot.send_photo(message_img)
-
-        message_text['chat_id'] = user_tgid
-        bot.send_answer(message_text)
 
         message_button['chat_id'] = user_tgid
         bot.send_answer(message_button)

@@ -70,7 +70,6 @@ def categorytasks(request, botid, categoryid):
     return render(request, 'content/category_tasks.html', context)
 
 
-
 def taskadd(request, botid, categoryid):
     form = TaskForm(request.POST, request.FILES or None)
     if not form.is_valid():
@@ -88,7 +87,8 @@ def taskadd(request, botid, categoryid):
         Task.objects.filter(id=new_task.id).update(img='/'.join(
             [str(botid), f'cat{categoryid}', name_new]))
     messages.success(request, 'Задача добавлена.')
-    return redirect('content:category_tasks', botid=botid, categoryid=categoryid)
+    return redirect(
+        'content:category_tasks', botid=botid, categoryid=categoryid)
 
 
 def task(request, botid, categoryid, taskid):

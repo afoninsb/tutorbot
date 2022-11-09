@@ -5,7 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .datatypes_classes import (HighLevelCallback, HighLevelCommand,
                                 HighLevelState, HighLevelText, Road)
-from .main_classes import BotData, LocalData
+from .main_classes import BotData
+from .main_classes.localdata import AdminUser, TempUser
 
 
 @csrf_exempt
@@ -21,7 +22,9 @@ def webhook(request, bot_tg):
     bot = BotData(bot_tg)
 
     # Создаём объект LocalData для работы с базой данных
-    local = LocalData(bot_tg, bot.user_id(from_tg))
+    # local = LocalData(bot_tg, bot.user_id(from_tg))
+    admin_user = AdminUser(bot.user_id(from_tg))
+    temp_user = TempUser(bot.user_id(from_tg))
 
     # Если юзера нет в базе, добавляем в базу и запускаем регистрацию
     if not local.user_is_in_base:
