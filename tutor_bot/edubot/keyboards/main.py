@@ -13,11 +13,11 @@ def main_kbrd(chat_id: int) -> json:
     mkbrd = {}
     keyboard = [
         [
-            {'text': 'План'},
-            {'text': 'Сообщение учителю'},
+            {'text': 'Рейтинг'},
+            {'text': 'Моя статистика'},
         ]
     ]
-    if BotAdmin.objects.filter(chat=chat_id):
+    if BotAdmin.objects.filter(tgid=chat_id):
         buttons_admin = [
             {'text': 'Администрировать'},
         ]

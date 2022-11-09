@@ -18,11 +18,6 @@ class BotForm(forms.ModelForm):
     class Meta:
         model = Bot
         fields = ('token', 'login', 'name')
-        labels = {
-            'token': 'Бот-токен',
-            'login': 'Имя пользователя бота в Telegram',
-            'name': 'Название (для себя)',
-        }
         help_texts = {
             'login': ('то, что начинается со знака @.'
                       'Обязательно заканчивается словом bot'),
@@ -53,19 +48,24 @@ class BotForm(forms.ModelForm):
 class BotFormEdit(forms.ModelForm):
     class Meta:
         model = Bot
-        fields = ('token', 'login', 'name')
-        labels = {
-            'token': 'Бот-токен',
-            'login': 'Имя пользователя бота в Telegram',
-            'name': 'Название (для себя)',
-        }
+        fields = ('name', 'is_show_wrong_right', 'is_show_answer')
         widgets = {
-            'token': forms.TextInput(
-                attrs={'class': 'form-control', 'disabled': True}),
-            'login': forms.TextInput(
-                attrs={'class': 'form-control', 'disabled': True}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'is_show_wrong_right': forms.CheckboxInput(),
+            'is_show_answer': forms.CheckboxInput(),
         }
+
+    def clean(self):
+        is_show_wrong_right = self.cleaned_data['is_show_wrong_right']
+        is_show_answer = self.cleaned_data['is_show_answer']
+        if is_show_answer and not is_show_wrong_right:
+            self.add_error(
+                'is_show_wrong_right',
+                ('При показе "Правильного ответа" необходимо включить '
+                 '"Показывать Правильно/Неправильно')
+            )
+            raise ValidationError('')
+        return self.cleaned_data
 
 
 class BotSchedule(forms.ModelForm):

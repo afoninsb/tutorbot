@@ -6,20 +6,18 @@ from edubot.main_classes import LocalData
 from edubot.main_classes.localdata import LocalData
 
 
-def push_kr_kbrd(item: int, kr_out: int, group_id: int) -> json:
-    """Кнопка Сдать контрольную работу.
+def push_answer_kbrd(task_id: int) -> json:
+    """Кнопка Ответить.
     Args:
-        item (int): id темы в тематическом плане.
-        kr_out (int): id выдачи контрольной работы.
-        group_id (int): id группы.
+        task_id (int): id задания.
     Returns:
         json: Клавиатура в формате json.
     """
     kkbd = {}
     keyboard = []
     inline_button = [{
-        'text': 'Сдать контрольную работу',
-        'callback_data': f'push:k:{item}:{group_id}:{kr_out}'
+        'text': 'Ответить',
+        'callback_data': f'answer:{task_id}'
     }]
     keyboard.append(inline_button)
     kkbd['inline_keyboard'] = keyboard
