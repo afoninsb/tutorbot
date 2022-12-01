@@ -69,6 +69,10 @@ class Student(models.Model):
         Bot,
         through="StudentBot"
     )
+    pin = models.CharField(
+        max_length=50,
+        blank=True
+    )
 
     class Meta:
         verbose_name = 'Учащийся'

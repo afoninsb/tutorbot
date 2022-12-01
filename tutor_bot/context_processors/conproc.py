@@ -6,7 +6,8 @@ from users.models import AdminBot
 def get_admin(request):
     if ('/tgbot_backend' in request.path
             or '/webhook' in request.path
-            or '/admin' in request.path):
+            or '/admin' in request.path
+            or 'stats/user/' in request.path):
         return {}
     chat = request.COOKIES.get('chatid')
     admin = AdminBot.objects.get(tgid=chat)
@@ -40,7 +41,8 @@ def get_bot(request):
 def alerts_newuser(request):
     if ('/tgbot_backend' in request.path
             or '/webhook' in request.path
-            or '/admin' in request.path):
+            or '/admin' in request.path
+            or 'stats/user/' in request.path):
         return {}
     alerts_newuser = 0
     alerts_count_newuser = []
@@ -62,7 +64,8 @@ def alerts_newuser(request):
 def alerts_endtask(request):
     if ('/tgbot_backend' in request.path
             or '/webhook' in request.path
-            or '/admin' in request.path):
+            or '/admin' in request.path
+            or 'stats/user/' in request.path):
         return {}
     alerts_count_endtask = {}
     cat_names = {}

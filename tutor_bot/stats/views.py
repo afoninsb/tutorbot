@@ -44,7 +44,7 @@ def category(request, botid, cat_id, user_id):
             user_id=user_id,
         )
     start_end_date = get_dates_from_coockies(request)
-    tasks = Task.objects.filter(category__id=cat_id)
+    tasks = Task.objects.filter(category__id=cat_id).filter(time__gte='2020-01-01 00:00:01')
     dates = None
     if start_end_date:
         dates = dates_tz(start_end_date, botid)
@@ -52,7 +52,6 @@ def category(request, botid, cat_id, user_id):
             time__gte=dates[0],
             time__lte=dates[1],
         )
-    task_count = tasks.filter(time__gte='2020-01-01 00:00:01').count()
     if user_id != 'all':
         student = get_object_or_404(Student, id=user_id)
         students = None
@@ -63,7 +62,7 @@ def category(request, botid, cat_id, user_id):
     cat_stats = get_stats(tasks, dates, student) if tasks else {}
     stud_stats = get_stats(students, dates, student) if students else {}
     context = {
-        'task_count': task_count,
+        'task_count': tasks.count(),
         'tasks': tasks,
         'cat_stats': cat_stats,
         'stud_stats': stud_stats,
@@ -117,3 +116,87 @@ def all_categories(request, botid, user_id):
         'student': student
     }
     return render(request, 'stats/all_categories.html', context)
+
+
+def userstat(request, botid, user_id, pin):
+    student = get_object_or_404(Student, id=user_id)
+    if pin != student.pin:
+        return render(request, '404.html')
+    form = SelectDateForm_disabled(request.POST or None)
+    if request.method == "POST":
+        return form_processing(
+            request,
+            form,
+            'stats/userstat.html',
+            'stats:userstat',
+            botid=botid,
+            user_id=user_id,
+            pin=pin
+        )
+    start_end_date = get_dates_from_coockies(request)
+    categories = Category.objects.filter(bot__id=botid)
+    stats = {}
+    if categories:
+        for category in categories:
+            tasks = Task.objects.filter(category=category)
+            logs = Log.objects.filter(category=category).filter(student=student)
+            if logs and tasks:
+                if start_end_date:
+                    dates = dates_tz(start_end_date, botid)
+                    logs = logs.filter(
+                        time__gte=dates[0],
+                        time__lte=dates[1],
+                    )
+                    tasks = tasks.filter(
+                        time__gte=dates[0],
+                        time__lte=dates[1],
+                    )
+                task_count = tasks.filter(time__gte='2020-01-01 00:00:01').count()
+                stats[category.id] = [task_count, 0, 0, 0]
+                compare_logs(stats, logs, category.id, 0)
+    context = {
+        'categories': categories,
+        'stats': stats,
+        'form': new_date_form(start_end_date),
+        'student': student,
+        'pin': pin
+    }
+    return render(request, 'stats/userstat.html', context)
+
+
+def usercatstat(request, botid, user_id, cat_id, pin):
+    student = get_object_or_404(Student, id=user_id)
+    if pin != student.pin:
+        return render(request, '404.html')
+    form = SelectDateForm_disabled(request.POST or None)
+    if request.method == "POST":
+        return form_processing(
+            request,
+            form,
+            'stats/usercatstat.html',
+            'stats:usercatstat',
+            botid=botid,
+            cat_id=cat_id,
+            user_id=user_id,
+            pin=pin
+        )
+    start_end_date = get_dates_from_coockies(request)
+    tasks = Task.objects.filter(category__id=cat_id).filter(time__gte='2020-01-01 00:00:01')
+    dates = None
+    if start_end_date:
+        dates = dates_tz(start_end_date, botid)
+        tasks = tasks.filter(
+            time__gte=dates[0],
+            time__lte=dates[1],
+        )
+    cat_stats = get_stats(tasks, dates, student) if tasks else {}
+    context = {
+        'task_count': tasks.count(),
+        'tasks': tasks,
+        'cat_stats': cat_stats,
+        'category': get_object_or_404(Category, id=cat_id),
+        'form': new_date_form(start_end_date),
+        'student': student,
+        'pin': pin
+    }
+    return render(request, 'stats/usercatstat.html', context)

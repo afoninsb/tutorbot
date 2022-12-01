@@ -1,0 +1,29 @@
+{% extends 'baseuser.html' %}
+{% load static %}
+
+{% block pagehead %}
+    Статистика: {{category}} - {{student}}
+{% endblock  %}
+
+{% block content %}
+    <p><i class="ri-book-read-fill ri-1x"></i> Выдано заданий: {{ task_count }}</p><hr>
+
+    <table class="table table-bordered datatable">
+        <thead>
+        <tr>
+            <th scope="col" width="75%">Задание</th>
+            <th scope="col">Правильный?</th>
+        </tr>
+        </thead>
+        <tbody>
+    {% for task in tasks %}
+        <tr>
+            <td>{{ task }}</td>
+            {% with stat=cat_stats|get_item:task.id %}
+                <td>{{ stat.1 }}</td>
+            {% endwith %}
+        </tr>
+    {% endfor %}
+    </table>
+    <a href="{% url 'stats:userstat' botid student.id pin %}"><< Назад</a>
+{% endblock  %}
