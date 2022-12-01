@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .datatypes_classes import (HighLevelCallback, HighLevelCommand,
                                 HighLevelState, HighLevelText, Road)
 from .main_classes import BotData
-from .main_classes.localdata import AdminUser, TempUser
+from .main_classes.localdata import AdminUser, StudentUser, TempUser
 
 
 @csrf_exempt
@@ -20,19 +20,27 @@ def webhook(request, bot_tg):
 
     # Создаём объект BotData для работы с данными с вебхука
     bot = BotData(bot_tg)
+    tgid = bot.user_id(from_tg)
 
-    # Создаём объект LocalData для работы с базой данных
-    # local = LocalData(bot_tg, bot.user_id(from_tg))
-    admin_user = AdminUser(bot.user_id(from_tg))
-    temp_user = TempUser(bot.user_id(from_tg))
-
-    # Если юзера нет в базе, добавляем в базу и запускаем регистрацию
-    if not local.user_is_in_base:
-        local.user_new
-
-    # Если юзер в базе, но не в этом боте, посылаем на пароль
-    elif not local.user_is_in_bot:
-        local.user_edit(state='start')
+    # Создаём один из объектов UserData для работы с базой данных
+    user = AdminUser(tgid)
+    if user.is_in_base and bot_tg in user.admin_bots:
+        is_admin = True
+    else:
+        is_admin = False
+        user = StudentUser(tgid, bot_tg)
+        if (user.is_in_base and not user.is_in_bot
+                or not user.is_in_base):
+            user = TempUser(tgid)
+            user.to_base(
+                tgid=tgid,
+                first_name='fn',
+                last_name='ln',
+                org='org',
+                position='pos',
+                why='why',
+                state='start'
+            )
 
     # Получаем объект message
     message = bot.get_message(from_tg)
@@ -42,7 +50,8 @@ def webhook(request, bot_tg):
 
     # Если у юзера есть состояние, в тип обонвления помещаем его,
     # Команды имеют приоритет - рассматриваются первыми
-    if local.user_state and data_type != 'command':
+    cur_user = user.get_info
+    if cur_user.state and data_type != 'command':
         data_type = 'state'
 
     # Создаём объект Road, определяющий направление движения
@@ -62,6 +71,7 @@ def webhook(request, bot_tg):
 
     # Запускаем движения по выбранному направлению,
     # определяемому параметром data_type
-    road.go(data_type, bot, local, message=message, from_tg=from_tg)
+    road.go(data_type, bot, user, message=message,
+            from_tg=from_tg, cur_user=cur_user, is_admin=is_admin)
 
     return render(request, 'webhook/123.html')

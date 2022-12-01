@@ -1,3 +1,5 @@
+import pytz
+from datetime import datetime
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -92,10 +94,12 @@ def taskadd(request, botid, categoryid):
 
 
 def task(request, botid, categoryid, taskid):
+    cur_bot = get_object_or_404(Bot, id=botid)
     cur_task = get_object_or_404(Task, id=taskid)
     context = {
         'task': cur_task,
         'categoryid': categoryid,
+        'tz': cur_bot.tz,
     }
     return render(request, 'content/task.html', context)
 

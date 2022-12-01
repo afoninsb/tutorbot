@@ -1,0 +1,59 @@
+{% extends 'dateform.html' %}
+{% load static %}
+
+{% block pagehead %}
+    Статистика: {{category}} {% if student %}- {{student}}{% endif %}
+{% endblock  %}
+
+{% block content %}
+    <p><i class="ri-book-read-fill ri-1x"></i> Выдано заданий: {{ task_count }}</p><hr>
+
+    <table class="table table-bordered datatable">
+        <thead>
+        <tr>
+            <th scope="col" width="35%">Задание</th>
+            <th scope="col">Дано ответов</th>
+            <th scope="col">Правильных</th>
+            <th scope="col">Качество, %</th>
+            <th scope="col"><i class="ri-arrow-right-up-fill ri-lg"></i></th>
+        </tr>
+        </thead>
+        <tbody>
+    {% for task in tasks %}
+        <tr>
+            <td><a href="{% url 'stats:task' botid task.id %}">{{ task }}</a></td>
+            {% with stat=cat_stats|get_item:task.id %}
+                <td>{{ stat.0 }}</td>
+                <td>{{ stat.1 }}</td>
+                <td>{{ stat.2 }}</td>
+                <th scope="col"><a href="{% url 'content:task' botid task.category_id task.id %}" target="_blank" title="Посмотреть задание">
+                    <i class="ri-arrow-right-up-fill ri-lg" style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="Посмотреть задание"></i></a></th>
+            {% endwith %}
+        </tr>
+    {% endfor %}
+    </table>
+	<hr>
+	{% if students %}
+		<table class="table table-bordered datatable">
+			<thead>
+			<tr>
+				<th scope="col" width="35%">Студент</th>
+				<th scope="col">Дано ответов</th>
+				<th scope="col">Правильных</th>
+				<th scope="col">Качество, %</th>
+			</tr>
+			</thead>
+			<tbody>
+		{% for student in students %}
+			<tr>
+				<td><a href="{% url 'stats:all_categories' botid student.id %}">{{ student }}</a></td>
+				{% with stat=stud_stats|get_item:student.id %}
+					<td>{{ stat.0 }}</td>
+					<td>{{ stat.1 }}</td>
+					<td>{{ stat.2 }}</td>
+				{% endwith %}
+			</tr>
+		{% endfor %}
+		</table>
+	{% endif %}
+{% endblock  %}

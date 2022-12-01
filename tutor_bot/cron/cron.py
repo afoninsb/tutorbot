@@ -3,12 +3,12 @@ def cron_task():
     import subprocess
     from datetime import datetime
     from bots.models import Bot
-    now = datetime.now(pytz.timezone('Europe/Moscow'))
-    hour = str(now.hour)
-    week_day = now.weekday()
     bots = Bot.objects.filter(is_active=True)
     tokens = []
     for bot in bots:
+        now = datetime.now(pytz.timezone(bot.tz))
+        hour = str(now.hour)
+        week_day = now.weekday()
         bot_hours = bot.hours.split()
         if (
             (bot.days == Bot.DayType.WEEK_DAYS

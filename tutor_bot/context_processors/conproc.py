@@ -32,6 +32,7 @@ def get_bot(request):
             'is_active': bot.is_active,
             'days': bot.get_days_display,
             'hours': bot.hours,
+            'tz': bot.tz,
         }
     return {}
 
@@ -45,9 +46,10 @@ def alerts_newuser(request):
     alerts_count_newuser = []
     admin = get_admin(request)
     bots = Bot.objects.filter(
-        admin__tgid=admin['tgid']).prefetch_related('student')
+        admin__tgid=admin['tgid'])
     for bot in bots:
-        cur_count = bot.student.filter(is_activated=False).count()
+        cur_count = bot.student_set.filter(
+            studentbot__is_activated=False).count()
         if cur_count > 0:
             alerts_newuser += cur_count
             alerts_count_newuser.append((bot.id, bot.name, cur_count))

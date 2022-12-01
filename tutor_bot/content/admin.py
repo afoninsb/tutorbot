@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from content.models import Category, Task
+from content.models import Category, Log, Task
 
 
 class TaskInline(admin.TabularInline):
@@ -44,3 +44,22 @@ class TaskAdmin(admin.ModelAdmin):
     )
     list_filter = ('time', 'bot', 'category')
     search_fields = ('text',)
+
+
+@admin.register(Log)
+class LogAdmin(admin.ModelAdmin):
+    """
+    Представление лога в админ-панели.
+    """
+
+    list_display = (
+        'student',
+        'task',
+        'answer',
+        'is_truth',
+        'time',
+        'bot',
+        'category',
+    )
+    list_filter = ('time',)
+    search_fields = ('student',)

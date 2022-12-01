@@ -48,9 +48,15 @@ class BotForm(forms.ModelForm):
 class BotFormEdit(forms.ModelForm):
     class Meta:
         model = Bot
-        fields = ('name', 'is_show_wrong_right', 'is_show_answer')
+        fields = (
+            'name',
+            'tz',
+            'is_show_wrong_right',
+            'is_show_answer',
+        )
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'tz': forms.Select(),
             'is_show_wrong_right': forms.CheckboxInput(),
             'is_show_answer': forms.CheckboxInput(),
         }

@@ -1,3 +1,4 @@
+import contextlib
 from django.db import IntegrityError
 from core.utils import add_dir, del_dir
 from django.contrib import messages
@@ -7,7 +8,7 @@ import hashlib
 from bots.forms import BotForm, BotFormEdit, BotPass, BotSchedule
 from bots.models import Bot
 from edubot.main_classes import BotData
-from users.models import AdminBot, Student
+from users.models import AdminBot, Student, StudentBot
 
 
 def index(request):
@@ -33,8 +34,17 @@ def botdel(request, botid):
 def botpass(request, botid):
     if request.method != "POST":
         return render(request, 'bots/botpass.html', {'form': BotPass, })
+    password = hashlib.pbkdf2_hmac(
+        'sha256',
+        request.POST['password'].encode('utf-8'),
+        b'',
+        100000,
+        dklen=128
+    )
     Bot.objects.filter(id=botid).update(
-        password=hashlib.md5(request.POST['password'].encode()))
+        # password=hashlib.md5(str(request.POST['password']).encode()))
+        password=password)
+
     messages.success(request, 'Пароль бота установлен.')
     return redirect('bots:bot_page', botid=botid)
 
@@ -67,18 +77,20 @@ def botadd(request):
     admin = get_object_or_404(AdminBot, tgid=tgid)
     new_bot.admin = admin
     form.save()
-    try:
-        new_bot.student.create(
+    with contextlib.suppress(IntegrityError):
+        Student.objects.create(
             tgid=tgid,
             first_name=admin.first_name,
             last_name=admin.last_name,
-            is_activated=True,
         )
-    except IntegrityError:
-        new_bot.student.add(Student.objects.get(tgid=tgid))
+    StudentBot(
+        bot=new_bot,
+        student=Student.objects.get(tgid=tgid),
+        is_activated=True
+    ).save()
     add_dir(botid=new_bot.id)
-    messages.success(request,
-                     'Бот добавлен. Вы также добавлены в учащихся этого бота.')
+    messages.success(
+        request, 'Бот добавлен. Вы также добавлены в учащихся этого бота.')
     return redirect('bots:bot_page', botid=new_bot.id)
 
 

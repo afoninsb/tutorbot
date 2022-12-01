@@ -1,34 +1,47 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
-
 from bots.models import Bot
-from users.models import Student
+from users.models import AdminBot, Student, StudentBot
 
 
 def index(request, botid):
     cur_bot = get_object_or_404(Bot, id=botid)
-    students = cur_bot.student.filter(is_activated=True)
-    students_new = cur_bot.student.filter(is_activated=False)
+    students = cur_bot.student_set.filter(studentbot__is_activated=True)
+    students_new = cur_bot.student_set.filter(studentbot__is_activated=False)
     return render(request, 'users/index.html',
                   {'students': students, 'students_new': students_new})
 
 
 def activate(request, botid):
-    tgids = request.POST.getlist('tgids')
-    if not tgids:
+    ids = request.POST.getlist('ids')
+    if not ids:
         messages.error(request, 'Выберите учащегося!')
         return redirect('users:index', botid=botid)
-    for tgid in tgids:
+    bulk_data = []
+    for id in ids:
         if request.POST.get('activate_button'):
-            Student.objects.filter(tgid=tgid).update(is_activated=True)
-            messages.success(request, 'Учащиеся активированы.')
+            cur_data = StudentBot.objects.get(
+                bot__id=botid, student__id=id)
+            cur_data.is_activated = True
+            bulk_data.append(cur_data)
         else:
-            Student.objects.filter(tgid=tgid).delete()
-            messages.success(request, 'Учащиеся удалены.')
+            Student.objects.filter(id=id).delete()
+
+    if request.POST.get('activate_button'):
+        StudentBot.objects.bulk_update(bulk_data, ('is_activated',))
+        messages.success(request, 'Учащиеся активированы.')
+    else:
+        messages.success(request, 'Учащиеся удалены.')
     return redirect('users:index', botid=botid)
 
 
 def delete(request, botid, tgid):
-    Student.objects.filter(tgid=tgid).delete()
-    messages.success(request, 'Учащийся удалён.')
+    try:
+        get_object_or_404(AdminBot, tgid=tgid)
+    except Exception:
+        Student.objects.filter(tgid=tgid).delete()
+        messages.success(request, 'Учащийся удалён.')
+    else:
+        messages.error(
+            request, 'Вы не можете удалить себя из списка учащихся!')
     return redirect('users:index', botid=botid)

@@ -20,18 +20,18 @@ def webhook(request, bot_tg):
 
     # Создаём объект BotData для работы с данными с вебхука
     bot = BotData(bot_tg)
+    tgid = bot.user_id(from_tg)
 
     # Создаём объект LocalData для работы с базой данных
-    # local = LocalData(bot_tg, bot.user_id(from_tg))
-    user = AdminUser(bot.user_id(from_tg))
+    user = AdminUser(tgid)
     is_admin = True
 
     # Если юзера нет в базе, добавляем в базу и запускаем регистрацию
     if not user.is_in_base:
         is_admin = False
-        user = TempUser(bot.user_id(from_tg))
+        user = TempUser(tgid)
         user.to_base(
-            tgid=bot.user_id(from_tg),
+            tgid=tgid,
             first_name='fn',
             last_name='ln',
             org='org',
@@ -49,10 +49,7 @@ def webhook(request, bot_tg):
     # Если у юзера есть состояние, в тип обонвления помещаем его,
     # Команды имеют приоритет - рассматриваются первыми
     cur_user = user.get_info
-    state = cur_user.state
-
-    # state = local.admin_state if admin else local.temp_admin_state
-    if state and data_type != 'command':
+    if cur_user.state and data_type != 'command':
         data_type = 'state'
 
     # Создаём объект Road, определяющий направление движения

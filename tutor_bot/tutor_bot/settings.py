@@ -22,7 +22,7 @@ ALERT_MIN_TASKS = 10
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '98b7-95-72-155-198.eu.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1', '9fd4-95-73-109-218.eu.ngrok.io']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'login',
     'edubot',
     'regbot',
+    'stats',
 ]
 
 MIDDLEWARE = [
@@ -103,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
