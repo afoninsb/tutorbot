@@ -1,5 +1,6 @@
 {% extends 'base-1c.html' %}
 {% load static %}
+{% load tz %}
 
 {% block pagehead %}
     Задание "{{ task.title }}"
@@ -11,8 +12,8 @@
             <div class="card-body">
                 <p class="card-text">{{ task.text|linebreaks }}</p>
                 <p class="card-text"><b>Ответ</b>: {{ task.answer }}</p>
-                {% if task.time not in NULL %}<b>Выдана</b>: {{ task.time }}
-                {% else %}<b>Не выдавалась</b>{% endif %}
+                {% if not task.time %}<b>Не выдавалась</b>:
+                {% else %}<b>Выдана</b>: {% timezone tz %}{{ task.time }}{% endtimezone %}{% endif %}
             </div>
         </div>
         {% if task.img %}
@@ -23,11 +24,7 @@
     </div>
     <div class="card-footer">
         <span class="left"><a href="{% url 'content:category_tasks' botid categoryid %}"><< обратно в категорию</a></span>
-        <span class="badge right" >
-          <a href="{% url 'content:task_edit' botid categoryid task.id %}" title="Редактировать задачу">
-            <i class="ri-edit-line ri-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать задачу"></i></a>
-        </span>
-        <span class="badge right">&nbsp;</span>
+
         <span class="badge right">
           <a href="#" title='Удалить задачу' onclick="
             Swal.fire({
@@ -48,5 +45,22 @@
             <i class="ri-delete-bin-5-fill ri-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить задачу {{ task.id }}" style="cursor: pointer;"></i>
           </a>
         </span>
-      </div>
+
+        <span class="badge right">&nbsp;</span>
+
+        <span class="badge right" >
+            <a href="{% url 'content:task_edit' botid categoryid task.id %}" title="Редактировать задачу">
+              <i class="ri-edit-line ri-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать задачу"></i></a>
+          </span>
+  
+        <span class="badge right">&nbsp;</span>
+
+        {% if task.time %}
+        <span class="badge right" >
+            <a href="{% url 'stats:task' botid task.id %}" title="Статистика задачи">
+            <i class="ri-bar-chart-fill ri-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Статистика задачи"></i></a>
+        </span>
+        {% endif %}
+
+    </div>
 {% endautoescape %}{% endblock  %}

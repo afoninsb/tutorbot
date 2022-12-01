@@ -22,13 +22,13 @@
     <div style='text-align: center; margin-left: 100px;'>
       {% for field in form %}
       <div class="row">
-        <div class="col-md-10">
+        <p class="col-md-10">
           {{field.label_tag}}<br>
           {% if field.help_text %}
             {{field.help_text}}<br>
           {% endif %}
           {{field}}<br>
-        </div>
+        </p>
       </div>
       {% endfor %}
       <div class="row">

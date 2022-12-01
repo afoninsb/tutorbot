@@ -1,0 +1,29 @@
+{% extends 'dateform.html' %}
+{% load static %}
+
+{% block pagehead %}
+    Статистика: {{task}}
+{% endblock  %}
+
+{% block content %}
+    <p><i class="ri-book-read-fill ri-1x"></i>
+    <a href="{% url 'content:task' botid task.category_id task.id %}" target="_blank">Смотреть задание</a></p><hr>
+
+    <table class="table table-bordered datatable">
+        <thead>
+        <tr>
+            <th scope="col" width="30%">Студент</th>
+            <th scope="col">Ответ</th>
+            <th scope="col">Верно?</th>
+        </tr>
+        </thead>
+        <tbody>
+    {% for log in logs %}
+        <tr>
+            <td><a href="{% url 'stats:all_categories' botid log.student.id %}">{{ log.student }}</a></td>
+            <td>{{ log.answer }}</td>
+            <td style="background-color: {% if log.is_truth %}#CCFFFF{% else %}#FFCCCC{% endif %};">{% if log.is_truth %}Верно{% else %}Нет{% endif %}</td>
+        </tr>
+    {% endfor %}
+    </tbody></table>
+{% endblock  %}

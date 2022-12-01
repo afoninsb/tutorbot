@@ -10,7 +10,7 @@ class RegbotConfig(AppConfig):
         from edubot.main_classes import BotData
         bot = BotData(settings.REGBOT_TOKEN)
         data = {
-            'url': f'https://98b7-95-72-155-198.eu.ngrok.io/webhook/reg/{settings.REGBOT_TOKEN}/'
+            'url': f'https://9fd4-95-73-109-218.eu.ngrok.io/webhook/reg/{settings.REGBOT_TOKEN}/'
             # 'url': f'{settings.BASE_URL}/webhook/reg/{settings.REGBOT_TOKEN}/'
         }
         bot.set_webhook(data)

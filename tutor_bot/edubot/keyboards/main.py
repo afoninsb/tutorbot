@@ -1,9 +1,7 @@
 import json
-from bots.models import BotAdmin
-from django.conf import settings
 
 
-def main_kbrd(chat_id: int) -> json:
+def main_kbrd(chat_id: int, is_admin: bool) -> json:
     """Главная клавиатура бота.
     Args:
         chat_id (int): Telegram chat_id юзера.
@@ -17,17 +15,21 @@ def main_kbrd(chat_id: int) -> json:
             {'text': 'Моя статистика'},
         ]
     ]
-    if BotAdmin.objects.filter(tgid=chat_id):
-        buttons_admin = [
+    if is_admin:
+        buttons_message = [
             {'text': 'Администрировать'},
         ]
-        if int(chat_id) == int(settings.BIG_BOSS_ID):
-            bbbutton = {'text': 'Сообщение админам'}
-        else:
-            bbbutton = {'text': 'Техподдержка'}
-        buttons_admin.append(bbbutton)
-        keyboard.append(buttons_admin)
+    else:
+        buttons_message = [
+            {'text': 'Сообщение учителю'},
+        ]
+    keyboard.append(buttons_message)
     mkbrd['keyboard'] = keyboard
     mkbrd['one_time_keyboard'] = True
     mkbrd['resize_keyboard'] = True
     return json.dumps(mkbrd)
+
+
+def hide_kbrd() -> json:
+    """Скрываем клавиатуру"""
+    return json.dumps({'hide_keyboard': True})

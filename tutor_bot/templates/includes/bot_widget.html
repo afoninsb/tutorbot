@@ -7,7 +7,7 @@
           <a href="{% url 'bots:bot_runstop' botid %}" class="run"><i class="ri-play-circle-fill ri-2x" style="cursor: pointer; color: green;" data-bs-toggle="tooltip" data-bs-placement="top" title="Включить бота"></i></a>
         {% else %}
           <a href="{% url 'bots:bot_runstop' botid %}" class="stop"><i class="ri-pause-circle-fill ri-2x" style="cursor: pointer; color: red;" data-bs-toggle="tooltip" data-bs-placement="top" title="Остановить бота"></i></a>
-          <p>{{ days }}: {{ hours }}</p>
+          <p>{{ days }}: {{ hours }}<br>{{ tz }}</p>
           {% endif %}
       </div>
       <div class="social-links mt-2">

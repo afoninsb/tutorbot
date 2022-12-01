@@ -1,0 +1,32 @@
+{% extends 'dateform.html' %}
+{% load static %}
+
+{% block pagehead %}
+    Статистика {% if student %}- {{student}}{% endif %}
+{% endblock  %}
+
+{% block content %}
+    <table class="table table-bordered datatable">
+        <thead>
+        <tr>
+            <th scope="col" width="30%">Категория</th>
+            <th scope="col">Выдано<br>вопросов</th>
+            <th scope="col">Дано<br>ответов</th>
+            <th scope="col">Правильных</th>
+            <th scope="col">Качество, %</th>
+        </tr>
+        </thead>
+        <tbody>
+    {% for category in categories %}
+        <tr>
+            <td><a href="{% if student %}{% url 'stats:category' botid category.id student.id%}{% else %}{% url 'stats:category' botid category.id 'all'%}{% endif %}">{{ category }}</a></td>
+            {% with stat=stats|get_item:category.id %}
+                <td>{{ stat.0 }}</td>
+                <td>{{ stat.1 }}</td>
+                <td>{{ stat.2 }}</td>
+                <td>{{ stat.3 }}</td>
+            {% endwith %}
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock  %}

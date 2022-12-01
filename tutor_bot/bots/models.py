@@ -9,6 +9,19 @@ class Bot(models.Model):
         WORKING_DAYS = 'WORKING_DAYS', 'Рабочие дни'
         WEEK_DAYS = 'WEEK', 'Вся неделя'
 
+    class TimeZones(models.TextChoices):
+        KALININGRAD = 'Europe/Kaliningrad', 'Europe/Kaliningrad +02'
+        MOSCOW = 'Europe/Moscow', 'Europe/Moscow +03'
+        SAMARA = 'Europe/Samara', 'Europe/Samara +04'
+        YEKATERINBURG = 'Asia/Yekaterinburg', 'Asia/Yekaterinburg +05'
+        OMSK = 'Asia/Omsk', 'Asia/Omsk +06'
+        KRASNOYARSK = 'Asia/Krasnoyarsk', 'Asia/Krasnoyarsk +07'
+        IRKUTSK = 'Asia/Irkutsk', 'Asia/Irkutsk +08'
+        CHITA = 'Asia/Chita', 'Asia/Chita +09'
+        VLADIVOSTOK = 'Asia/Vladivostok', 'Asia/Vladivostok +10'
+        MAGADAN = 'Asia/Magadan', 'Asia/Magadan +11'
+        KAMCHATKA = 'Asia/Kamchatka', 'Asia/Kamchatka +12'
+
     token = models.CharField(
         verbose_name='Telegram token',
         max_length=100,
@@ -35,7 +48,7 @@ class Bot(models.Model):
     )
     password = models.CharField(
         verbose_name='Пароль бота',
-        max_length=50
+        max_length=500
     )
     days = models.CharField(
         verbose_name='Дни работы',
@@ -55,6 +68,12 @@ class Bot(models.Model):
     is_show_answer = models.BooleanField(
         verbose_name='Показывать правильный ответ?',
         default=True
+    )
+    tz = models.CharField(
+        verbose_name='Часовой пояс',
+        max_length=20,
+        choices=TimeZones.choices,
+        default=TimeZones.MOSCOW
     )
 
     class Meta:

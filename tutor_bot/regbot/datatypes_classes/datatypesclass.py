@@ -7,7 +7,6 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from edubot.main_classes.botdata import BotData
-from edubot.main_classes.localdata import AdminUser, TempUser
 
 
 class Subject(ABC):

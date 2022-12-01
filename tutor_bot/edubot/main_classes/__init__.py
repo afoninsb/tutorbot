@@ -1,2 +1,2 @@
 from .botdata import BotData
-from .localdata import AdminUser, TempUser, LocalData
+from .localdata import AdminUser, TempUser, UserData, StudentUser

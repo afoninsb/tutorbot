@@ -9,7 +9,8 @@ def get_task(bot):
 
 def get_students_tgids(bot):
     return list(
-        bot.student.filter(is_activated=True).values_list('tgid', flat=True)
+        bot.student_set.filter(
+            studentbot__is_activated=True).values_list('tgid', flat=True)
     )
 
 
@@ -50,7 +51,7 @@ def send_task(bot_tg):
         sleep(0.5)
 
     Task.objects.filter(id=task.id).update(
-        time=datetime.now(pytz.timezone('Europe/Moscow')))
+        time=datetime.now(pytz.timezone('UTC')))
 
 
 if __name__ == '__main__':

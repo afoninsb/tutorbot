@@ -57,21 +57,17 @@ class Student(models.Model):
         verbose_name='Фамилия',
         max_length=20
     )
-    bot = models.ManyToManyField(
-        Bot,
-        verbose_name='Бот',
-        related_name='student')
     time = models.DateTimeField(
         verbose_name='Last login time',
         auto_now=True
     )
-    is_activated = models.BooleanField(
-        verbose_name='Активирован?',
-        default=False
-    )
     state = models.CharField(
         max_length=50,
         blank=True
+    )
+    bot = models.ManyToManyField(
+        Bot,
+        through="StudentBot"
     )
 
     class Meta:
@@ -81,3 +77,30 @@ class Student(models.Model):
 
     def __str__(self):
         return f'{self.last_name} {self.first_name}'
+
+
+class StudentBot(models.Model):
+    """Связь учащихся с ботами."""
+
+    from bots.models import Bot
+
+    bot = models.ForeignKey(
+        Bot,
+        verbose_name='Бот',
+        on_delete=models.CASCADE,
+    )
+    student = models.ForeignKey(
+        Student,
+        verbose_name='Учащийся',
+        on_delete=models.CASCADE,
+    )
+    is_activated = models.BooleanField(
+        verbose_name='Активирован?',
+        default=False
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=('bot', 'student'), name='unique_StudentBot')
+        ]

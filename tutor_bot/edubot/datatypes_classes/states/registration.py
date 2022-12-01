@@ -1,7 +1,9 @@
-from edubot.main_classes import BotData, LocalData
+from edubot.main_classes import BotData, UserData
+from edubot.keyboards.main import hide_kbrd
+from edubot.main_classes.localdata import StudentUser
 
 
-def reg_start(message: dict, bot: BotData, local: LocalData) -> None:
+def reg_start(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
     """Старт процедуры регистрации."""
     text = '''
     Добрый день!
@@ -11,40 +13,35 @@ def reg_start(message: dict, bot: BotData, local: LocalData) -> None:
 
     Шаг 1. Введите пароль, выданный Вам учителем:'''
     answer = {
-        'chat_id': local.chat_id,
+        'chat_id': user.chat_id,
         'text': text,
+        'reply_markup': hide_kbrd(),
     }
-    local.user_edit(state='password')
+    user.edit(state='password')
     bot.send_answer(answer)
 
 
-def reg_password(message: dict, bot: BotData, local: LocalData) -> None:
+def reg_password(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
     """Получили пароль и обрабатываем его.
     Args:
         message (dict): объект message, полученный с вебхука.
     """
-    if message.get('text') and message.get('text') == local.bot_password:
-        # Если новый ученик на платформе, регистрируем
-        if local.user_full_name == 'fn ln':
-            text = '''Отлично!
+    if message.get('text') and user.is_right_bot_password(bot, message.get('text')):
+        text = '''Отлично!
 
-            Шаг 2. Введите ваше Имя (только Имя):'''
-            local.user_edit(state='first_name')
-        # Если уже работал с другим ботом, регистрацию пропускаем
-        else:
-            local.user_to_bot
-            text = 'Отлично! Продолжайте работать.'
-            local.user_edit(state='')
+        Шаг 2. Введите ваше Имя (только Имя):'''
+        user.edit(state='first_name')
     else:
         text = 'Шаг 1. Введите пароль, выданный Вам учителем:'
     answer = {
-        'chat_id': local.chat_id,
+        'chat_id': user.chat_id,
         'text': text,
+        'reply_markup': hide_kbrd(),
     }
     bot.send_answer(answer)
 
 
-def reg_first_name(message: dict, bot: BotData, local: LocalData) -> None:
+def reg_first_name(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
     """Получили Имя и обрабатываем его.
     Args:
         message (dict): объект message, полученный с вебхука.
@@ -54,37 +51,40 @@ def reg_first_name(message: dict, bot: BotData, local: LocalData) -> None:
         Отлично, {message['text']}!
 
         Шаг 3. Введите вашу Фамилию (только Фамилию):'''
-        local.user_edit(first_name=message['text'], state='last_name')
+        user.edit(first_name=message['text'], state='last_name')
     else:
         text = 'Шаг 2. Введите ваше Имя (только Имя):'
     answer = {
-        'chat_id': local.chat_id,
+        'chat_id': user.chat_id,
         'text': text,
+        'reply_markup': hide_kbrd(),
     }
     bot.send_answer(answer)
 
 
-def reg_last_name(message: dict, bot: BotData, local: LocalData) -> None:
+def reg_last_name(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
     """Получили Фамилию и обрабатываем её. Завершаем регистрацию.
     Args:
         message (dict): объект message, полученный с вебхука.
     """
     if message.get('text'):
+        user.edit(last_name=message['text'], state='')
+        cur_temp_user = user.get_info
         text = f'''
-        Отлично, {local.user_first_name} {message['text']}!
-
-        Теперь Вам необходимо <b>присоединиться к группе</b>.
-        Для этого:
-            либо 1. Отправьте команду /signup_to_group
-        и введите пин-код, выданный учителем;
-            либо 2. Дождитесь, пока учитель Вас добавит в группу сам.'''
-        local.user_edit(last_name=message['text'], state='')
-        local.user_to_bot
+        Отлично, {cur_temp_user.last_name} {cur_temp_user.first_name}!
+        Теперь дождитесь, пока учитель вас одобрит для работы с ботом'''
+        student_user = StudentUser(user.chat_id, bot.token)
+        student_user.to_base(
+            tgid=user.chat_id,
+            first_name=cur_temp_user.first_name,
+            last_name=cur_temp_user.last_name,
+        )
+        student_user.to_bot
     else:
         text = 'Шаг 3. Введите вашу Фамилию (только Фамилию):'
     answer = {
-        'chat_id': local.chat_id,
+        'chat_id': user.chat_id,
         'text': text,
-        'parse_mode': 'HTML',
+        'reply_markup': hide_kbrd(),
     }
     bot.send_answer(answer)

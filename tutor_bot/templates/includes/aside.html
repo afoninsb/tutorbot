@@ -19,7 +19,12 @@
           <span>Контент</span>
         </a>
       </li>
-
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'stats:all_categories' botid 'all' %}">
+          <i class="ri-bar-chart-fill ri-1x"></i>
+          <span>Статистика</span>
+        </a>
+      </li>
     </ul>
 
 {% else %}

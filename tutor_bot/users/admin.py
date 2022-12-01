@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from bots.admin import BotkInline
-from users.models import AdminBot, Student
+from users.models import AdminBot, Student, StudentBot
 
 
 @admin.register(AdminBot)
@@ -33,7 +33,21 @@ class UserStudent(admin.ModelAdmin):
         'time',
         'first_name',
         'last_name',
+    )
+    list_filter = ('time', )
+    search_fields = ('tgid', 'last_name')
+
+
+@admin.register(StudentBot)
+class UserStudentBot(admin.ModelAdmin):
+    """
+    Представление админов в админ-панели.
+    """
+
+    list_display = (
+        'bot',
+        'student',
         'is_activated',
     )
-    list_filter = ('time', 'is_activated')
-    search_fields = ('tgid', 'last_name')
+    list_filter = ('bot', 'is_activated')
+    search_fields = ('bot',)
