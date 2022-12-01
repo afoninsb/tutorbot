@@ -17,7 +17,8 @@ def is_yours(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
                 or '/del/' in request.path
                 or '/login/' in request.path
                 or '/media/' in request.path
-                or '/webhook/' in request.path):
+                or '/webhook/' in request.path
+                or 'stats/user/' in request.path):
             return get_response(request)
 
         tgid = request.COOKIES.get('chatid')
