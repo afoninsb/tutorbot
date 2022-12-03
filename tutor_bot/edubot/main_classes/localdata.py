@@ -119,7 +119,7 @@ class TempUser(UserData):
         return str(password) == str(cur_bot.password)
 
     def delete(self, **kwargs) -> None:
-        """Меняем информацию о юзере."""
+        """Удаляем временного юзера."""
         self.model.objects.filter(tgid=self.chat_id).delete()
 
 
@@ -132,6 +132,19 @@ class StudentUser(UserData):
     ):
         super().__init__(chat_id, model=Student)
         self.token = token
+        self.edit(pin='')
+
+    @property
+    def user_id(self):
+        try:
+            cur_user = get_object_or_404(
+                Student,
+                tgid=self.chat_id,
+                bot__token=self.token,
+            )
+        except Exception:
+            return None
+        return cur_user.id
 
     @property
     def is_in_bot(self) -> bool:

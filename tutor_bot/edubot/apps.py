@@ -16,7 +16,7 @@ class EdubotConfig(AppConfig):
                 bot = BotData(bot.token)
                 if settings.DEBUG:
                     data = {
-                        'url': f'https://9fd4-95-73-109-218.eu.ngrok.io/webhook/{bot.token}/'
+                        'url': f'https://{settings.NGROK}/webhook/{bot.token}/'
                     }
                 else:
                     data = {

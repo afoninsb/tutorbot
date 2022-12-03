@@ -41,6 +41,10 @@ class BotData(DataClass):
             return message_object['from'].get('id', 0)
         return 0
 
+    @property
+    def bot_id(self):
+        return self.token.split(':')[0]
+
     @staticmethod
     def get_message(data: dict) -> dict:
         """Получение объекта message.

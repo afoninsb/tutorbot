@@ -1,7 +1,7 @@
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 
-from dotenv import load_dotenv
 
 DEBUG = True
 
@@ -11,18 +11,34 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 BIG_BOSS_ID = os.getenv('BIG_BOSS_ID')
 REGBOT_TOKEN = str(os.getenv('REGBOT_TOKEN'))
 
-if DEBUG:
-    BASE_URL = 'http://127.0.0.1:8000'
-else:
-    BASE_URL = 'http://studybot.fun'
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALERT_MIN_TASKS = 10
+if DEBUG:
+    NGROK = '1a2f-95-73-109-218.eu.ngrok.io'
+    ALLOWED_HOSTS = ['127.0.0.1', NGROK]
+    BASE_URL = 'http://127.0.0.1:8000'
 
-DEBUG = True
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
-ALLOWED_HOSTS = ['127.0.0.1', '9fd4-95-73-109-218.eu.ngrok.io']
+else:
+    ALLOWED_HOSTS = ['studybot.fun']
+    BASE_URL = 'http://studybot.fun'
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': str(os.getenv('BD_NAME')),
+            'USER': str(os.getenv('BD_USER')),
+            'PASSWORD': str(os.getenv('BD_PASSWORD')),
+            'HOST': str(os.getenv('BD_HOST')),
+            'PORT': '3306',
+        }
+    }
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -80,13 +96,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tutor_bot.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -122,3 +131,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 TEMP_URL = f'{MEDIA_URL}temp/'
 TEMP_ROOT = os.path.join(MEDIA_ROOT, 'temp')
+
+ALERT_MIN_TASKS = 10
