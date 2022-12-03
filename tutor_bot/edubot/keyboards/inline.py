@@ -47,3 +47,19 @@ def admin_kbrd(chat_id: int, pin: str) -> json:
     }]
     akbd = {'inline_keyboard': [inline_button]}
     return json.dumps(akbd)
+
+
+def userstat_kbr(bot_id, user_id: int, pin: str) -> json:
+    """Кнопка Моя статистика.
+    Args:
+        user_id (int): id юзера.
+        pin (str): pin-код для входа в статистику.
+    Returns:
+        json: Клавиатура в формате json.
+    """
+    inline_button = [{
+        'text': 'Смотреть статистику',
+        'url': f"{settings.BASE_URL}/bot/{bot_id}/stats/user/{user_id}/{pin}/"
+    }]
+    akbd = {'inline_keyboard': [inline_button]}
+    return json.dumps(akbd)

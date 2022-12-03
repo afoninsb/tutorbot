@@ -55,13 +55,14 @@ class HighLevelText(Observer):
     ) -> None:
         """Направления при получении обычного текста."""
         from .textlevel import (TextGoToPanel, TextHaHaHa,
-                                TextMessageToTeacher)
+                                TextMessageToTeacher, TextMyStat)
         if subject._state == 'text':
             text = bot.get_message(kwargs['from_tg'])['text']
             road = Road()
             pathes = (
                 TextMessageToTeacher(),
                 TextGoToPanel(),
+                TextMyStat(),
                 TextHaHaHa(),
             )
             for path in pathes:
