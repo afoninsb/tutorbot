@@ -56,6 +56,27 @@ class TextMyStat(Observer):
             bot.send_answer(answer)
 
 
+class TextRating(Observer):
+    def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
+        if subject._state != 'Рейтинг':
+            return
+        user = StudentUser(user.chat_id, bot.token)
+        if rating := user.get_rating:
+            text = 'Вы в рейтинге\n'
+            for rtng in rating:
+                if rtng[0] == user.chat_id:
+                    text = f'{text}\n{rtng[1]}. Вы - {rtng[2]}'
+                else:
+                    text = f'{text}\n{rtng[1]}. Ученик - {rtng[2]}'
+        else:
+            text = 'Рейтинг сформируется сегодня в 3 часа'
+        answer = {
+            'chat_id': user.chat_id,
+            'text': text,
+        }
+        bot.send_answer(answer)
+
+
 class TextHaHaHa(Observer):
     def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
         if subject._state not in [

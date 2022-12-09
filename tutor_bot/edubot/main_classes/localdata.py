@@ -1,5 +1,6 @@
 """Класс для работы с базой данных."""
 
+from datetime import datetime
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 import hashlib
@@ -7,6 +8,7 @@ import hashlib
 from bots.models import Bot
 from regbot.models import Temp
 from content.models import Log, Task
+from stats.models import Rating
 from users.models import AdminBot, Student, StudentBot
 from .dataclass import DataClass
 
@@ -191,6 +193,38 @@ class StudentUser(UserData):
             )
         except Exception:
             return 0
+
+    @property
+    def get_rating(self):
+        try:
+            cur_bot = get_object_or_404(Bot, token=self.token)
+        except Exception:
+            return
+        try:
+            rating_data = Rating.objects.filter(bot=cur_bot).\
+                filter(time=datetime.now().strftime('%Y-%m-%d')).\
+                select_related('student')
+        except Exception:
+            return
+        if not rating_data:
+            return
+        tgids = []
+        rating = []
+        for number, rtng in enumerate(rating_data):
+            tgids.append(rtng.student.tgid)
+            rating.append((rtng.student.tgid, number+1, rtng.score))
+        number = tgids.index(self.chat_id)
+        user_rating = []
+        if number > 1:
+            user_rating.append(rating[number-2])
+        if number > 0:
+            user_rating.append(rating[number-1])
+        user_rating.append(rating[number])
+        if number < len(tgids)-1:
+            user_rating.append(rating[number+1])
+        if number < len(tgids)-2:
+            user_rating.append(rating[number+2])
+        return user_rating
 
 
 class TaskData(DataClass):

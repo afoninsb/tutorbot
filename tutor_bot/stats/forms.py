@@ -108,3 +108,15 @@ class SelectDateForm(forms.Form):
             )
             raise ValidationError('')
         return self.cleaned_data
+
+
+class DateForm(forms.Form):
+    date = forms.DateField(
+        label='Дата',
+        widget=forms.SelectDateWidget(
+            years=YEARS,
+            attrs={
+                'class': 'dateform',
+            }
+        ),
+    )

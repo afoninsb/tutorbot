@@ -31,6 +31,11 @@ class Category(models.Model):
 class Task(models.Model):
     """Модель заданий."""
 
+    class DifLevel(models.TextChoices):
+        NORMAL = 1, 'Обычный - 1'
+        DIFFICULT = 2, 'Трудный - 2'
+        INGENIOUS = 3, 'Для гениев - 3'
+
     title = models.CharField(
         verbose_name='Заголовок',
         max_length=50)
@@ -40,6 +45,11 @@ class Task(models.Model):
     answer = models.CharField(
         verbose_name='Ответ',
         max_length=100)
+    difficulty = models.PositiveSmallIntegerField(
+        verbose_name='Трудность задания',
+        choices=DifLevel.choices,
+        default=DifLevel.NORMAL
+    )
     category = models.ForeignKey(
         Category,
         verbose_name='Категория',
@@ -91,6 +101,9 @@ class Log(models.Model):
     is_truth = models.BooleanField(
         verbose_name='Верно?',
         default=False)
+    score = models.PositiveSmallIntegerField(
+        verbose_name='Балл',
+    )
     time = models.DateTimeField(
         verbose_name='Дата ответа',
         auto_now=True)
