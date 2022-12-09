@@ -32,3 +32,7 @@ def get_stats(array, dates, student):
             stats[element.id][0] = logs.count()
             compare_logs(stats, logs, element.id, -1)
     return stats
+
+
+def create_rating():
+    pass

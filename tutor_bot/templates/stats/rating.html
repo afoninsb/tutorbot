@@ -1,0 +1,32 @@
+{% extends 'base-1c.html' %}
+{% load static %}
+
+{% block pagehead %}
+    Рейтинг
+{% endblock  %}
+
+{% block content %}
+<form action='' method='post'>{% csrf_token %}
+    <div style='text-align: center; margin-left: 100px;'>
+      {% for field in form %}
+      <div class="row">
+        <p class="col-md-10">
+          {{field.label_tag}} {{field}} <input type='submit' 
+            value='В Ы Б Р А Т Ь'
+            class='btn btn-outline-primary btn-sm'>
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+  </form>
+  <div style='padding-left: 100px; padding-right: 100px;'>
+  <ul class="list-group">
+        {% for rtng in rating %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{% url 'stats:all_categories' botid rtng.1 %}">{{rtng.0}}</a>
+            <span class="badge bg-primary rounded-pill">{{rtng.2}}</span>
+            </li>
+        {% endfor %}
+  </ul>
+</div>
+{% endblock  %}

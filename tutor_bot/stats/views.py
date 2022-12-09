@@ -1,11 +1,15 @@
+from datetime import date, datetime
 from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
 
 from stats.clndr import (
     dates_tz, form_processing, get_dates_from_coockies, new_date_form
 )
 from content.models import Category, Log, Task
-from stats.forms import SelectDateForm_disabled
+from stats.forms import DateForm, SelectDateForm_disabled
 from stats.functions import compare_logs, get_stats
+from bots.models import Bot
+from stats.models import Rating
 from users.models import Student
 
 
@@ -200,3 +204,30 @@ def usercatstat(request, botid, user_id, cat_id, pin):
         'pin': pin
     }
     return render(request, 'stats/usercatstat.html', context)
+
+
+def rating(request, botid):
+    if request.method == "POST":
+        form = DateForm(request.POST)
+        cur_date = date(
+            int(request.POST['date_year']),
+            int(request.POST['date_month']),
+            int(request.POST['date_day'])
+        ).strftime('%Y-%m-%d')
+    else:
+        cur_date = datetime.now()
+        data = {
+            'date': date(cur_date.year, cur_date.month, cur_date.day),
+        }
+        form = DateForm(initial=data)
+        cur_date = cur_date.strftime('%Y-%m-%d')
+    cur_bot = get_object_or_404(Bot, id=botid)
+    rating_data = Rating.objects.filter(bot=cur_bot).\
+        filter(time=cur_date).select_related('student')
+    rating = [(rtng.student, rtng.student.id, rtng.score)
+              for rtng in rating_data]
+    context = {
+        'rating': rating,
+        'form': form,
+    }
+    return render(request, 'stats/rating.html', context)

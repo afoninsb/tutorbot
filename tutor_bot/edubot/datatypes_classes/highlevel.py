@@ -54,7 +54,7 @@ class HighLevelText(Observer):
         self, subject: Subject, bot: BotData, user: UserData, **kwargs
     ) -> None:
         """Направления при получении обычного текста."""
-        from .textlevel import (TextGoToPanel, TextHaHaHa,
+        from .textlevel import (TextGoToPanel, TextHaHaHa, TextRating,
                                 TextMessageToTeacher, TextMyStat)
         if subject._state == 'text':
             text = bot.get_message(kwargs['from_tg'])['text']
@@ -63,6 +63,7 @@ class HighLevelText(Observer):
                 TextMessageToTeacher(),
                 TextGoToPanel(),
                 TextMyStat(),
+                TextRating(),
                 TextHaHaHa(),
             )
             for path in pathes:

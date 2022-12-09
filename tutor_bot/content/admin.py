@@ -60,6 +60,7 @@ class LogAdmin(admin.ModelAdmin):
         'time',
         'bot',
         'category',
+        'score'
     )
     list_filter = ('time',)
     search_fields = ('student',)
