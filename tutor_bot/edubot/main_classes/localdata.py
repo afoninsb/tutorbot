@@ -1,15 +1,16 @@
 """Класс для работы с базой данных."""
 
+import hashlib
 from datetime import datetime
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
-import hashlib
 
 from bots.models import Bot
-from regbot.models import Temp
 from content.models import Log, Task
+from regbot.models import Temp
 from stats.models import Rating
 from users.models import AdminBot, Student, StudentBot
+
 from .dataclass import DataClass
 
 

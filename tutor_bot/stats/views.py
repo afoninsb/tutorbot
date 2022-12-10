@@ -1,14 +1,12 @@
 from datetime import date, datetime
 from django.shortcuts import get_object_or_404, render
-from django.contrib import messages
 
-from stats.clndr import (
-    dates_tz, form_processing, get_dates_from_coockies, new_date_form
-)
+from bots.models import Bot
 from content.models import Category, Log, Task
+from stats.clndr import (dates_tz, form_processing, get_dates_from_coockies,
+                         new_date_form)
 from stats.forms import DateForm, SelectDateForm_disabled
 from stats.functions import compare_logs, get_stats
-from bots.models import Bot
 from stats.models import Rating
 from users.models import Student
 

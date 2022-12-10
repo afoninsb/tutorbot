@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from regbot.models import Temp
 
+
 @admin.register(Temp)
 class UserAdmin(admin.ModelAdmin):
     """

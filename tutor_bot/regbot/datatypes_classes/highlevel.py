@@ -16,7 +16,7 @@ from .datatypesclass import Observer, Road, Subject
 class HighLevelCommand(Observer):
     def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
         """Направления при получении комманды."""
-        from .commandlevel import (CommandCancel, )
+        from .commandlevel import CommandCancel
         if subject._state == 'command':
             command = kwargs['message']['text'][1:]
             road = Road()

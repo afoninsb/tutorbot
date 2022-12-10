@@ -1,20 +1,21 @@
 import contextlib
-from django.db import IntegrityError
-from core.utils import add_dir, del_dir
-from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect, render
-from django.http import HttpResponseForbidden
 import hashlib
+from django.contrib import messages
+from django.db import IntegrityError
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect, render
 
 from bots.forms import BotForm, BotFormEdit, BotPass, BotSchedule
 from bots.models import Bot
+from core.utils import add_dir, del_dir
 from edubot.main_classes import BotData
 from users.models import AdminBot, Student, StudentBot
 
 
 def index(request):
     try:
-        cur_admin = get_object_or_404(AdminBot, tgid=request.COOKIES.get('chatid'))
+        cur_admin = get_object_or_404(
+            AdminBot, tgid=request.COOKIES.get('chatid'))
     except Exception:
         return HttpResponseForbidden()
     bots = cur_admin.bot.all()

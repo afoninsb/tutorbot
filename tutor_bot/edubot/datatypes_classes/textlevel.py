@@ -5,7 +5,7 @@
 
 from uuid import uuid1
 
-from edubot.keyboards import admin_kbrd, main_kbrd, hide_kbrd, userstat_kbr
+from edubot.keyboards import admin_kbrd, hide_kbrd, main_kbrd, userstat_kbr
 from edubot.main_classes import BotData, UserData
 from edubot.main_classes.localdata import AdminUser, StudentUser, TempUser
 
