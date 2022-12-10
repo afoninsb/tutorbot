@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from core.utils import add_dir, del_dir
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponseForbidden
 import hashlib
 
 from bots.forms import BotForm, BotFormEdit, BotPass, BotSchedule
@@ -12,7 +13,10 @@ from users.models import AdminBot, Student, StudentBot
 
 
 def index(request):
-    cur_admin = get_object_or_404(AdminBot, tgid=request.COOKIES.get('chatid'))
+    try:
+        cur_admin = get_object_or_404(AdminBot, tgid=request.COOKIES.get('chatid'))
+    except Exception:
+        return HttpResponseForbidden()
     bots = cur_admin.bot.all()
     return render(request, 'index.html', {'bots': bots, })
 
