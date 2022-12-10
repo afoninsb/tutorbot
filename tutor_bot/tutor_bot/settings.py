@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
-
 DEBUG = True
 
 load_dotenv()

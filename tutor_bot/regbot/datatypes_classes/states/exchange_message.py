@@ -1,6 +1,7 @@
 from django.conf import settings
-from regbot.keyboards.inline import reply_kbrd
+
 from edubot.main_classes import BotData
+from regbot.keyboards.inline import reply_kbrd
 
 
 def message_to_admins(message: dict, bot: BotData, user) -> None:

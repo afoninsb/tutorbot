@@ -2,6 +2,7 @@ def cron_task():
     import pytz
     import subprocess
     from datetime import datetime
+
     from bots.models import Bot
     from buildrating import rating
 
@@ -40,8 +41,9 @@ if __name__ == '__main__':
     import sys
     sys.path.append(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-    from tutor_bot import asgi
     import django
+
+    from tutor_bot import asgi
 
     django.setup()
     cron_task()

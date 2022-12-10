@@ -1,12 +1,10 @@
-import pytz
-from datetime import datetime
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
 from bots.models import Bot
-from core.utils import add_dir, del_dir, del_file, replace_from_temp
 from content.forms import CategoryForm, TaskForm
 from content.models import Category, Task
+from core.utils import add_dir, del_dir, del_file, replace_from_temp
 
 
 def category(request, botid):

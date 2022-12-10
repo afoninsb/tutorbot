@@ -1,7 +1,7 @@
 from datetime import deltatime
 
-from content.models import Log
 from bots.models import Bot
+from content.models import Log
 from stats.models import Rating
 
 

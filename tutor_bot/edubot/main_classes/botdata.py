@@ -1,7 +1,6 @@
 """Класс для работы с информацией, полученной с вебхука."""
 
 import json
-
 import requests
 
 from .dataclass import DataClass

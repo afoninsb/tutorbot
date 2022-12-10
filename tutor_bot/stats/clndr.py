@@ -3,8 +3,8 @@ from datetime import date, datetime, timedelta
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
-from stats.forms import SelectDateForm, SelectDateForm_disabled
 from bots.models import Bot
+from stats.forms import SelectDateForm, SelectDateForm_disabled
 
 
 def now():

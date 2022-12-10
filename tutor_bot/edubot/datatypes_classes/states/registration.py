@@ -1,5 +1,5 @@
-from edubot.main_classes import BotData, UserData
 from edubot.keyboards.main import hide_kbrd
+from edubot.main_classes import BotData, UserData
 from edubot.main_classes.localdata import StudentUser
 
 

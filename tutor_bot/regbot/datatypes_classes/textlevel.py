@@ -5,8 +5,8 @@
 
 from uuid import uuid1
 
-from regbot.keyboards import admin_kbrd, main_kbrd, hide_kbrd
 from edubot.main_classes import BotData
+from regbot.keyboards import admin_kbrd, hide_kbrd, main_kbrd
 
 from .datatypesclass import Observer, Subject
 

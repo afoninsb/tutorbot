@@ -1,5 +1,4 @@
 from typing import Callable
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
 

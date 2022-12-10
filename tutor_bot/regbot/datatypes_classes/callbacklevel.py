@@ -5,8 +5,9 @@
 """
 
 from django.conf import settings
-from regbot.keyboards.main import hide_kbrd, main_kbrd
+
 from edubot.main_classes.localdata import AdminUser, TempUser
+from regbot.keyboards.main import hide_kbrd, main_kbrd
 
 from .datatypesclass import Observer, Subject
 

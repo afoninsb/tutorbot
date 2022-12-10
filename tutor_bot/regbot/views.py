@@ -1,12 +1,12 @@
 import json
-
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from .datatypes_classes import (HighLevelCallback, HighLevelCommand,
-                                HighLevelState, HighLevelText, Road)
 from edubot.main_classes import BotData
 from edubot.main_classes.localdata import AdminUser, TempUser
+
+from .datatypes_classes import (HighLevelCallback, HighLevelCommand,
+                                HighLevelState, HighLevelText, Road)
 
 
 @csrf_exempt

@@ -4,6 +4,7 @@
 """
 
 from edubot.main_classes.localdata import AdminUser
+
 from .datatypesclass import Observer, Subject
 
 
