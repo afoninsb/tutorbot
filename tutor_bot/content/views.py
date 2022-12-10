@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from bots.models import Bot
 from content.forms import CategoryForm, TaskForm
+from content.functions import is_need_stop_bot
 from content.models import Category, Task
 from core.utils import add_dir, del_dir, del_file, replace_from_temp
 
@@ -54,6 +55,7 @@ def categoryedit(request, botid, categoryid):
 def categorydel(request, botid, categoryid):
     Category.objects.filter(id=categoryid).delete()
     del_dir(botid=botid, num_dir=categoryid, type_dir='cat')
+    is_need_stop_bot(botid)
     messages.success(request, 'Категория удалена.')
     return redirect('content:category', botid=botid)
 
@@ -147,6 +149,7 @@ def catrunstop(request, botid, categoryid):
     Category.objects.filter(id=categoryid).update(
         is_active=not cur_category.is_active)
     if cur_category.is_active:
+        is_need_stop_bot(botid)
         messages.success(request, 'Категория остановлена.')
     else:
         messages.success(request, 'Категория запущена.')

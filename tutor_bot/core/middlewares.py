@@ -1,4 +1,5 @@
 from typing import Callable
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
 
@@ -17,7 +18,8 @@ def is_yours(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
                 or '/login/' in request.path
                 or '/media/' in request.path
                 or '/webhook/' in request.path
-                or 'stats/user/' in request.path):
+                or '/stats/user/' in request.path
+                or '/static/' in request.path):
             return get_response(request)
 
         tgid = request.COOKIES.get('chatid')

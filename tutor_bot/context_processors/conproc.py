@@ -20,7 +20,10 @@ def get_admin(request):
 
 
 def get_bot_id(request):
-    data = request.resolver_match.kwargs
+    try:
+        data = request.resolver_match.kwargs
+    except Exception:
+        return {}
     return {'bot_id': data['botid'], } if 'botid' in data else {}
 
 
