@@ -1,4 +1,4 @@
-from datetime import deltatime
+from datetime import timedelta
 
 from bots.models import Bot
 from content.models import Log
@@ -6,7 +6,7 @@ from stats.models import Rating
 
 
 def rating(tokens: list, now):
-    yesterday = (now - deltatime(days=1)).strftime('%Y-%m-%d')
+    yesterday = (now - timedelta(days=1)).strftime('%Y-%m-%d')
     now = now.strftime('%Y-%m-%d')
     for token in tokens:
         bot = Bot.objects.get(token=token)
