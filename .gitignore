@@ -1,6 +1,7 @@
 .vscode/
 tutor_bot/media/
 tutor_bot/tutor_bot/settings.py
+tutor_bot/db.sqlite3
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
