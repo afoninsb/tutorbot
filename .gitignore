@@ -2,8 +2,8 @@
 tutor_bot/media/
 tutor_bot/tutor_bot/settings.py
 tutor_bot/db.sqlite3
-# tutor_bot/edubot/apps.py
-# tutor_bot/regbot/apps.py
+tutor_bot/edubot/apps.py
+tutor_bot/regbot/apps.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
