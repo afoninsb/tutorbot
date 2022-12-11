@@ -61,8 +61,8 @@ def category(request, botid, cat_id, user_id):
         student = None
         students = Student.objects.filter(
             bot__id=botid).prefetch_related('log')
-    cat_stats = get_stats(tasks, dates, student) if tasks else {}
-    stud_stats = get_stats(students, dates, student) if students else {}
+    cat_stats = get_stats(tasks, dates, student, cat_id) if tasks else {}
+    stud_stats = get_stats(students, dates, student, cat_id) if students else {}
     context = {
         'task_count': tasks.count(),
         'tasks': tasks,
