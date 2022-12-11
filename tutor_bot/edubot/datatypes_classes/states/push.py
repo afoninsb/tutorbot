@@ -17,7 +17,7 @@ def answer(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
             student_user = user
         task = TaskData(task_id)
         cur_task = task.get_all_info
-        is_truth = message['text'] == cur_task.answer
+        is_truth = str(message['text']) == str(cur_task.answer)
         score = cur_task.difficulty if is_truth else 0
         task.save_log(
             student=student_user,
