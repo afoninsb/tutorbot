@@ -15,11 +15,12 @@ class CategoryForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ('title', 'text', 'answer', 'img')
+        fields = ('title', 'text', 'answer', 'difficulty', 'img')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'text': forms.Textarea(attrs={'class': 'form-control'}),
             'answer': forms.TextInput(attrs={'class': 'form-control'}),
+            'difficulty': forms.Select(attrs={'class': 'form-control'}),
             'img': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
         help_texts = {

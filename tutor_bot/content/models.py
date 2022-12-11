@@ -31,7 +31,7 @@ class Category(models.Model):
 class Task(models.Model):
     """Модель заданий."""
 
-    class DifLevel(models.TextChoices):
+    class DifLevel(models.IntegerChoices):
         NORMAL = 1, 'Обычный - 1'
         DIFFICULT = 2, 'Трудный - 2'
         INGENIOUS = 3, 'Для гениев - 3'
