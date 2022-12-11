@@ -257,6 +257,7 @@ class TaskData(DataClass):
             category=kwargs['category'],
             answer=kwargs['answer'],
             is_truth=kwargs['is_truth'],
+            score=kwargs['score'],
             bot=kwargs['bot']
         )
 

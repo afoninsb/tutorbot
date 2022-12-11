@@ -18,7 +18,6 @@ def answer(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
         task = TaskData(task_id)
         cur_task = task.get_all_info
         is_truth = str(message['text']) == str(cur_task.answer)
-        diff = cur_task.difficulty
         score = cur_task.difficulty if is_truth else 0
         task.save_log(
             student=student_user,
@@ -26,7 +25,7 @@ def answer(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
             category=cur_task.category,
             answer=message['text'],
             is_truth=is_truth,
-            score=diff,
+            score=score,
             bot=cur_task.bot
         )
         text = 'Ваш ответ принят!'
