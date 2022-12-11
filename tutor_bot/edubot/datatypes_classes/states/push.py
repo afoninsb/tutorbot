@@ -26,7 +26,7 @@ def answer(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
             category=cur_task.category,
             answer=message['text'],
             is_truth=is_truth,
-            score=score,
+            score=diff,
             bot=cur_task.bot
         )
         text = 'Ваш ответ принят!'
