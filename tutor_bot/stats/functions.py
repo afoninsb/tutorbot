@@ -17,13 +17,15 @@ def compare_logs(stats, logs, id, start):
     return stats
 
 
-def get_stats(array, dates, student):
+def get_stats(array, dates, student, cat_id):
     stats = {}
     for element in array:
         stats[element.id] = [0, 0, 0]
         if logs := element.log.all():
             if student:
                 logs = logs.filter(student=student)
+            else:
+                logs = logs.filter(category__id=cat_id)
             if dates:
                 logs = logs.filter(
                     time__gte=dates[0],
