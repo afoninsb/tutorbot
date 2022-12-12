@@ -15,12 +15,12 @@ def rating(tokens: list, now):
         from_log = Log.objects.\
             filter(bot=bot).\
             filter(time__gte=now).\
-            filtet(is_truth=True).\
+            filter(is_truth=True).\
             select_related('student')
         log_scores = {log.student: log.score for log in from_log}
         from_rating = Rating.objects.\
             filter(bot=bot).\
-            filtet(time=yesterday).\
+            filter(time=yesterday).\
             select_related('student')
         for rating in from_rating:
             scores = rating.score
