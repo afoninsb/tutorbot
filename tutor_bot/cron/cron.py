@@ -20,7 +20,7 @@ def cron_task():
             and hour in bot_hours
         ):
             tokens_tasks.append(bot.token)
-        if hour == '3':
+        if hour == '12':
             tokens_rating.append(bot.token)
 
     if tokens_tasks:
@@ -34,7 +34,6 @@ def cron_task():
             stdout_byte, stderr_byte = proc[i].communicate()
     if tokens_rating:
         rating(tokens_rating, now)
-
 
 if __name__ == '__main__':
     import os
