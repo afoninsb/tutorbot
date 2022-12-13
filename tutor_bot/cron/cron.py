@@ -20,7 +20,7 @@ def cron_task():
             and hour in bot_hours
         ):
             tokens_tasks.append(bot.token)
-        if hour == '12':
+        if hour == '3':
             tokens_rating.append(bot.token)
 
     if tokens_tasks:
