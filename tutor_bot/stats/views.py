@@ -191,7 +191,7 @@ def usercatstat(request, botid, user_id, cat_id, pin):
             time__gte=dates[0],
             time__lte=dates[1],
         )
-    cat_stats = get_stats(tasks, dates, student) if tasks else {}
+    cat_stats = get_stats(tasks, dates, student, cat_id) if tasks else {}
     context = {
         'task_count': tasks.count(),
         'tasks': tasks,

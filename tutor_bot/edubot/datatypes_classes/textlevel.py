@@ -64,12 +64,12 @@ class TextRating(Observer):
         if rating := user.get_rating:
             text = 'Вы в рейтинге\n'
             for rtng in rating:
-                if rtng[0] == user.chat_id:
+                if rtng[0] == str(user.chat_id):
                     text = f'{text}\n{rtng[1]}. Вы - {rtng[2]}'
                 else:
                     text = f'{text}\n{rtng[1]}. Ученик - {rtng[2]}'
         else:
-            text = 'Рейтинг сформируется сегодня в 3 часа'
+            text = 'Рейтинг сформируется в 3 часа'
         answer = {
             'chat_id': user.chat_id,
             'text': text,
@@ -81,7 +81,7 @@ class TextHaHaHa(Observer):
     def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
         if subject._state not in [
                 'Сообщение учителю', 'Администрировать',
-                'Техподдержка', 'Моя статистика']:
+                'Техподдержка', 'Моя статистика', 'Рейтинг']:
             answer = {
                 'chat_id': user.chat_id,
                 'text': 'Ага... и вам приветик!',
