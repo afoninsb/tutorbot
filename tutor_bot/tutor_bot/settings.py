@@ -1,11 +1,9 @@
 import os
 from dotenv import load_dotenv
 from pathlib import Path
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
 
 
-DEBUG = False
+DEBUG = True
 
 load_dotenv()
 
@@ -15,18 +13,32 @@ REGBOT_TOKEN = str(os.getenv('REGBOT_TOKEN'))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = ['tutor.studybot.fun', 'www.tutor.studybot.fun']
-BASE_URL = 'https://tutor.studybot.fun'
+if DEBUG:
+    NGROK = '1a2f-95-73-109-218.eu.ngrok.io'
+    ALLOWED_HOSTS = ['127.0.0.1', NGROK]
+    BASE_URL = 'http://127.0.0.1:8000'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': str(os.getenv('BD_NAME')),
-        'USER': str(os.getenv('BD_USER')),
-        'PASSWORD': str(os.getenv('BD_PASSWORD')),
-        'HOST': str(os.getenv('BD_HOST')),
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+
+else:
+    ALLOWED_HOSTS = ['studybot.fun']
+    BASE_URL = 'http://studybot.fun'
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': str(os.getenv('BD_NAME')),
+            'USER': str(os.getenv('BD_USER')),
+            'PASSWORD': str(os.getenv('BD_PASSWORD')),
+            'HOST': str(os.getenv('BD_HOST')),
+            'PORT': '3306',
+        }
+    }
 
 INSTALLED_APPS = [
     'django.contrib.admin',
