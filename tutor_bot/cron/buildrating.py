@@ -6,9 +6,8 @@ from stats.models import Rating
 
 
 def rating(tokens: list, now):
-        yesterday = (now - timedelta(days=1))
-        yesterday = datetime(yesterday.year, yesterday.month, yesterday.day)
         now = datetime(now.year, now.month, now.day)
+        yesterday = (now - timedelta(days=1))
         for token in tokens:
             bot = Bot.objects.get(token=token)
             objs = []
