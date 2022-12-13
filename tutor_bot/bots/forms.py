@@ -96,6 +96,6 @@ class BotSchedule(forms.ModelForm):
             if not hour.isdigit() or int(hour) > 24:
                 raise ValidationError(
                     'Должны быть только целые числа от 0 до 24 и пробел.')
-            if len(hour) == 1:
-                hours[count] = f'0{hour}'
+            # if len(hour) == 1:
+            #     hours[count] = f'0{hour}'
         return ' '.join(hours)
