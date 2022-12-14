@@ -43,10 +43,21 @@ def disable_categories_bots(bots):
     for bot in bots:
         categories = Category.objects.filter(bot=bot).\
             filter(is_active=True)
-        for category in categories:
-            if not Task.objects.filter(category=category).\
-                    filter(time__isnull=True).exists():
-                category.update(is_active=False)
-        if not Category.objects.filter(bot=bot).\
+        if categories:
+            objs = []
+            for category in categories:
+                if Task.objects.filter(category=category).\
+                        filter(time__isnull=True).exists():
+                    continue
+                category.is_active = False
+                objs.append(category)
+            if objs:
+                Category.objects.bulk_update(objs, ['is_active'])
+        objs = []
+        if Category.objects.filter(bot=bot).\
                 filter(is_active=True).exists():
-            bot.update(is_active=False)
+            continue
+        bot.is_active = False
+        objs.append(bot)
+    if objs:
+        Bot.objects.bulk_update(objs, ['is_active'])
