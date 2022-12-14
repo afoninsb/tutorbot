@@ -1,9 +1,11 @@
-def cron_task():
-    import pytz
-    import subprocess
-    from datetime import datetime
+import pytz
+from datetime import datetime
 
-    from bots.models import Bot
+from bots.models import Bot
+
+
+def cron_task():
+    import subprocess
 
     bots = Bot.objects.filter(is_active=True)
     tokens_tasks = []
@@ -29,10 +31,6 @@ def cron_task():
             stdout_byte, stderr_byte = proc[i].communicate()
 
 def cron_rating():
-    import pytz
-    from datetime import datetime
-
-    from bots.models import Bot
     from buildrating import rating
 
     bots = Bot.objects.all()
