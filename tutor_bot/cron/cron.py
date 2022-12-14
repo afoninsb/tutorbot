@@ -4,7 +4,7 @@ def cron_task():
     from datetime import datetime
 
     from bots.models import Bot
-    from cron.functions import disable_categories_bots
+    from tutor_bot.cron.functions import disable_categories_bots
 
     bots = Bot.objects.filter(is_active=True)
     disable_categories_bots(bots)
