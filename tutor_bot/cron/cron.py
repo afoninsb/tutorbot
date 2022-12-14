@@ -37,7 +37,7 @@ def cron_rating():
     from datetime import datetime
 
     from bots.models import Bot
-    from cron.functions import rating
+    from functions import rating
 
     bots = Bot.objects.all()
     tokens_rating = []
