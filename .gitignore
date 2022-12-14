@@ -8,8 +8,11 @@ public_html/
 tmp/
 venv_django/
 passenger_wsgi.py
+<<<<<<< HEAD
 public/
 public
+=======
+>>>>>>> 29d3d70 (1)
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
