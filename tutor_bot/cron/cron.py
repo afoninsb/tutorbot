@@ -7,7 +7,8 @@ def cron_task():
     from functions import disable_categories_bots
 
     bots = Bot.objects.filter(is_active=True)
-    disable_categories_bots(bots)
+    if not bots:
+        return
 
     tokens_tasks = []
     for bot in bots:
@@ -26,10 +27,16 @@ def cron_task():
         proc = [1]*len_tokens_tasks
         for count, token in enumerate(tokens_tasks):
             proc[count] = subprocess.Popen(
-                ['/home/a/afoninry/tutor.studybot.fun/venv_django/bin/python3', '/home/a/afoninry/tutor.studybot.fun/tutor_bot/cron/sendtask.py', token]
+                [
+                    '/home/a/afoninry/tutor.studybot.fun/venv_django/bin/python3',
+                    '/home/a/afoninry/tutor.studybot.fun/tutor_bot/cron/sendtask.py',
+                    token
+                ]
             )
         for i in range(len_tokens_tasks):
             stdout_byte, stderr_byte = proc[i].communicate()
+
+    disable_categories_bots(bots)
 
 
 def cron_rating():
