@@ -2,7 +2,7 @@ def cron_task():
     import subprocess
     import pytz
     from datetime import datetime
-    
+
     from bots.models import Bot
 
     bots = Bot.objects.filter(is_active=True)
@@ -28,21 +28,24 @@ def cron_task():
         for i in range(len_tokens_tasks):
             stdout_byte, stderr_byte = proc[i].communicate()
 
+
 def cron_rating():
     import pytz
     from datetime import datetime
-    
+
     from bots.models import Bot
     from buildrating import rating
 
     bots = Bot.objects.all()
     tokens_rating = []
     for bot in bots:
-        hour = str(datetime.now(pytz.timezone(bot.tz)).hour)
+        now = datetime.now(pytz.timezone(bot.tz))
+        hour = str(now.hour)
         if hour == '3':
             tokens_rating.append(bot.token)
     if tokens_rating:
         rating(tokens_rating, now)
+
 
 if __name__ == '__main__':
     import os
