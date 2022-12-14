@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from bots.models import Bot
-from content.models import Log
+from content.models import Category, Log, Task
 from stats.models import Rating
 
 
@@ -37,3 +37,16 @@ def rating(tokens: list, now):
                         for student, score in log_scores.items())
 
         Rating.objects.bulk_create(objs)
+
+
+def disable_categories_bots(bots):
+    for bot in bots:
+        categories = Category.objects.filter(bot=bot).\
+            filter(is_active=True)
+        for category in categories:
+            if not Task.objects.filter(category=category).\
+                    filter(time__isnull=True).exists():
+                category.update(is_active=False)
+        if not Category.objects.filter(bot=bot).\
+                filter(is_active=True).exists():
+            bot.update(is_active=False)

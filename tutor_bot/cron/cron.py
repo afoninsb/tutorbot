@@ -4,8 +4,11 @@ def cron_task():
     from datetime import datetime
 
     from bots.models import Bot
+    from cron.functions import disable_categories_bots
 
     bots = Bot.objects.filter(is_active=True)
+    disable_categories_bots(bots)
+
     tokens_tasks = []
     for bot in bots:
         now = datetime.now(pytz.timezone(bot.tz))
@@ -34,7 +37,7 @@ def cron_rating():
     from datetime import datetime
 
     from bots.models import Bot
-    from buildrating import rating
+    from cron.functions import rating
 
     bots = Bot.objects.all()
     tokens_rating = []
