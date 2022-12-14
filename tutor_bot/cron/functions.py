@@ -40,24 +40,23 @@ def rating(tokens: list, now):
 
 
 def disable_categories_bots(bots):
+    objs_bot = []
     for bot in bots:
-        categories = Category.objects.filter(bot=bot).\
-            filter(is_active=True)
-        if categories:
-            objs = []
+        if categories := Category.objects.\
+                filter(bot=bot).filter(is_active=True):
+            objs_cat = []
             for category in categories:
                 if Task.objects.filter(category=category).\
                         filter(time__isnull=True).exists():
                     continue
                 category.is_active = False
-                objs.append(category)
-            if objs:
-                Category.objects.bulk_update(objs, ['is_active'])
-        objs = []
+                objs_cat.append(category)
+            if objs_cat:
+                Category.objects.bulk_update(objs_cat, ['is_active'])
         if Category.objects.filter(bot=bot).\
                 filter(is_active=True).exists():
             continue
         bot.is_active = False
-        objs.append(bot)
-    if objs:
-        Bot.objects.bulk_update(objs, ['is_active'])
+        objs_bot.append(bot)
+    if objs_bot:
+        Bot.objects.bulk_update(objs_bot, ['is_active'])
