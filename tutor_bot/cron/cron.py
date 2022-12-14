@@ -4,11 +4,9 @@ def cron_task():
     from datetime import datetime
 
     from bots.models import Bot
-    from buildrating import rating
 
     bots = Bot.objects.filter(is_active=True)
     tokens_tasks = []
-    tokens_rating = []
     for bot in bots:
         now = datetime.now(pytz.timezone(bot.tz))
         hour = str(now.hour)
@@ -20,9 +18,6 @@ def cron_task():
             and hour in bot_hours
         ):
             tokens_tasks.append(bot.token)
-        if hour == '3':
-            tokens_rating.append(bot.token)
-
     if tokens_tasks:
         len_tokens_tasks = len(tokens_tasks)
         proc = [1]*len_tokens_tasks
@@ -32,6 +27,20 @@ def cron_task():
             )
         for i in range(len_tokens_tasks):
             stdout_byte, stderr_byte = proc[i].communicate()
+
+def cron_rating():
+    import pytz
+    from datetime import datetime
+
+    from bots.models import Bot
+    from buildrating import rating
+
+    bots = Bot.objects.all()
+    tokens_rating = []
+    for bot in bots:
+        hour = str(datetime.now(pytz.timezone(bot.tz)).hour)
+        if hour == '3':
+            tokens_rating.append(bot.token)
     if tokens_rating:
         rating(tokens_rating, now)
 
@@ -46,3 +55,4 @@ if __name__ == '__main__':
 
     django.setup()
     cron_task()
+    cron_rating()
