@@ -6,16 +6,21 @@ from stats.models import Rating
 
 
 def rating(tokens: list, now):
-    now = datetime(now.year, now.month, now.day)
-    yesterday = (now - timedelta(days=1))
+    today = datetime(now.year, now.month, now.day)
+    yesterday = (today - timedelta(days=1))
     for token in tokens:
         bot = Bot.objects.get(token=token)
         objs = []
         from_log = Log.objects.\
             filter(bot=bot).\
-            filter(time__gte=now).\
+            filter(time__gte=yesterday, time__lt=today).\
             select_related('student')
-        log_scores = {log.student: log.score for log in from_log}
+        log_scores = {}
+        for log in from_log:
+            if log.student in log_scores:
+                log_scores[log.student] += log.score
+            else:
+                log_scores[log.student] = log.score
         from_rating = Rating.objects.\
             filter(bot=bot).\
             filter(time=yesterday).\
