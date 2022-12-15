@@ -68,6 +68,7 @@ class TextRating(Observer):
                     text = f'{text}\n{rtng[1]}. Вы - {rtng[2]}'
                 else:
                     text = f'{text}\n{rtng[1]}. Ученик - {rtng[2]}'
+            text = f'{text}\n\nРейтинг обновляется в 3 часа по местному времени.'
         else:
             text = 'Рейтинг сформируется в 3 часа'
         answer = {
