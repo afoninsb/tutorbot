@@ -1,5 +1,8 @@
+from datetime import datetime
 from django.db import models
+from django.utils import timezone
 
+from tarifs.models import Tarif
 from users.models import AdminBot
 
 
@@ -74,6 +77,24 @@ class Bot(models.Model):
         max_length=20,
         choices=TimeZones.choices,
         default=TimeZones.MOSCOW
+    )
+    tarif = models.ForeignKey(
+        Tarif,
+        verbose_name='Тариф',
+        on_delete=models.CASCADE,
+        related_name='bot',
+    )
+    start_time = models.DateTimeField(
+        verbose_name='Дата начала тарифа',
+        default=timezone.now,
+    )
+    end_time = models.DateTimeField(
+        verbose_name='Дата конца тарифа',
+        default=datetime(2100, 12, 31)
+    )
+    is_paid = models.BooleanField(
+        verbose_name='Оплачено?',
+        default=False
     )
 
     class Meta:

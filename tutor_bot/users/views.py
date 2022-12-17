@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
 from bots.models import Bot
+from bots.permissions import stop_bot
 from users.models import AdminBot, Student, StudentBot
 
 
@@ -31,6 +32,7 @@ def activate(request, botid):
     if request.POST.get('activate_button'):
         StudentBot.objects.bulk_update(bulk_data, ('is_activated',))
         messages.success(request, 'Учащиеся активированы.')
+        stop_bot(botid)
     else:
         messages.success(request, 'Учащиеся удалены.')
     return redirect('users:index', botid=botid)

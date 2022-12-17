@@ -13,6 +13,7 @@ urlpatterns = [
     path('login/', include('login.urls', namespace='login')),
     path('webhook/reg/', include('regbot.urls', namespace='regbot')),
     path('webhook/', include('edubot.urls', namespace='edubot')),
+    path('tarifs/', include('tarifs.urls', namespace='tarifs')),
     path('', include('bots.urls', namespace='bots')),
 ]
 

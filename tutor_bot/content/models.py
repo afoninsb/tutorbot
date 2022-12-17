@@ -9,15 +9,18 @@ class Category(models.Model):
 
     name = models.CharField(
         verbose_name='Категория (тема)',
-        max_length=100)
+        max_length=100
+    )
     is_active = models.BooleanField(
         verbose_name='Активна?',
-        default=False)
+        default=False
+    )
     bot = models.ForeignKey(
         Bot,
         verbose_name='Бот',
         on_delete=models.CASCADE,
-        related_name='category')
+        related_name='category'
+    )
 
     class Meta:
         verbose_name = 'Категория'
@@ -38,13 +41,16 @@ class Task(models.Model):
 
     title = models.CharField(
         verbose_name='Заголовок',
-        max_length=50)
+        max_length=50
+    )
     text = models.TextField(
         verbose_name='Текст задания',
-        max_length=3900)
+        max_length=3900
+    )
     answer = models.CharField(
         verbose_name='Ответ',
-        max_length=100)
+        max_length=100
+    )
     difficulty = models.PositiveSmallIntegerField(
         verbose_name='Трудность задания',
         choices=DifLevel.choices,
@@ -54,20 +60,24 @@ class Task(models.Model):
         Category,
         verbose_name='Категория',
         on_delete=models.CASCADE,
-        related_name='task')
+        related_name='task'
+    )
     time = models.DateTimeField(
         verbose_name='Дата выдачи',
         blank=True,
-        null=True)
+        null=True
+    )
     img = models.ImageField(
         verbose_name='Изображение',
         upload_to='temp/',
-        blank=True)
+        blank=True
+    )
     bot = models.ForeignKey(
         Bot,
         verbose_name='Бот',
         on_delete=models.CASCADE,
-        related_name='task')
+        related_name='task'
+    )
 
     class Meta:
         verbose_name = 'Задание'
