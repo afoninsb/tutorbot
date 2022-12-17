@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'edubot',
     'regbot',
     'stats',
+    'tarifs',
 ]
 
 MIDDLEWARE = [
