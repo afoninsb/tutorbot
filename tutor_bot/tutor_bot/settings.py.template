@@ -132,4 +132,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 TEMP_URL = f'{MEDIA_URL}temp/'
 TEMP_ROOT = os.path.join(MEDIA_ROOT, 'temp')
 
-ALERT_MIN_TASKS = 10
+ALERT_MIN_TASKS = 10  # количество задач, ниже которого показывается оповещение
+
+ALERT_END_TARIF = 3  # количество дней до окончания тарифа, ниже которого показывается оповещение
+
+STUDENT_FREE_TARIF = 4  # количество учащихся в бесплатном тарифе = Количество учащихся + Сам админ-учитель (3+1=4 - 3 учащихся)
