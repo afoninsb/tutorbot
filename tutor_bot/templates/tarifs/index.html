@@ -21,7 +21,7 @@
         {% for bot in bots %}
         <tr>
           <td><a href="{% url 'bots:bot_page' bot.id %}">{{ bot }}</a></td>
-          <td>{{ bot.tarif }} руб.</td>
+          <td>{{ bot.tarif }}</td>
           <td>{{ bot.start_time }}</td>
           <td>{{ bot.end_time }}</td>
           <td><a class="nav-link collapsed" href="https://studybot.fun/" target="_blank">
