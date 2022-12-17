@@ -26,4 +26,4 @@ class Tarif(models.Model):
         verbose_name_plural = 'Тарифы'
 
     def __str__(self):
-        return f'{self.duration}: {self.price}'
+        return f'{self.duration} мес.: {self.price} руб.'
