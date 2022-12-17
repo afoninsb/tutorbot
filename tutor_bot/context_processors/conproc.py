@@ -1,3 +1,5 @@
+import pytz
+from datetime import datetime, timedelta
 from django.conf import settings
 
 from bots.models import Bot
@@ -100,4 +102,24 @@ def alerts_endtask(request):
     return {
         'alerts_count_endtask': alerts_count_endtask,
         'cat_names': cat_names,
+    }
+
+
+def alerts_endtarif(request):
+    if ('/tgbot_backend' in request.path
+            or '/webhook' in request.path
+            or '/admin' in request.path
+            or 'stats/user/' in request.path):
+        return {}
+    alerts_tarif = []
+    admin = get_admin(request)
+    bots = Bot.objects.filter(
+        admin__tgid=admin['tgid']).select_related('tarif')
+    for bot in bots:
+        now = datetime.now(pytz.timezone(bot.tz))
+        end_tarif = bot.end_time
+        if now + timedelta(days=3) > end_tarif:
+            alerts_tarif.append(bot.name)
+    return {
+        'alerts_tarif': alerts_tarif,
     }

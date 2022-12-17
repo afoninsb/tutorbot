@@ -2,11 +2,13 @@
   <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
     {% if botid %}
       <h2>Бот "{{ bot_name }}"</h2>
+      bot id: {{botid}}
       <div class="social-links mt-2 run">
         {% if not is_active %}
-          <a href="{% url 'bots:bot_runstop' botid %}" class="run"><i class="ri-play-circle-fill ri-2x" style="cursor: pointer; color: green;" data-bs-toggle="tooltip" data-bs-placement="top" title="Включить бота"></i></a>
+          <p><a href="{% url 'bots:bot_runstop' botid %}" class="run"><i class="ri-play-circle-fill ri-2x" style="cursor: pointer; color: green;" data-bs-toggle="tooltip" data-bs-placement="top" title="Включить бота"></i></a>
         {% else %}
           <a href="{% url 'bots:bot_runstop' botid %}" class="stop"><i class="ri-pause-circle-fill ri-2x" style="cursor: pointer; color: red;" data-bs-toggle="tooltip" data-bs-placement="top" title="Остановить бота"></i></a>
+          </p>
           <p>{{ days }}: {{ hours }}<br>{{ tz }}</p>
           {% endif %}
       </div>

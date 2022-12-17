@@ -3,13 +3,37 @@
 <div class="d-flex align-items-center justify-content-between">
   <a href="/" class="logo d-flex align-items-center">
     <i class="ri-robot-fill ri-2x"></i>&nbsp;&nbsp;
-    <span class="d-none d-lg-block">StudyBot.Fun</span>
+    <span class="d-none d-lg-block">TutorBot</span>
   </a>
   <i class="bi bi-list toggle-sidebar-btn"></i>
 </div><!-- End Logo --> 
 
 <nav class="header-nav ms-auto">
   <ul class="d-flex align-items-center">
+
+    {% if alerts_tarif %}
+    <li class="nav-item dropdown">
+              <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                <i class="ri-wallet-3-line ri-1x" data-bs-toggle="tooltip" data-bs-placement="top" title="У вас заканчивается срок тарифа."></i>
+                <span class="badge bg-danger text-light badge-number"><i class="bi bi-exclamation-octagon me-1"></i></span>
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                  {% for bot_name in alerts_tarif %}
+                          <li class="notification-item">
+                            <li>
+                              <a class="dropdown-item d-flex align-items-center" href="{% url 'tarifs:index' %}">
+                                {{ bot_name }}
+                              </a>
+                            </li>
+                            <li>
+                              <hr class="dropdown-divider">
+                            </li>
+                  {% endfor %}
+              </ul>
+            </li>
+    {% endif %}
+
     {% if alerts_count_endtask %}
     <li class="nav-item dropdown">
               <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">

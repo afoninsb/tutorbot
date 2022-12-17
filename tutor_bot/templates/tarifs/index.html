@@ -1,0 +1,35 @@
+{% extends 'base-1c.html' %}
+{% load static %}
+
+{% block pagehead %}
+    Тарифы ваших ботов
+{% endblock  %}
+
+{% block content %}
+  <div class="list-group">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Бот</th>
+          <th scope="col">Тариф (срок:цена)</th>
+          <th scope="col">Начало</th>
+          <th scope="col">Конец</th>
+          <th scope="col" width="20px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bot in bots %}
+        <tr>
+          <td><a href="{% url 'bots:bot_page' bot.id %}">{{ bot }}</a></td>
+          <td>{{ bot.tarif }} руб.</td>
+          <td>{{ bot.start_time }}</td>
+          <td>{{ bot.end_time }}</td>
+          <td><a class="nav-link collapsed" href="https://studybot.fun/" target="_blank">
+            <i class="ri-wallet-3-line ri-xl" style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" title="Продлить"></i>
+          </a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock  %}

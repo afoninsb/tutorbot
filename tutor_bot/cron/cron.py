@@ -4,6 +4,7 @@ def cron_task():
     from datetime import datetime
 
     from bots.models import Bot
+    from bots.permissions import stop_bot
     from functions import disable_categories_bots
 
     bots = Bot.objects.filter(is_active=True)
@@ -22,6 +23,9 @@ def cron_task():
             and hour in bot_hours
         ):
             tokens_tasks.append(bot.token)
+
+        stop_bot(bot.id)
+
     if tokens_tasks:
         len_tokens_tasks = len(tokens_tasks)
         proc = [1]*len_tokens_tasks

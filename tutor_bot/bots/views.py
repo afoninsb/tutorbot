@@ -7,8 +7,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from bots.forms import BotForm, BotFormEdit, BotPass, BotSchedule
 from bots.models import Bot
+from bots.permissions import can_bot_run
 from core.utils import add_dir, del_dir
 from edubot.main_classes import BotData
+from tarifs.models import Tarif
 from users.models import AdminBot, Student, StudentBot
 
 
@@ -81,6 +83,11 @@ def botadd(request):
     tgid = request.COOKIES.get('chatid')
     admin = get_object_or_404(AdminBot, tgid=tgid)
     new_bot.admin = admin
+    if free_tarif := Tarif.objects.filter(duration=Tarif.TarifsTypes.FREE):
+        new_bot.tarif = free_tarif[0]
+    else:
+        tarif = Tarif.objects.all()
+        new_bot.tarif = tarif[0]
     form.save()
     with contextlib.suppress(IntegrityError):
         Student.objects.create(
@@ -101,14 +108,12 @@ def botadd(request):
 
 def botrunstop(request, botid):
     cur_bot = get_object_or_404(Bot, id=botid)
-    active_categories = cur_bot.category.filter(is_active=True)
-
-    if not (cur_bot.days and cur_bot.hours):
-        messages.error(request, 'Необходимо настроить расписание.')
-        return redirect('bots:bot_schedule', botid=botid)
-    if not active_categories:
-        messages.error(request, 'Необходимо включить хотя бы одну категорию.')
-        return redirect('content:category', botid=botid)
+    permission = can_bot_run(cur_bot)
+    if permission[0] > 1:
+        messages.error(request, permission[1])
+        if permission[0] in (2, 5):
+            return redirect(permission[2])
+        return redirect(permission[2], botid=botid)
 
     Bot.objects.filter(id=botid).update(is_active=not cur_bot.is_active)
     if cur_bot.is_active:

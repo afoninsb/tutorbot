@@ -5,6 +5,7 @@ from bots.models import Bot
 from content.forms import CategoryForm, TaskForm
 from content.functions import is_need_stop_bot
 from content.models import Category, Task
+from content.permissions import can_category_run
 from core.utils import add_dir, del_dir, del_file, replace_from_temp
 
 
@@ -142,10 +143,11 @@ def taskdel(request, botid, categoryid, taskid):
 
 def catrunstop(request, botid, categoryid):
     cur_category = get_object_or_404(Category, id=categoryid)
-    if (not cur_category.task.filter(time__isnull=True).exists()
-            and not cur_category.is_active):
-        messages.error(request, 'В категории нет задач.')
-        return redirect('content:category', botid=botid)
+    permission = can_category_run(cur_category)
+    if permission[0] > 1:
+        messages.error(request, permission[1])
+        return redirect(permission[2], botid=botid, categoryid=categoryid)
+
     Category.objects.filter(id=categoryid).update(
         is_active=not cur_category.is_active)
     if cur_category.is_active:
