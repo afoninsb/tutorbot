@@ -60,4 +60,5 @@ def stop_bot(botid):
             duration=Tarif.TarifsTypes.FREE)[0]
         or now >= cur_bot.end_time
     ):
-        Bot.objects.filter(id=cur_bot.id).update(is_active=False)
+        Bot.objects.filter(id=cur_bot.id).\
+            update(is_active=False, is_paid=False)

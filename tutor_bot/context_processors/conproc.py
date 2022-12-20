@@ -38,6 +38,7 @@ def get_bot(request):
             'bot_name': bot.name,
             'bot_login': bot.login[1:],
             'is_active': bot.is_active,
+            'is_paid': bot.is_paid,
             'days': bot.get_days_display,
             'hours': bot.hours,
             'tz': bot.tz,
