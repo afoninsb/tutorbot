@@ -55,7 +55,7 @@ def cron_rating():
     for bot in bots:
         now = datetime.now(pytz.timezone(bot.tz))
         hour = str(now.hour)
-        if hour == '3':
+        if hour == '6':
             tokens_rating.append(bot.token)
     if tokens_rating:
         rating(tokens_rating, now)
