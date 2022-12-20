@@ -85,9 +85,11 @@ def botadd(request):
     new_bot.admin = admin
     if free_tarif := Tarif.objects.filter(duration=Tarif.TarifsTypes.FREE):
         new_bot.tarif = free_tarif[0]
+        new_bot.is_paid = True
     else:
         tarif = Tarif.objects.all()
         new_bot.tarif = tarif[0]
+        new_bot.is_paid = False
     form.save()
     with contextlib.suppress(IntegrityError):
         Student.objects.create(
