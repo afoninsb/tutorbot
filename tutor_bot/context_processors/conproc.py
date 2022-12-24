@@ -5,58 +5,61 @@ from django.conf import settings
 from bots.models import Bot
 from users.models import AdminBot
 
+IGNORE_URL = (
+    '/tgbot_backend',
+    '/webhook',
+    '/admin',
+    'stats/user/',
+    '/favicon.ico',
+)
 
-def get_admin(request):
-    if ('/tgbot_backend' in request.path
-            or '/webhook' in request.path
-            or '/admin' in request.path
-            or 'stats/user/' in request.path
-            or '/favicon.ico' in request.path):
+
+def is_continue(path) -> bool:
+    return all(url not in path for url in IGNORE_URL)
+
+
+def get_context_data(request):
+    if not is_continue(request.path):
         return {}
     chat = request.COOKIES.get('chatid')
     admin = AdminBot.objects.get(tgid=chat)
-    return {
+    context = get_context(request, admin)
+    alerts = get_alerts(admin)
+    return context | alerts
+
+
+def get_context(request, admin):
+    context = {
         'first_name': admin.first_name,
         'last_name': admin.last_name,
-        'tgid': admin.tgid,
+        'tgid': admin.tgid
     }
+    if botid := request.resolver_match.kwargs.get('botid'):
+        bot = Bot.objects.get(id=botid)
+        context['botid'] = botid
+        context['bot_name'] = bot.name
+        context['bot_login'] = bot.login[1:]
+        context['is_active'] = bot.is_active
+        context['is_paid'] = bot.is_paid
+        context['days'] = bot.get_days_display
+        context['hours'] = bot.hours
+        context['tz'] = bot.tz
+    return context
 
 
-def get_bot_id(request):
-    try:
-        data = request.resolver_match.kwargs
-    except Exception:
+def get_alerts(admin):
+    bots = Bot.objects.filter(admin__tgid=admin.tgid)
+    if not bots:
         return {}
-    return {'bot_id': data['botid'], } if 'botid' in data else {}
+    newuser = alerts_newuser(bots)
+    endtask = alerts_endtask(bots)
+    endtarif = alerts_endtarif(bots)
+    return newuser | endtask | endtarif
 
 
-def get_bot(request):
-    if data := get_bot_id(request):
-        bot = Bot.objects.get(id=data['bot_id'])
-        return {
-            'botid': bot.id,
-            'bot_name': bot.name,
-            'bot_login': bot.login[1:],
-            'is_active': bot.is_active,
-            'is_paid': bot.is_paid,
-            'days': bot.get_days_display,
-            'hours': bot.hours,
-            'tz': bot.tz,
-        }
-    return {}
-
-
-def alerts_newuser(request):
-    if ('/tgbot_backend' in request.path
-            or '/webhook' in request.path
-            or '/admin' in request.path
-            or 'stats/user/' in request.path):
-        return {}
+def alerts_newuser(bots):
     alerts_newuser = 0
     alerts_count_newuser = []
-    admin = get_admin(request)
-    bots = Bot.objects.filter(
-        admin__tgid=admin['tgid'])
     for bot in bots:
         cur_count = bot.student_set.filter(
             studentbot__is_activated=False).count()
@@ -69,17 +72,10 @@ def alerts_newuser(request):
     }
 
 
-def alerts_endtask(request):
-    if ('/tgbot_backend' in request.path
-            or '/webhook' in request.path
-            or '/admin' in request.path
-            or 'stats/user/' in request.path):
-        return {}
+def alerts_endtask(bots):
     alerts_count_endtask = {}
     cat_names = {}
-    admin = get_admin(request)
-    bots = Bot.objects.filter(
-        admin__tgid=admin['tgid']).prefetch_related('task')
+    bots = bots.prefetch_related('task')
     for bot in bots:
         tasks = bot.task.filter(time__isnull=True)
         categories = {}
@@ -106,16 +102,9 @@ def alerts_endtask(request):
     }
 
 
-def alerts_endtarif(request):
-    if ('/tgbot_backend' in request.path
-            or '/webhook' in request.path
-            or '/admin' in request.path
-            or 'stats/user/' in request.path):
-        return {}
+def alerts_endtarif(bots):
     alerts_tarif = []
-    admin = get_admin(request)
-    bots = Bot.objects.filter(
-        admin__tgid=admin['tgid']).select_related('tarif')
+    bots = bots.select_related('tarif')
     for bot in bots:
         now = datetime.now(pytz.timezone(bot.tz))
         end_tarif = bot.end_time

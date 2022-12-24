@@ -22,12 +22,7 @@ def category(request, botid):
 def categoryadd(request, botid):
     form = CategoryForm(request.POST or None)
     if form.is_valid():
-        new_category = form.save(commit=False)
-        new_category.bot = get_object_or_404(Bot, id=botid)
-        form.save()
-        add_dir(botid=botid, num_dir=new_category.id, type_dir='cat')
-        messages.success(request, 'Категория добавлена.')
-        return redirect('content:category', botid=botid)
+        return categoryadd_done(request, botid, form)
     context = {
         'form': form,
         'is_new': True,
@@ -35,6 +30,15 @@ def categoryadd(request, botid):
     if request.method == "POST":
         messages.error(request, ' ')
     return render(request, 'content/categoryadd.html', context)
+
+
+def categoryadd_done(request, botid, form):
+    new_category = form.save(commit=False)
+    new_category.bot = get_object_or_404(Bot, id=botid)
+    form.save()
+    add_dir(botid=botid, num_dir=new_category.id, type_dir='cat')
+    messages.success(request, 'Категория добавлена.')
+    return redirect('content:category', botid=botid)
 
 
 def categoryedit(request, botid, categoryid):
