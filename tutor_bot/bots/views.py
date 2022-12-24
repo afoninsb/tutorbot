@@ -49,7 +49,6 @@ def botpass(request, botid):
         dklen=128
     )
     Bot.objects.filter(id=botid).update(
-        # password=hashlib.md5(str(request.POST['password']).encode()))
         password=password)
 
     messages.success(request, 'Пароль бота установлен.')
