@@ -51,7 +51,9 @@ def webhook(request, bot_tg):
     # Если у юзера есть состояние, в тип обонвления помещаем его,
     # Команды имеют приоритет - рассматриваются первыми
     cur_user = user.get_info
-    if cur_user.state and data_type != 'command':
+    if message['text'] == '/start':
+        data_type = 'state'
+    elif cur_user.state and data_type != 'command':
         data_type = 'state'
 
     # Создаём объект Road, определяющий направление движения
