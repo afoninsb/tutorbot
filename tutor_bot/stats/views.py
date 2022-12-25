@@ -46,7 +46,8 @@ def category(request, botid, cat_id, user_id):
             user_id=user_id,
         )
     start_end_date = get_dates_from_coockies(request)
-    tasks = Task.objects.filter(category__id=cat_id).filter(time__gte='2020-01-01 00:00:01')
+    tasks = Task.objects.filter(category__id=cat_id).\
+        filter(time__gte='2020-01-01 00:00:01')
     dates = None
     if start_end_date:
         dates = dates_tz(start_end_date, botid)
@@ -61,8 +62,10 @@ def category(request, botid, cat_id, user_id):
         student = None
         students = Student.objects.filter(
             bot__id=botid).prefetch_related('log')
-    cat_stats = get_stats(tasks, dates, student, cat_id) if tasks else {}
-    stud_stats = get_stats(students, dates, student, cat_id) if students else {}
+    cat_stats = get_stats(
+        tasks, dates, student, cat_id) if tasks else {}
+    stud_stats = get_stats(
+        students, dates, student, cat_id) if students else {}
     context = {
         'task_count': tasks.count(),
         'tasks': tasks,
@@ -90,7 +93,8 @@ def all_categories(request, botid, user_id):
     start_end_date = get_dates_from_coockies(request)
     categories = Category.objects.filter(bot__id=botid)
     stats = {}
-    student = get_object_or_404(Student, id=user_id) if user_id != 'all' else None
+    student = get_object_or_404(
+        Student, id=user_id) if user_id != 'all' else None
     if categories:
         for category in categories:
             tasks = Task.objects.filter(category=category)
@@ -108,7 +112,8 @@ def all_categories(request, botid, user_id):
                         time__gte=dates[0],
                         time__lte=dates[1],
                     )
-                task_count = tasks.filter(time__gte='2020-01-01 00:00:01').count()
+                task_count = tasks.\
+                    filter(time__gte='2020-01-01 00:00:01').count()
                 stats[category.id] = [task_count, 0, 0, 0]
                 compare_logs(stats, logs, category.id, 0)
     context = {
@@ -141,7 +146,8 @@ def userstat(request, botid, user_id, pin):
     if categories:
         for category in categories:
             tasks = Task.objects.filter(category=category)
-            logs = Log.objects.filter(category=category).filter(student=student)
+            logs = Log.objects.filter(category=category).\
+                filter(student=student)
             if logs and tasks:
                 if start_end_date:
                     dates = dates_tz(start_end_date, botid)
@@ -153,7 +159,8 @@ def userstat(request, botid, user_id, pin):
                         time__gte=dates[0],
                         time__lte=dates[1],
                     )
-                task_count = tasks.filter(time__gte='2020-01-01 00:00:01').count()
+                task_count = tasks.\
+                    filter(time__gte='2020-01-01 00:00:01').count()
                 stats[category.id] = [task_count, 0, 0, 0]
                 compare_logs(stats, logs, category.id, 0)
     context = {
@@ -183,7 +190,8 @@ def usercatstat(request, botid, user_id, cat_id, pin):
             pin=pin
         )
     start_end_date = get_dates_from_coockies(request)
-    tasks = Task.objects.filter(category__id=cat_id).filter(time__gte='2020-01-01 00:00:01')
+    tasks = Task.objects.filter(category__id=cat_id).\
+        filter(time__gte='2020-01-01 00:00:01')
     dates = None
     if start_end_date:
         dates = dates_tz(start_end_date, botid)

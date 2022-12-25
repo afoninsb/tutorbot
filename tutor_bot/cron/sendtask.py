@@ -67,10 +67,10 @@ if __name__ == '__main__':
 
     import pytz
     from datetime import datetime
-    from django.conf import settings
-    from django.shortcuts import get_object_or_404
     from random import choice
     from time import sleep
+    from django.conf import settings
+    from django.shortcuts import get_object_or_404
 
     from bots.models import Bot
     from content.models import Task

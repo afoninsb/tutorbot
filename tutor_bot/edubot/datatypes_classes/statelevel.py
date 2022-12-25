@@ -22,4 +22,9 @@ class StateDistributor(Observer):
         }
         state = subject._state.split(':')[0]
         if state in pathes:
-            pathes[state](kwargs['message'], bot, user, is_admin=kwargs['is_admin'])
+            pathes[state](
+                kwargs['message'],
+                bot,
+                user,
+                is_admin=kwargs['is_admin']
+            )

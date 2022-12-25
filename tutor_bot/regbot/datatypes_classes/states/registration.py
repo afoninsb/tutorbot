@@ -91,8 +91,8 @@ def reg_position(message: dict, bot: BotData, user) -> None:
     if message.get('text'):
         text = '''И последнее....
 
-            Шаг 5. Объясните в 3-х предложениях, 
-    зачем вам этот бот, 
+            Шаг 5. Объясните в 3-х предложениях,
+    зачем вам этот бот,
     для чего будете его использовать:'''
         user.edit(position=message['text'], state='get_admin_why')
     else:
@@ -129,7 +129,7 @@ def reg_why(message: dict, bot: BotData, user) -> None:
         }
         bot.send_answer(answer_to_boss)
     else:
-        text = '''Объясните в 3-х предложениях, зачем вам этот бот, 
+        text = '''Объясните в 3-х предложениях, зачем вам этот бот,
         для чего будете его использовать:'''
     answer = {
         'chat_id': user.chat_id,

@@ -21,12 +21,17 @@ def reg_start(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
     bot.send_answer(answer)
 
 
-def reg_password(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
+def reg_password(
+        message: dict, bot: BotData, user: UserData, **kwargs
+) -> None:
     """Получили пароль и обрабатываем его.
     Args:
         message (dict): объект message, полученный с вебхука.
     """
-    if message.get('text') and user.is_right_bot_password(bot, message.get('text')):
+    if (
+        message.get('text')
+        and user.is_right_bot_password(bot, message.get('text'))
+    ):
         text = '''Отлично!
 
         Шаг 2. Введите ваше Имя (только Имя):'''
@@ -41,7 +46,9 @@ def reg_password(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
     bot.send_answer(answer)
 
 
-def reg_first_name(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
+def reg_first_name(
+        message: dict, bot: BotData, user: UserData, **kwargs
+) -> None:
     """Получили Имя и обрабатываем его.
     Args:
         message (dict): объект message, полученный с вебхука.
@@ -62,7 +69,9 @@ def reg_first_name(message: dict, bot: BotData, user: UserData, **kwargs) -> Non
     bot.send_answer(answer)
 
 
-def reg_last_name(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
+def reg_last_name(
+        message: dict, bot: BotData, user: UserData, **kwargs
+) -> None:
     """Получили Фамилию и обрабатываем её. Завершаем регистрацию.
     Args:
         message (dict): объект message, полученный с вебхука.

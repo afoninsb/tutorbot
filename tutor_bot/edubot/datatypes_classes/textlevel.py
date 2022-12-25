@@ -8,12 +8,13 @@ from uuid import uuid1
 from edubot.keyboards import admin_kbrd, hide_kbrd, main_kbrd, userstat_kbr
 from edubot.main_classes import BotData, UserData
 from edubot.main_classes.localdata import AdminUser, StudentUser, TempUser
-
 from .datatypesclass import Observer, Subject
 
 
 class TextMessageToTeacher(Observer):
-    def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         if (subject._state == 'Сообщение учителю'
                 and isinstance(user, StudentUser)):
             user.edit(state='message_to_teacher')
@@ -29,7 +30,9 @@ class TextMessageToTeacher(Observer):
 
 
 class TextGoToPanel(Observer):
-    def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         if (subject._state == 'Администрировать'
                 and isinstance(user, AdminUser)):
             pin = str(uuid1())
@@ -43,7 +46,9 @@ class TextGoToPanel(Observer):
 
 
 class TextMyStat(Observer):
-    def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         if subject._state == 'Моя статистика':
             pin = str(uuid1())
             user = StudentUser(user.chat_id, bot.token)
@@ -57,7 +62,9 @@ class TextMyStat(Observer):
 
 
 class TextRating(Observer):
-    def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         if subject._state != 'Рейтинг':
             return
         user = StudentUser(user.chat_id, bot.token)
@@ -79,7 +86,9 @@ class TextRating(Observer):
 
 
 class TextHaHaHa(Observer):
-    def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         if subject._state not in [
                 'Сообщение учителю', 'Администрировать',
                 'Техподдержка', 'Моя статистика', 'Рейтинг']:

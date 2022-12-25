@@ -2,7 +2,9 @@ from edubot.main_classes import BotData
 from edubot.main_classes.localdata import UserData
 
 
-def change_first_name(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
+def change_first_name(
+        message: dict, bot: BotData, user: UserData, **kwargs
+) -> None:
     """Редактирование имени юзера.
     Args:
         message (dict): объект message, полученный с вебхука.
@@ -21,7 +23,9 @@ def change_first_name(message: dict, bot: BotData, user: UserData, **kwargs) -> 
     bot.send_answer(answer)
 
 
-def change_last_name(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
+def change_last_name(
+        message: dict, bot: BotData, user: UserData, **kwargs
+) -> None:
     """Редактирование фамилии юзера.
     Args:
         message (dict): объект message, полученный с вебхука.
