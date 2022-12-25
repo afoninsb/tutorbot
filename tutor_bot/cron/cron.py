@@ -1,7 +1,9 @@
 def cron_task():
-    import subprocess
+    import os
     import pytz
+    import subprocess
     from datetime import datetime
+    from django.conf import settings
 
     from bots.models import Bot
     from bots.permissions import stop_bot
@@ -27,14 +29,20 @@ def cron_task():
         stop_bot(bot.id)
 
     if tokens_tasks:
+        path_python = os.path.join(
+            settings.BASE_DIR.parent, 'venv_django', 'bin', 'python3'
+        )
+        path_script = path_python = os.path.join(
+            settings.BASE_DIR, 'cron', 'sendtask.py'
+        )
         len_tokens_tasks = len(tokens_tasks)
         proc = [1]*len_tokens_tasks
         for count, token in enumerate(tokens_tasks):
             proc[count] = subprocess.Popen(
                 [
-                    '/home/a/afoninry/tutor.studybot.fun/venv_django/bin/python3',
-                    '/home/a/afoninry/tutor.studybot.fun/tutor_bot/cron/sendtask.py',
-                    token
+                    # '/home/a/afoninry/tutor.studybot.fun/venv_django/bin/python3',
+                    # '/home/a/afoninry/tutor.studybot.fun/tutor_bot/cron/sendtask.py',
+                    path_python, path_script, token
                 ]
             )
         for i in range(len_tokens_tasks):

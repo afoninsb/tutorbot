@@ -1,10 +1,8 @@
-import contextlib
 import csv
 import os
 
 from django.apps import apps
 from django.conf import settings
-from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
 
@@ -18,13 +16,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         message = 'Данные добавлены!'
-
-        # Если БД существует, очищаем её таблицы от данных
-        #with contextlib.suppress(ValueError):
-        #    call_command('flush', '--no-input')
-
-        # Выполняем миграции
-        # call_command('migrate')
 
         # Импорт данных из файлов в БД
         for fixture, app, model in self.DATA:
@@ -49,12 +40,12 @@ class Command(BaseCommand):
 
             with open(path_to_file, newline='') as csvfile:
                 reader = csv.DictReader(csvfile)
+                bot_id = 5000765506
                 for row in reader:
                     title = row['text'][:50]
                     text = row['text']
                     answer = row['answer']
                     category_id = int(row['category_id']) - 1
-                    bot_id = 5000765506
                     task = current_model.objects.create(
                         title=title,
                         text=text,
@@ -67,22 +58,16 @@ class Command(BaseCommand):
                         exp = name.split('.')[-1]
                         new_name = f'{task.id}.{exp}'
                         img = f'5000765506/cat{category_id}/{new_name}'
-                        current_model.objects.filter(id=task.id).update(img=img)
+                        current_model.objects.filter(id=task.id).\
+                            update(img=img)
                         path_old = os.path.join(
-                            settings.BASE_DIR, 'content', 'management', 'commands', 'uploads', name
+                            settings.BASE_DIR, 'content',
+                            'management', 'commands', 'uploads', name
                         )
                         path_new = os.path.join(
-                            settings.MEDIA_ROOT, '5000765506', f'cat{category_id}', new_name
+                            settings.MEDIA_ROOT, '5000765506',
+                            f'cat{category_id}', new_name
                         )
                         os.replace(path_old, path_new)
-
-                # Получаем данные из csv файла 1900288220/cat1/1.png
-                #reader = csv.DictReader(csvfile)
-
-                # Формируем список данных
-                #bulk_data = [current_model(**row) for row in reader]
-
-                # Сохраняем данные в БД
-                #current_model.objects.bulk_create(bulk_data)
 
         self.stdout.write(message)
