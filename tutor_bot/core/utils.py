@@ -24,7 +24,7 @@ def replace_from_temp(**kwargs) -> str:
     botid = kwargs.get('botid', False)
     img_name = kwargs.get('img_name', False)
     if not img_name:
-        return None
+        return ''
     num_file = kwargs.get('num_file', False)
     num_dir = kwargs.get('num_dir', False)
     type_dir = kwargs.get('type_dir', False)

@@ -1,5 +1,4 @@
 import contextlib
-from types import NoneType
 from typing import Dict, List, Tuple, Union
 from django.db.models.query import QuerySet
 
@@ -30,8 +29,8 @@ def compare_logs(
 
 def get_stats(
         array: QuerySet,
-        dates: Tuple[str],
-        student: Union[NoneType, Student],
+        dates: Tuple[str, str],
+        student: Union[None, Student],
         cat_id: int
 ) -> Dict[int, List[int]]:
     """Построение статистики в категории за указанный период."""

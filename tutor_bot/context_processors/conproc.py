@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models.query import QuerySet
-from typing import Dict, Any
+from typing import Dict, Any, List, Tuple
 
 from bots.models import Bot
 from users.models import AdminBot
@@ -67,14 +67,15 @@ def get_alerts(admin: AdminBot) -> Dict[str, Any]:
 
 def alerts_newuser(bots: QuerySet) -> Dict[str, Any]:
     """Получаем значения алертов по пользователям."""
-    alerts_newuser = 0
-    alerts_count_newuser = []
+    alerts_newuser: int = 0
+    alerts_count_newuser: List[Tuple[int, str, int]] = []
     for bot in bots:
         cur_count = bot.student_set.filter(
             studentbot__is_activated=False).count()
         if cur_count > 0:
             alerts_newuser += cur_count
             alerts_count_newuser.append((bot.id, bot.name, cur_count))
+    print(alerts_count_newuser)
     return {
         'alerts_count_newuser': alerts_count_newuser,
         'alerts_newuser': alerts_newuser,
@@ -83,13 +84,13 @@ def alerts_newuser(bots: QuerySet) -> Dict[str, Any]:
 
 def alerts_endtask(bots: QuerySet) -> Dict[str, Any]:
     """Получаем значения алертов по заданиям."""
-    alerts_count_endtask = {}
-    cat_names = {}
+    alerts_count_endtask: Dict[int, int] = {}
+    cat_names: Dict[int, str] = {}
     bots = bots.prefetch_related('task')
     for bot in bots:
         tasks = bot.task.filter(time__isnull=True)
-        categories = {}
-        cat_names = {}
+        categories: Dict[int, int] = {}
+        cat_names: Dict[int, str] = {}
         for task in tasks:
             if categories.get(task.category.id):
                 categories[task.category.id] += 1
@@ -114,7 +115,7 @@ def alerts_endtask(bots: QuerySet) -> Dict[str, Any]:
 
 def alerts_endtarif(bots: QuerySet) -> Dict[str, Any]:
     """Получаем значения алертов по тарифам."""
-    alerts_tarif = []
+    alerts_tarif: List[str] = []
     bots = bots.select_related('tarif')
     for bot in bots:
         now = datetime.now(pytz.timezone(bot.tz))

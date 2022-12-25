@@ -35,28 +35,28 @@ def enddate(date: datetime) -> str:
     return f'{date} 23:59:59'
 
 
-def currentweek(*args) -> Tuple[str]:
+def currentweek(*args) -> Tuple[str, str]:
     """Даты начала и окончания текущей недели."""
     moment = now()
     date_start = moment - timedelta(days=weekdaynow())
     return (startdate(date_start), enddate(moment))
 
 
-def previousweek(*args) -> Tuple[str]:
+def previousweek(*args) -> Tuple[str, str]:
     """Даты начала и окончания предыдущей недели."""
     date_end = now() - timedelta(days=(weekdaynow()+1))
     date_start = date_end - timedelta(days=6)
     return (startdate(date_start), enddate(date_end))
 
 
-def currentmonth(*args) -> Tuple[str]:
+def currentmonth(*args) -> Tuple[str, str]:
     """Даты начала и окончания текущего месяца."""
     moment = now()
     date_start = str(datetime(moment.year, moment.month, 1))
     return (date_start, enddate(moment))
 
 
-def previousmonth(*args) -> Tuple[str]:
+def previousmonth(*args) -> Tuple[str, str]:
     """Даты начала и окончания предыдущего месяца."""
     moment = now()
     pre = moment - timedelta(days=(moment.day+1))
@@ -66,7 +66,7 @@ def previousmonth(*args) -> Tuple[str]:
     return (date_start, date_end)
 
 
-def other(request: WSGIRequest) -> Tuple[str]:
+def other(request: WSGIRequest) -> Tuple[str, str]:
     """Даты начала и окончания произвольного периода."""
     date_start = date(
         int(request.POST['date_start_year']),
@@ -81,7 +81,7 @@ def other(request: WSGIRequest) -> Tuple[str]:
     return (f"{date_start} 00:00:00", f"{date_end} 23:59:59")
 
 
-def allperiod(request: WSGIRequest) -> Tuple[str]:
+def allperiod(request: WSGIRequest) -> Tuple[str, str]:
     """Безграничный период."""
     return ('', '')
 
@@ -100,7 +100,7 @@ def get_dates(request: WSGIRequest) -> str:
     return '#'.join(start_end)
 
 
-def new_date_form(start_end_date: Tuple[str]) -> SelectDateForm:
+def new_date_form(start_end_date: Tuple[str, str]) -> SelectDateForm:
     """Помещаем даты начала и окончания периода в форму даты."""
     if not start_end_date:
         return SelectDateForm_disabled()
@@ -146,6 +146,8 @@ def get_dates_from_coockies(request: WSGIRequest) -> List[str]:
     """Получение даты из куки."""
     if start_end_date := request.COOKIES.get('dates'):
         return start_end_date.split('#')
+    else:
+        return []
 
 
 def dates_tz(dates: List[str], botid: int) -> Tuple[datetime]:
