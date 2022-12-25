@@ -1,22 +1,7 @@
 import os
 import shutil
-import uuid
 
 from django.conf import settings
-from django.core.files.uploadedfile import InMemoryUploadedFile
-
-
-def handle_uploaded_file(file: InMemoryUploadedFile) -> str:
-    """Сохраняем загружаемый файл во временную папку."""
-    if not os.path.exists(settings.TEMP_ROOT):
-        os.mkdir(settings.TEMP_ROOT, mode=0o777)
-    new_name = uuid.uuid1()
-    _, file_extension = os.path.splitext(file._name)
-    file = f'{settings.TEMP_ROOT}/{new_name}{file_extension}'
-    with open(file, 'wb+') as destination:
-        for chunk in file.chunks():
-            destination.write(chunk)
-    return f'{new_name}{file_extension}'
 
 
 def replace_from_temp(**kwargs) -> str:
