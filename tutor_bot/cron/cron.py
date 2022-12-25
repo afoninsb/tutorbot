@@ -32,7 +32,7 @@ def cron_task():
         path_python = os.path.join(
             settings.BASE_DIR.parent, 'venv_django', 'bin', 'python3'
         )
-        path_script = path_python = os.path.join(
+        path_script = os.path.join(
             settings.BASE_DIR, 'cron', 'sendtask.py'
         )
         len_tokens_tasks = len(tokens_tasks)
