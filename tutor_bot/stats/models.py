@@ -6,7 +6,6 @@ from users.models import Student
 
 class Rating(models.Model):
     """Модель рейтинга."""
-
     bot = models.ForeignKey(
         Bot,
         verbose_name='Бот',
@@ -32,8 +31,8 @@ class Rating(models.Model):
 
 class Alert(models.Model):
     """Модель алертов."""
-
     class AlertsTypes(models.IntegerChoices):
+        """Типы алертов."""
         NEWUSER = 1, 'Новый ученик.'
         FEWTASKS = 2, 'В категории мало задач.'
         TASKSAREOVER = 3, 'В категории кончились задачи. Она отключена.'

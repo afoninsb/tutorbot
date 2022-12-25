@@ -12,6 +12,7 @@ from users.models import Student
 
 
 def task(request, botid, task_id):
+    """Статистика по заданию."""
     form = SelectDateForm_disabled(request.POST or None)
     if request.method == "POST":
         return form_processing(
@@ -34,6 +35,7 @@ def task(request, botid, task_id):
 
 
 def category(request, botid, cat_id, user_id):
+    """Статистика по категории."""
     form = SelectDateForm_disabled(request.POST or None)
     if request.method == "POST":
         return form_processing(
@@ -80,6 +82,7 @@ def category(request, botid, cat_id, user_id):
 
 
 def all_categories(request, botid, user_id):
+    """Сводная статистика по всем категориям."""
     form = SelectDateForm_disabled(request.POST or None)
     if request.method == "POST":
         return form_processing(
@@ -126,6 +129,7 @@ def all_categories(request, botid, user_id):
 
 
 def userstat(request, botid, user_id, pin):
+    """Статистика пользователя обобщенная - переход из бота."""
     student = get_object_or_404(Student, id=user_id)
     if pin != student.pin:
         return render(request, '404.html')
@@ -174,6 +178,7 @@ def userstat(request, botid, user_id, pin):
 
 
 def usercatstat(request, botid, user_id, cat_id, pin):
+    """Статистика пользователя по категории - переход из бота."""
     student = get_object_or_404(Student, id=user_id)
     if pin != student.pin:
         return render(request, '404.html')
@@ -213,6 +218,7 @@ def usercatstat(request, botid, user_id, cat_id, pin):
 
 
 def rating(request, botid):
+    """Отображение рейтинга."""
     if request.method == "POST":
         form = DateForm(request.POST)
         cur_date = date(

@@ -7,6 +7,7 @@ from users.models import AdminBot, Student, StudentBot
 
 
 def index(request, botid):
+    """Список учеников бота и заявок в бот."""
     cur_bot = get_object_or_404(Bot, id=botid)
     students = cur_bot.student_set.filter(studentbot__is_activated=True)
     students_new = cur_bot.student_set.filter(studentbot__is_activated=False)
@@ -15,6 +16,7 @@ def index(request, botid):
 
 
 def activate(request, botid):
+    """Активация ученика в боте или удаление его заявки."""
     ids = request.POST.getlist('ids')
     if not ids:
         messages.error(request, 'Выберите учащегося!')
@@ -39,6 +41,7 @@ def activate(request, botid):
 
 
 def delete(request, botid, tgid):
+    """Удаление ученика из бота."""
     try:
         get_object_or_404(AdminBot, tgid=tgid)
     except Exception:

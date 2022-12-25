@@ -5,9 +5,7 @@ from tarifs.models import Tarif
 
 @admin.register(Tarif)
 class TarifAdmin(admin.ModelAdmin):
-    """
-    Представление тарифов в админ-панели.
-    """
+    """Представление тарифов в админ-панели."""
 
     list_display = (
         'id',

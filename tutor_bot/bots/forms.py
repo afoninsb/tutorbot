@@ -5,6 +5,7 @@ from bots.models import Bot
 
 
 class BotPass(forms.ModelForm):
+    """Форма изменения пароля бота."""
     class Meta:
         model = Bot
         fields = ('password', )
@@ -15,6 +16,7 @@ class BotPass(forms.ModelForm):
 
 
 class BotForm(forms.ModelForm):
+    """Форма добавления бота."""
     class Meta:
         model = Bot
         fields = ('token', 'login', 'name')
@@ -46,6 +48,7 @@ class BotForm(forms.ModelForm):
 
 
 class BotFormEdit(forms.ModelForm):
+    """Форма редактирования параметров бота."""
     class Meta:
         model = Bot
         fields = (
@@ -75,6 +78,7 @@ class BotFormEdit(forms.ModelForm):
 
 
 class BotSchedule(forms.ModelForm):
+    """Форма настройки расписания бота."""
     class Meta:
         model = Bot
         fields = ('days', 'hours')
@@ -92,10 +96,8 @@ class BotSchedule(forms.ModelForm):
     def clean_hours(self):
         data = self.cleaned_data['hours']
         hours = data.split()
-        for count, hour in enumerate(hours):
+        for hour in hours:
             if not hour.isdigit() or int(hour) > 24:
                 raise ValidationError(
                     'Должны быть только целые числа от 0 до 24 и пробел.')
-            # if len(hour) == 1:
-            #     hours[count] = f'0{hour}'
         return ' '.join(hours)

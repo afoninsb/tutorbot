@@ -1,4 +1,8 @@
+"""Рассылка заданий учащимся."""
+
+
 def get_task(bot):
+    """Получаем задание для рассылки."""
     all_tasks = []
     categories = bot.category.filter(is_active=True)
     for category in categories:
@@ -8,13 +12,15 @@ def get_task(bot):
 
 
 def get_students_tgids(bot):
+    """Получаем список Telegram ID студентов для рассылки."""
     return list(
         bot.student_set.filter(
             studentbot__is_activated=True).values_list('tgid', flat=True)
     )
 
 
-def send_task(bot_tg):
+def send_task(bot_tg: str):
+    """Формируем сообщение и рассылаем."""
     from edubot.keyboards.inline import push_answer_kbrd
 
     cur_bot = get_object_or_404(Bot, token=bot_tg)

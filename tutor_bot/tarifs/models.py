@@ -3,8 +3,8 @@ from django.db import models
 
 class Tarif(models.Model):
     """Модель тарифов."""
-
     class TarifsTypes(models.IntegerChoices):
+        """Типы тарифов."""
         FREE = 0, 'бессрочно'
         ONE = 1, '1 месяц'
         THREE = 3, '3 месяца'

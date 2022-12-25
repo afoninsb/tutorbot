@@ -6,7 +6,6 @@ from users.models import Student
 
 class Category(models.Model):
     """Модель категорий заданий."""
-
     name = models.CharField(
         verbose_name='Категория (тема)',
         max_length=100
@@ -33,8 +32,8 @@ class Category(models.Model):
 
 class Task(models.Model):
     """Модель заданий."""
-
     class DifLevel(models.IntegerChoices):
+        """Уровни трудности заданий."""
         NORMAL = 1, 'Обычный - 1'
         DIFFICULT = 2, 'Трудный - 2'
         INGENIOUS = 3, 'Для гениев - 3'
@@ -89,7 +88,6 @@ class Task(models.Model):
 
 class Log(models.Model):
     """Модель выдачи заданий."""
-
     student = models.ForeignKey(
         Student,
         verbose_name='Учащийся',

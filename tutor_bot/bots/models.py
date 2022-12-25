@@ -7,12 +7,14 @@ from users.models import AdminBot
 
 
 class Bot(models.Model):
-
+    """Модель бота."""
     class DayType(models.TextChoices):
+        """Дни раздачи заданий."""
         WORKING_DAYS = 'WORKING_DAYS', 'Рабочие дни'
         WEEK_DAYS = 'WEEK', 'Вся неделя'
 
     class TimeZones(models.TextChoices):
+        """Часовые пояса России."""
         KALININGRAD = 'Europe/Kaliningrad', 'Europe/Kaliningrad +02'
         MOSCOW = 'Europe/Moscow', 'Europe/Moscow +03'
         SAMARA = 'Europe/Samara', 'Europe/Samara +04'
