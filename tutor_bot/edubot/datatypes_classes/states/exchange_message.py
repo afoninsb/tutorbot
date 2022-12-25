@@ -3,7 +3,9 @@ from edubot.main_classes import BotData
 from edubot.main_classes.localdata import UserData
 
 
-def message_to_admin(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
+def message_to_admin(
+        message: dict, bot: BotData, user: UserData, **kwargs
+) -> None:
     """Сообщение ученика учителю.
     Args:
         message (dict): объект message, полученный с вебхука.

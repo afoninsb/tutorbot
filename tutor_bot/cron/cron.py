@@ -38,13 +38,7 @@ def cron_task():
         len_tokens_tasks = len(tokens_tasks)
         proc = [1]*len_tokens_tasks
         for count, token in enumerate(tokens_tasks):
-            proc[count] = subprocess.Popen(
-                [
-                    # '/home/a/afoninry/tutor.studybot.fun/venv_django/bin/python3',
-                    # '/home/a/afoninry/tutor.studybot.fun/tutor_bot/cron/sendtask.py',
-                    path_python, path_script, token
-                ]
-            )
+            proc[count] = subprocess.Popen([path_python, path_script, token])
         for i in range(len_tokens_tasks):
             stdout_byte, stderr_byte = proc[i].communicate()
 

@@ -8,7 +8,6 @@
 """
 
 from edubot.main_classes import BotData, UserData
-
 from .datatypesclass import Observer, Road, Subject
 
 
@@ -46,7 +45,11 @@ class HighLevelCallback(Observer):
             )
             for path in pathes:
                 road.attach(path)
-            road.go(callback, bot, user, callback_query=callback_query, is_admin=kwargs['is_admin'])
+            road.go(
+                callback, bot, user,
+                callback_query=callback_query,
+                is_admin=kwargs['is_admin']
+            )
 
 
 class HighLevelText(Observer):

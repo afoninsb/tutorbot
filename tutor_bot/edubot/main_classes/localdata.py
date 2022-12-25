@@ -250,7 +250,8 @@ class TaskData(DataClass):
     @staticmethod
     def save_log(**kwargs):
         """Сохраняем лог о выполнении задания."""
-        cur_student = get_object_or_404(Student, tgid=kwargs['student'].chat_id)
+        cur_student = get_object_or_404(
+            Student, tgid=kwargs['student'].chat_id)
         Log.objects.create(
             student=cur_student,
             task=kwargs['task'],

@@ -5,15 +5,20 @@
 """
 
 from edubot.main_classes.localdata import AdminUser, StudentUser, TaskData
-
 from .datatypesclass import Observer, Subject
 
 
 class CallbackPush(Observer):
     def update(self, subject: Subject, bot, user, **kwargs) -> None:
-        if (subject._state != 'answer' or not isinstance(user, (AdminUser, StudentUser))):
+        if (
+            subject._state != 'answer'
+            or not isinstance(user, (AdminUser, StudentUser))
+        ):
             return
-        student_user = StudentUser(user.chat_id, bot.token) if kwargs['is_admin'] else user
+        if kwargs['is_admin']:
+            student_user = StudentUser(user.chat_id, bot.token)
+        else:
+            student_user = user
         task = TaskData(kwargs['callback_query'].split(':')[1])
         count = task.count_logs(student_user)
         if count > 0:

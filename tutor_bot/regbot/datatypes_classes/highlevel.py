@@ -9,12 +9,13 @@
 
 from edubot.main_classes import BotData
 from edubot.main_classes.localdata import UserData
-
 from .datatypesclass import Observer, Road, Subject
 
 
 class HighLevelCommand(Observer):
-    def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         """Направления при получении комманды."""
         from .commandlevel import CommandCancel
         if subject._state == 'command':
@@ -29,7 +30,9 @@ class HighLevelCommand(Observer):
 
 
 class HighLevelCallback(Observer):
-    def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         """Направления при получении callback_query."""
         from .callbacklevel import (CallbackApprove, CallbackReject,
                                     CallbackReply)
@@ -49,7 +52,9 @@ class HighLevelCallback(Observer):
 
 
 class HighLevelText(Observer):
-    def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         """Направления при получении обычного текста."""
         from .textlevel import (TextGoToPanel, TextHaHaHa, TextMessageToAdmins,
                                 TextSupport)
@@ -68,7 +73,9 @@ class HighLevelText(Observer):
 
 
 class HighLevelState(Observer):
-    def update(self, subject: Subject, bot: BotData, user: UserData, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         """Направления, если юзер в каком-либо состоянии."""
         from .statelevel import StateDistributor
         if subject._state == 'state':
