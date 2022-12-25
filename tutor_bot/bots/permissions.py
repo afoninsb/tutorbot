@@ -33,7 +33,8 @@ def can_bot_run(bot):
     if not bot.category.filter(is_active=True).exists():
         permission = (
             3,
-            'Нельзя запустить бота. Необходимо включить хотя бы одну категорию!',
+            ('Нельзя запустить бота. Необходимо включить '
+             'хотя бы одну категорию!'),
             'content:category'
         )
 
