@@ -1,7 +1,18 @@
 import contextlib
+from types import NoneType
+from typing import Dict, List, Tuple, Union
+from django.db.models.query import QuerySet
+
+from users.models import Student
 
 
-def compare_logs(stats, logs, id, start):
+def compare_logs(
+        stats: Dict[int, List[int]],
+        logs: QuerySet,
+        id: int,
+        start: int
+) -> Dict[int, List[int]]:
+    """Получение и обработка данных из логов."""
     for log in logs:
         if start == 0:
             stats[id][1] += 1
@@ -17,7 +28,15 @@ def compare_logs(stats, logs, id, start):
     return stats
 
 
-def get_stats(array, dates, student, cat_id):
+def get_stats(
+        array: QuerySet,
+        dates: Tuple[str],
+        student: Union[NoneType, Student],
+        cat_id: int
+) -> Dict[int, List[int]]:
+    """Построение статистики в категории за указанный период."""
+    print(array)
+    print(type(array), type(dates), type(student), type(cat_id))
     stats = {}
     for element in array:
         stats[element.id] = [0, 0, 0]
@@ -34,7 +53,3 @@ def get_stats(array, dates, student, cat_id):
             stats[element.id][0] = logs.count()
             compare_logs(stats, logs, element.id, -1)
     return stats
-
-
-def create_rating():
-    pass

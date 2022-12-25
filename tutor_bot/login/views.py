@@ -6,6 +6,7 @@ from users.models import AdminBot
 
 
 def enter(request, chatid, pin):
+    """Авторизация пользователя."""
     if request.COOKIES.get('chatid'):
         response = HttpResponse("Cookie deleted")
         response.delete_cookie("chatid")
@@ -25,6 +26,7 @@ def enter(request, chatid, pin):
 
 
 def logout(request):
+    """Выход пользователя."""
     response = HttpResponse('<center><h2>До свидания!</h2></center>')
     response.delete_cookie("chatid")
     return response

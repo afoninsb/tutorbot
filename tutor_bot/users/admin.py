@@ -6,10 +6,7 @@ from users.models import AdminBot, Student, StudentBot
 
 @admin.register(AdminBot)
 class UserAdmin(admin.ModelAdmin):
-    """
-    Представление админов в админ-панели.
-    """
-
+    """Представление админов в админ-панели."""
     list_display = (
         'tgid',
         'time',
@@ -24,10 +21,7 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Student)
 class UserStudent(admin.ModelAdmin):
-    """
-    Представление учащихся в админ-панели.
-    """
-
+    """Представление учащихся в админ-панели."""
     list_display = (
         'tgid',
         'time',
@@ -40,10 +34,7 @@ class UserStudent(admin.ModelAdmin):
 
 @admin.register(StudentBot)
 class UserStudentBot(admin.ModelAdmin):
-    """
-    Представление админов в админ-панели.
-    """
-
+    """Представление админов в админ-панели."""
     list_display = (
         'bot',
         'student',

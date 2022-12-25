@@ -1,11 +1,14 @@
 from datetime import datetime, timedelta
+from typing import List
+from django.db.models.query import QuerySet
 
 from bots.models import Bot
 from content.models import Category, Log, Task
 from stats.models import Rating
 
 
-def rating(tokens: list, now):
+def rating(tokens: List[str], now: datetime):
+    """Обновляем рейтинг."""
     today = datetime(now.year, now.month, now.day)
     yesterday = (today - timedelta(days=1))
     for token in tokens:
@@ -44,7 +47,8 @@ def rating(tokens: list, now):
         Rating.objects.bulk_create(objs)
 
 
-def disable_categories_bots(bots):
+def disable_categories_bots(bots: QuerySet):
+    """Останавливаем категории бота."""
     objs_bot = []
     for bot in bots:
         if categories := Category.objects.\

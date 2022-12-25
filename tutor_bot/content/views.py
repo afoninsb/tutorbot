@@ -10,6 +10,7 @@ from core.utils import add_dir, del_dir, del_file, replace_from_temp
 
 
 def category(request, botid):
+    """Категории текущего бота."""
     cur_bot = get_object_or_404(Bot, id=botid)
     categories = cur_bot.category.all()
     context = {
@@ -20,6 +21,7 @@ def category(request, botid):
 
 
 def categoryadd(request, botid):
+    """Добавляем категорию."""
     form = CategoryForm(request.POST or None)
     if form.is_valid():
         return categoryadd_done(request, botid, form)
@@ -33,6 +35,7 @@ def categoryadd(request, botid):
 
 
 def categoryadd_done(request, botid, form):
+    """Сохраняем форму добавления категории."""
     new_category = form.save(commit=False)
     new_category.bot = get_object_or_404(Bot, id=botid)
     form.save()
@@ -42,6 +45,7 @@ def categoryadd_done(request, botid, form):
 
 
 def categoryedit(request, botid, categoryid):
+    """Редактируем категорию."""
     cur_category = get_object_or_404(Category, id=categoryid)
     form = CategoryForm(request.POST or None, instance=cur_category)
     if form.is_valid():
@@ -58,6 +62,7 @@ def categoryedit(request, botid, categoryid):
 
 
 def categorydel(request, botid, categoryid):
+    """Удаляем категорию."""
     Category.objects.filter(id=categoryid).delete()
     del_dir(botid=botid, num_dir=categoryid, type_dir='cat')
     is_need_stop_bot(botid)
@@ -66,6 +71,7 @@ def categorydel(request, botid, categoryid):
 
 
 def categorytasks(request, botid, categoryid):
+    """Задания текущей категории."""
     cur_category = get_object_or_404(Category, id=categoryid)
     tasks = cur_category.task.all()
     context = {
@@ -78,6 +84,7 @@ def categorytasks(request, botid, categoryid):
 
 
 def taskadd(request, botid, categoryid):
+    """Добавляем задание."""
     form = TaskForm(request.POST, request.FILES or None)
     if not form.is_valid():
         if request.method == "POST":
@@ -99,6 +106,7 @@ def taskadd(request, botid, categoryid):
 
 
 def task(request, botid, categoryid, taskid):
+    """Информация о задании."""
     cur_bot = get_object_or_404(Bot, id=botid)
     cur_task = get_object_or_404(Task, id=taskid)
     context = {
@@ -110,6 +118,7 @@ def task(request, botid, categoryid, taskid):
 
 
 def taskedit(request, botid, categoryid, taskid):
+    """Редактируем задание."""
     cur_task = get_object_or_404(Task, id=taskid)
     img_url = cur_task.img
     form = TaskForm(request.POST, request.FILES or None, instance=cur_task)
@@ -136,6 +145,7 @@ def taskedit(request, botid, categoryid, taskid):
 
 
 def taskdel(request, botid, categoryid, taskid):
+    """Удаляем задание."""
     cur_task = Task.objects.get(id=taskid)
     if cur_task.img:
         del_file(url=cur_task.img)
@@ -146,6 +156,7 @@ def taskdel(request, botid, categoryid, taskid):
 
 
 def catrunstop(request, botid, categoryid):
+    """Запускаем или останавливаем категорию."""
     cur_category = get_object_or_404(Category, id=categoryid)
     permission = can_category_run(cur_category)
     if permission[0] > 1:

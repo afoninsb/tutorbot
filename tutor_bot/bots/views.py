@@ -15,6 +15,7 @@ from users.models import AdminBot, Student, StudentBot
 
 
 def index(request):
+    """Главная страница сайта - список ботов, если есть у админа."""
     try:
         cur_admin = get_object_or_404(
             AdminBot, tgid=request.COOKIES.get('chatid'))
@@ -25,10 +26,12 @@ def index(request):
 
 
 def bot(request, botid):
+    """Главная страница бота."""
     return render(request, 'bots/bots.html')
 
 
 def botdel(request, botid):
+    """Удаляем бота."""
     cur_bot = get_object_or_404(Bot, id=botid)
     bot = BotData(cur_bot.token)
     bot.delete_webhook()
@@ -39,6 +42,7 @@ def botdel(request, botid):
 
 
 def botpass(request, botid):
+    """Устанавливаем пароль бота."""
     if request.method != "POST":
         return render(request, 'bots/botpass.html', {'form': BotPass, })
     password = hashlib.pbkdf2_hmac(
@@ -56,6 +60,7 @@ def botpass(request, botid):
 
 
 def botedit(request, botid):
+    """Редактируем бота."""
     cur_bot = get_object_or_404(Bot, id=botid)
     form = BotFormEdit(request.POST or None, instance=cur_bot)
     if form.is_valid():
@@ -68,6 +73,7 @@ def botedit(request, botid):
 
 
 def botadd(request):
+    """Добавляем бота."""
     form = BotForm(request.POST or None)
     if not form.is_valid():
         context = {
@@ -108,6 +114,7 @@ def botadd(request):
 
 
 def botrunstop(request, botid):
+    """Запускаем или останавливаем бота."""
     cur_bot = get_object_or_404(Bot, id=botid)
     permission = can_bot_run(cur_bot)
     if permission[0] > 1:
@@ -125,6 +132,7 @@ def botrunstop(request, botid):
 
 
 def botschedule(request, botid):
+    """Редактируем расписание бота."""
     cur_bot = get_object_or_404(Bot, id=botid)
     form = BotSchedule(request.POST or None, instance=cur_bot)
     if form.is_valid():

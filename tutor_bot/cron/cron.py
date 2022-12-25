@@ -1,4 +1,12 @@
+"""Выполнение заданий, повторяемых регулярно."""
+
+from types import ModuleType
+from typing import List
+from django.conf import LazySettings
+
+
 def cron_task():
+    """Главная функция cron."""
     import os
     import pytz
     import subprocess
@@ -26,26 +34,39 @@ def cron_task():
         ):
             tokens_tasks.append(bot.token)
 
+        # Надо ли остановить бота?
         stop_bot(bot.id)
 
+    # Если есть боты для рассылки заданий, рассылаем.
     if tokens_tasks:
-        path_python = os.path.join(
-            settings.BASE_DIR.parent, 'venv_django', 'bin', 'python3'
-        )
-        path_script = os.path.join(
-            settings.BASE_DIR, 'cron', 'sendtask.py'
-        )
-        len_tokens_tasks = len(tokens_tasks)
-        proc = [1]*len_tokens_tasks
-        for count, token in enumerate(tokens_tasks):
-            proc[count] = subprocess.Popen([path_python, path_script, token])
-        for i in range(len_tokens_tasks):
-            stdout_byte, stderr_byte = proc[i].communicate()
+        send_task(os, settings, tokens_tasks, subprocess)
 
+    # Может надо остановить отдельные категории в каких-то ботах?
     disable_categories_bots(bots)
 
 
+def send_task(
+        os: ModuleType,
+        settings: LazySettings,
+        tokens_tasks: List[str],
+        subprocess: ModuleType
+):
+    path_python = os.path.join(
+        settings.BASE_DIR.parent, 'venv_django', 'bin', 'python3'
+    )
+    path_script = os.path.join(
+        settings.BASE_DIR, 'cron', 'sendtask.py'
+    )
+    len_tokens_tasks = len(tokens_tasks)
+    proc = [1]*len_tokens_tasks
+    for count, token in enumerate(tokens_tasks):
+        proc[count] = subprocess.Popen([path_python, path_script, token])
+    for i in range(len_tokens_tasks):
+        stdout_byte, stderr_byte = proc[i].communicate()
+
+
 def cron_rating():
+    """Обновление рейтинга."""
     import pytz
     from datetime import datetime
 
@@ -60,6 +81,8 @@ def cron_rating():
         if hour == '6':
             tokens_rating.append(bot.token)
     if tokens_rating:
+
+        # Если есть боты для обновления, обновляем
         rating(tokens_rating, now)
 
 

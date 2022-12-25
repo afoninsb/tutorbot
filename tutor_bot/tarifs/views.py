@@ -5,6 +5,7 @@ from users.models import AdminBot
 
 
 def index(request):
+    """Тарифы ботов пользователя."""
     try:
         cur_admin = get_object_or_404(
             AdminBot, tgid=request.COOKIES.get('chatid'))

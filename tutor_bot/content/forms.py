@@ -4,6 +4,7 @@ from content.models import Category, Task
 
 
 class CategoryForm(forms.ModelForm):
+    """Форма создания иредактирования категории."""
     class Meta:
         model = Category
         fields = ('name', )
@@ -13,6 +14,7 @@ class CategoryForm(forms.ModelForm):
 
 
 class TaskForm(forms.ModelForm):
+    """Форма создания задания."""
     class Meta:
         model = Task
         fields = ('title', 'text', 'answer', 'difficulty', 'img')

@@ -1,6 +1,9 @@
+from content.models import Category
+from typing import Tuple
 
 
-def can_category_run(category):
+def can_category_run(category: Category) -> Tuple[int, str]:
+    """Можно ли запустить категорию?"""
     return (
         (
             2,

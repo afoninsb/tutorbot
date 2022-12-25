@@ -3,21 +3,24 @@ import shutil
 import uuid
 
 from django.conf import settings
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
-def handle_uploaded_file(f):
+def handle_uploaded_file(file: InMemoryUploadedFile) -> str:
+    """Сохраняем загружаемый файл во временную папку."""
     if not os.path.exists(settings.TEMP_ROOT):
         os.mkdir(settings.TEMP_ROOT, mode=0o777)
     new_name = uuid.uuid1()
-    _, file_extension = os.path.splitext(f._name)
+    _, file_extension = os.path.splitext(file._name)
     file = f'{settings.TEMP_ROOT}/{new_name}{file_extension}'
     with open(file, 'wb+') as destination:
-        for chunk in f.chunks():
+        for chunk in file.chunks():
             destination.write(chunk)
     return f'{new_name}{file_extension}'
 
 
-def replace_from_temp(**kwargs):
+def replace_from_temp(**kwargs) -> str:
+    """Перемещаем файл из временной папки в определяемую kwargs."""
     botid = kwargs.get('botid', False)
     img_name = kwargs.get('img_name', False)
     if not img_name:
@@ -36,6 +39,7 @@ def replace_from_temp(**kwargs):
 
 
 def del_file(**kwargs):
+    """Удаляем файл."""
     if url := kwargs.get('url', False):
         path = str(url).split('/')
     path = os.path.join(settings.MEDIA_ROOT, *path)
@@ -44,6 +48,7 @@ def del_file(**kwargs):
 
 
 def del_dir(**kwargs):
+    """Удаляем каталог."""
     botid = kwargs.get('botid', False)
     path = os.path.join(settings.MEDIA_ROOT, str(botid))
     num_dir = kwargs.get('num_dir', False)
@@ -55,6 +60,7 @@ def del_dir(**kwargs):
 
 
 def add_dir(**kwargs):
+    """Добавляем каталог."""
     botid = kwargs.get('botid', False)
     path = os.path.join(settings.MEDIA_ROOT, str(botid))
     num_dir = kwargs.get('num_dir', False)

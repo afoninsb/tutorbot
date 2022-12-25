@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+# Периоды дат
 PERIODS = (
     ('allperiod', 'Без ограничений'),
     ('previousmonth', 'Прошлый месяц'),
@@ -10,10 +11,12 @@ PERIODS = (
     ('currentweek', 'Текущая неделя'),
     ('other', 'Произвольный период'),
 )
+# года - предыдущий и текущий
 YEARS = (timezone.now().year, timezone.now().year - 1)
 
 
 class SelectDateForm_disabled(forms.Form):
+    """Форма даты с отключенным произвольным периодом."""
     period = forms.ChoiceField(
         label='Выберите период',
         choices=PERIODS,
@@ -63,6 +66,7 @@ class SelectDateForm_disabled(forms.Form):
 
 
 class SelectDateForm(forms.Form):
+    """Форма даты полностью активная."""
     period = forms.ChoiceField(
         label='Выберите период',
         choices=PERIODS,
@@ -110,6 +114,7 @@ class SelectDateForm(forms.Form):
 
 
 class DateForm(forms.Form):
+    """Форма даты для рейтинга."""
     date = forms.DateField(
         label='Дата',
         widget=forms.SelectDateWidget(

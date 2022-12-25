@@ -10,10 +10,7 @@ class BotkInline(admin.TabularInline):
 
 @admin.register(Bot)
 class BotAdmin(admin.ModelAdmin):
-    """
-    Представление ботов в админ-панели.
-    """
-
+    """Представление ботов в админ-панели."""
     list_display = (
         'id',
         'login',

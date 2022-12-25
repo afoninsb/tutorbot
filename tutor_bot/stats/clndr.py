@@ -1,50 +1,63 @@
+"""Функции работы с датами."""
+
 import calendar
 from datetime import date, datetime, timedelta
+from typing import List, Tuple
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from django.core.handlers.wsgi import WSGIRequest
 
 from bots.models import Bot
 from stats.forms import SelectDateForm, SelectDateForm_disabled
 
 
-def now():
+def now() -> datetime:
+    """Сейчас."""
     return datetime.now()
 
 
-def weekdaynow():
+def weekdaynow() -> int:
+    """Номер дня недели."""
     moment = now()
     return calendar.weekday(moment.year, moment.month, moment.day)
 
 
-def startdate(date):
+def startdate(date: datetime) -> str:
+    """Дата старта периода."""
     date = str(date).split(" ")[0]
     return f'{date} 00:00:00'
 
 
-def enddate(date):
+def enddate(date: datetime) -> str:
+    """Дата окончания периода."""
     date = str(date).split(" ")[0]
     return f'{date} 23:59:59'
 
 
-def currentweek(*args):
+def currentweek(*args) -> Tuple[str]:
+    """Даты начала и окончания текущей недели."""
     moment = now()
     date_start = moment - timedelta(days=weekdaynow())
     return (startdate(date_start), enddate(moment))
 
 
-def previousweek(*args):
+def previousweek(*args) -> Tuple[str]:
+    """Даты начала и окончания предыдущей недели."""
     date_end = now() - timedelta(days=(weekdaynow()+1))
     date_start = date_end - timedelta(days=6)
     return (startdate(date_start), enddate(date_end))
 
 
-def currentmonth(*args):
+def currentmonth(*args) -> Tuple[str]:
+    """Даты начала и окончания текущего месяца."""
     moment = now()
     date_start = str(datetime(moment.year, moment.month, 1))
     return (date_start, enddate(moment))
 
 
-def previousmonth(*args):
+def previousmonth(*args) -> Tuple[str]:
+    """Даты начала и окончания предыдущего месяца."""
     moment = now()
     pre = moment - timedelta(days=(moment.day+1))
     date_start = str(datetime(pre.year, pre.month, 1))
@@ -53,7 +66,8 @@ def previousmonth(*args):
     return (date_start, date_end)
 
 
-def other(request):
+def other(request: WSGIRequest) -> Tuple[str]:
+    """Даты начала и окончания произвольного периода."""
     date_start = date(
         int(request.POST['date_start_year']),
         int(request.POST['date_start_month']),
@@ -67,11 +81,13 @@ def other(request):
     return (f"{date_start} 00:00:00", f"{date_end} 23:59:59")
 
 
-def allperiod(request):
+def allperiod(request: WSGIRequest) -> Tuple[str]:
+    """Безграничный период."""
     return ('', '')
 
 
-def get_dates(request):
+def get_dates(request: WSGIRequest) -> str:
+    """Получаем даты начала и окончания периода."""
     period_func = {
         'allperiod': allperiod,
         'previousmonth': previousmonth,
@@ -84,7 +100,8 @@ def get_dates(request):
     return '#'.join(start_end)
 
 
-def new_date_form(start_end_date):
+def new_date_form(start_end_date: Tuple[str]) -> SelectDateForm:
+    """Помещаем даты начала и окончания периода в форму даты."""
     if not start_end_date:
         return SelectDateForm_disabled()
     start_date = start_end_date[0].split(' ')[0].split('-')
@@ -99,7 +116,14 @@ def new_date_form(start_end_date):
     return SelectDateForm(initial=data)
 
 
-def form_processing(request, form, template, url, **kwargs):
+def form_processing(
+        request: WSGIRequest,
+        form: SelectDateForm_disabled,
+        template: str,
+        url: str,
+        **kwargs
+) -> HttpResponseRedirect:
+    """Обработка формы даты."""
     if not form.is_valid():
         messages.error(request, ' ')
         context = {'form': form}
@@ -118,12 +142,14 @@ def form_processing(request, form, template, url, **kwargs):
     return response
 
 
-def get_dates_from_coockies(request):
+def get_dates_from_coockies(request: WSGIRequest) -> List[str]:
+    """Получение даты из куки."""
     if start_end_date := request.COOKIES.get('dates'):
         return start_end_date.split('#')
 
 
-def dates_tz(dates, botid):
+def dates_tz(dates: List[str], botid: int) -> Tuple[datetime]:
+    """Приведение даты к часовому поясу бота."""
     cur_bot = get_object_or_404(Bot, id=botid)
     tz = int(cur_bot.TimeZones(cur_bot.tz).label.split()[1])
     return (

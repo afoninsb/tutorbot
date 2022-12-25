@@ -3,7 +3,6 @@ from django.db import models
 
 class AdminBot(models.Model):
     """Модель администратора ботов."""
-
     tgid = models.CharField(
         verbose_name='Telegram ID',
         max_length=20,
@@ -41,9 +40,7 @@ class AdminBot(models.Model):
 
 class Student(models.Model):
     """Модель учащихся."""
-
     from bots.models import Bot
-
     tgid = models.CharField(
         verbose_name='Telegram ID',
         max_length=20,
@@ -85,7 +82,6 @@ class Student(models.Model):
 
 class StudentBot(models.Model):
     """Связь учащихся с ботами."""
-
     from bots.models import Bot
 
     bot = models.ForeignKey(

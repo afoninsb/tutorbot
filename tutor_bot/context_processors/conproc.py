@@ -1,10 +1,14 @@
 import pytz
 from datetime import datetime, timedelta
 from django.conf import settings
+from django.core.handlers.wsgi import WSGIRequest
+from django.db.models.query import QuerySet
+from typing import Dict, Any
 
 from bots.models import Bot
 from users.models import AdminBot
 
+# адреса, для которых не создается context
 IGNORE_URL = (
     '/tgbot_backend',
     '/webhook',
@@ -14,11 +18,13 @@ IGNORE_URL = (
 )
 
 
-def is_continue(path) -> bool:
+def is_continue(path: str) -> bool:
+    """Проверяем адресаcd ."""
     return all(url not in path for url in IGNORE_URL)
 
 
-def get_context_data(request):
+def get_context_data(request: WSGIRequest) -> Dict[str, Any]:
+    """Формируем контекст из переменных контекста и алертов."""
     if not is_continue(request.path):
         return {}
     chat = request.COOKIES.get('chatid')
@@ -28,7 +34,8 @@ def get_context_data(request):
     return context | alerts
 
 
-def get_context(request, admin):
+def get_context(request: WSGIRequest, admin: AdminBot) -> Dict[str, Any]:
+    """Получаем значения контекста."""
     context = {
         'first_name': admin.first_name,
         'last_name': admin.last_name,
@@ -47,7 +54,8 @@ def get_context(request, admin):
     return context
 
 
-def get_alerts(admin):
+def get_alerts(admin: AdminBot) -> Dict[str, Any]:
+    """Формируем значения алертов."""
     bots = Bot.objects.filter(admin__tgid=admin.tgid)
     if not bots:
         return {}
@@ -57,7 +65,8 @@ def get_alerts(admin):
     return newuser | endtask | endtarif
 
 
-def alerts_newuser(bots):
+def alerts_newuser(bots: QuerySet) -> Dict[str, Any]:
+    """Получаем значения алертов по пользователям."""
     alerts_newuser = 0
     alerts_count_newuser = []
     for bot in bots:
@@ -72,7 +81,8 @@ def alerts_newuser(bots):
     }
 
 
-def alerts_endtask(bots):
+def alerts_endtask(bots: QuerySet) -> Dict[str, Any]:
+    """Получаем значения алертов по заданиям."""
     alerts_count_endtask = {}
     cat_names = {}
     bots = bots.prefetch_related('task')
@@ -102,7 +112,8 @@ def alerts_endtask(bots):
     }
 
 
-def alerts_endtarif(bots):
+def alerts_endtarif(bots: QuerySet) -> Dict[str, Any]:
+    """Получаем значения алертов по тарифам."""
     alerts_tarif = []
     bots = bots.select_related('tarif')
     for bot in bots:

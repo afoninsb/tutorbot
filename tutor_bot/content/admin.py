@@ -13,9 +13,7 @@ class CategorykInline(admin.TabularInline):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    """
-    Представление ботов в админ-панели.
-    """
+    """Представление ботов в админ-панели."""
 
     list_display = (
         'name',
@@ -29,9 +27,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    """
-    Представление ботов в админ-панели.
-    """
+    """Представление ботов в админ-панели."""
 
     list_display = (
         'title',
@@ -48,9 +44,7 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(Log)
 class LogAdmin(admin.ModelAdmin):
-    """
-    Представление лога в админ-панели.
-    """
+    """Представление лога в админ-панели."""
 
     list_display = (
         'student',

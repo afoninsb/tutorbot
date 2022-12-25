@@ -2,13 +2,18 @@ import pytz
 from datetime import datetime
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from typing import Tuple
 
 from bots.models import Bot
 from tarifs.models import Tarif
 from users.models import StudentBot
 
 
-def can_bot_run(bot):
+def can_bot_run(bot: Bot) -> Tuple[int, str]:
+    """Разрешено ли запустить бота?
+        1 - Да
+        2-5 - Нет.
+    """
     permission = (1,)
 
     num_students = StudentBot.objects.filter(bot=bot).count()
@@ -49,7 +54,8 @@ def can_bot_run(bot):
     return permission
 
 
-def stop_bot(botid):
+def stop_bot(botid: int):
+    """Останавливаем бота при наступлении условий."""
     cur_bot = get_object_or_404(Bot, id=botid)
     if not cur_bot.is_active:
         return
