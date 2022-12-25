@@ -10,12 +10,12 @@ public
 .isort.cfg
 .mypy.ini
 tutor_bot/.env
+.htaccess
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-.htaccess
 # C extensions
 *.so
 
