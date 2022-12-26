@@ -3,19 +3,23 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 
-DEBUG = True
-
 load_dotenv()
 
+DEBUG = os.getenv("DEBUG", 'False').lower() in ('true', '1', 't')
+
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
+
 BIG_BOSS_ID = os.getenv('BIG_BOSS_ID')
-REGBOT_TOKEN = str(os.getenv('REGBOT_TOKEN'))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 if DEBUG:
-    NGROK = '1a2f-95-73-109-218.eu.ngrok.io'
+    REGBOT_TOKEN = str(os.getenv('TEMP_REGBOT_TOKEN'))
+
+    NGROK = str(os.getenv('NGROK'))
+
     ALLOWED_HOSTS = ['127.0.0.1', NGROK]
+
     BASE_URL = 'http://127.0.0.1:8000'
 
     DATABASES = {
@@ -26,7 +30,10 @@ if DEBUG:
     }
 
 else:
+    REGBOT_TOKEN = str(os.getenv('REGBOT_TOKEN'))
+
     ALLOWED_HOSTS = ['studybot.fun']
+
     BASE_URL = 'http://studybot.fun'
 
     DATABASES = {
@@ -39,6 +46,13 @@ else:
             'PORT': '3306',
         }
     }
+
+    sentry_sdk.init(
+        dsn = str(os.getenv('SENTRY_DSN')),
+        integrations = [DjangoIntegration()],
+        traces_sample_rate = 1.0,
+        send_default_pii = True
+    )
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -83,10 +97,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
-                'context_processors.conproc.get_admin',
-                'context_processors.conproc.get_bot',
-                'context_processors.conproc.alerts_newuser',
-                'context_processors.conproc.alerts_endtask',
+                'context_processors.conproc.get_context_data',
             ],
             'libraries': {
                 'custom_tags': 'core.custom_tags'
@@ -121,16 +132,21 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static") # Изначально пустой каталог, куда Django соберёт всё при выполнении manage.py collectstatic
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, "static_dev"), # Каталог, куда вам нужно складывать статику проекта, не относящуюся к конкретному приложению
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 TEMP_URL = f'{MEDIA_URL}temp/'
+
 TEMP_ROOT = os.path.join(MEDIA_ROOT, 'temp')
 
 ALERT_MIN_TASKS = 10  # количество задач, ниже которого показывается оповещение
