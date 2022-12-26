@@ -1,7 +1,8 @@
 import os
+import sentry_sdk
 from dotenv import load_dotenv
 from pathlib import Path
-
+from sentry_sdk.integrations.django import DjangoIntegration
 
 load_dotenv()
 
@@ -46,7 +47,7 @@ else:
             'PORT': '3306',
         }
     }
-
+    
     sentry_sdk.init(
         dsn = str(os.getenv('SENTRY_DSN')),
         integrations = [DjangoIntegration()],
