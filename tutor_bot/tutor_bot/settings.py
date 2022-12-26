@@ -34,7 +34,7 @@ else:
 
     ALLOWED_HOSTS = ['tutor.studybot.fun']
 
-    BASE_URL = 'http://tutor.studybot.fun'
+    BASE_URL = 'https://tutor.studybot.fun'
 
     DATABASES = {
         'default': {
