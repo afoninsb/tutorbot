@@ -207,6 +207,7 @@ def usercatstat(request, botid, user_id, cat_id, pin):
         )
     cat_stats = get_stats(tasks, dates, student, cat_id) if tasks else {}
     context = {
+        'botid': botid,
         'task_count': tasks.count(),
         'tasks': tasks,
         'cat_stats': cat_stats,
