@@ -32,9 +32,9 @@ if DEBUG:
 else:
     REGBOT_TOKEN = str(os.getenv('REGBOT_TOKEN'))
 
-    ALLOWED_HOSTS = ['studybot.fun']
+    ALLOWED_HOSTS = ['tutor.studybot.fun']
 
-    BASE_URL = 'http://studybot.fun'
+    BASE_URL = 'http://tutor.studybot.fun'
 
     DATABASES = {
         'default': {
