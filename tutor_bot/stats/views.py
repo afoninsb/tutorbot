@@ -168,6 +168,7 @@ def userstat(request, botid, user_id, pin):
                 stats[category.id] = [task_count, 0, 0, 0]
                 compare_logs(stats, logs, category.id, 0)
     context = {
+        'botid': botid,
         'categories': categories,
         'stats': stats,
         'form': new_date_form(start_end_date),
