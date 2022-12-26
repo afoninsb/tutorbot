@@ -42,7 +42,7 @@
   pip install -r requirements.txt
 ```
 ### 2. Настраиваем переменные
-Переименовать файл _tutor_bot/.env.template_ в _tutor_bot/.env_
+Переименовать файл _tutor_bot/.env.dist_ в _tutor_bot/.env_
 
 В файле _tutor_bot/.env_:
 ```bash
@@ -52,12 +52,19 @@ SECRET_KEY=django-injrtyuygecure-k%yu756#j@g+t636456454y4yeqfu&yfso4!ci%s_&3mg5p
 BIG_BOSS_ID=337470404
 # Токен регистрационного бота
 REGBOT_TOKEN=5963756302:AAGU7Esfy45tgwyrtj7srttEnumUctgjI
-
+# Токен регистрационного бота для разработки
+TEMP_REGBOT_TOKEN=5962239353:seghfasbf764gtfwvywagyubgutGYGFCluggtlT
 # параметры подключения к базе данных
 BD_NAME=bd_name
 BD_USER=user_login_bd
 BD_PASSWORD=bd_password
 BD_HOST=localhost
+# DEBUG - в разработке или в продакшене?
+DEBUG=False
+# NGROK - адрес для подключения локального бота через NGROK
+NGROK=bflist6yilgfegfligi.ngrok.io
+# Параметры подключения к sentry.io
+SENTRY_DSN=https://34asdjfh34tr3qgtfo8tyg2dtlqgf72t3lf82976.ingest.sentry.io/4765764653523696
 ```
 
 Переименовать файл _tutor_bot/tutor_bot/settings.py.template_ в _tutor_bot/tutor_bot/settings.py_
@@ -70,6 +77,10 @@ BASE_URL = 'https://your_cite.com'
 
 # Количество оставшихся задач, меньше которого срабатывает алерт
 ALERT_MIN_TASKS = 10
+# Количество дней до окончания тарифа, чтобы выдать алерт
+ALERT_END_TARIF = 3
+# Количество учащихся в бесплатном тарифе = Количество учащихся + Сам админ-учитель (3+1=4 - 3 учащихся)
+STUDENT_FREE_TARIF = 4
 ```
 ### 3. Выполняем миграции, собираем статику, создаём суперпользователя для доступа в админку Django
 ```bash
