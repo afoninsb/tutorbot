@@ -97,7 +97,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
-                'context_processors.conproc.get_context_data',
+                'core.conproc.get_context_data',
             ],
             'libraries': {
                 'custom_tags': 'core.custom_tags'
