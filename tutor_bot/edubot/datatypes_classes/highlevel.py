@@ -15,7 +15,7 @@ class HighLevelCommand(Observer):
     def update(
         self, subject: Subject, bot: BotData, user: UserData, **kwargs
     ) -> None:
-        """Направления при получении комманды."""
+        """Направления при получении команды."""
         from .commandlevel import CommandCancel, CommandChangeName
         if subject._state == 'command':
             command = kwargs['message']['text']

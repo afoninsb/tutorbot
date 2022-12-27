@@ -5,6 +5,7 @@ from django.conf import settings
 
 def push_answer_kbrd(task_id: int) -> json:
     """Кнопка Ответить на вопрос.
+
     Args:
         task_id (int): id задания.
     Returns:
@@ -20,6 +21,7 @@ def push_answer_kbrd(task_id: int) -> json:
 
 def reply_kbrd(chat_id: int) -> json:
     """Кнопка Ответить при переписке.
+
     Args:
         chat_id (int): Telegram chat_id юзера.
     Returns:
@@ -35,6 +37,7 @@ def reply_kbrd(chat_id: int) -> json:
 
 def admin_kbrd(chat_id: int, pin: str) -> json:
     """Кнопка Войти в административную панель.
+
     Args:
         chat_id (int): Telegram chat_id юзера.
         pin (str): pin-код для входа в админпанель.
@@ -51,6 +54,7 @@ def admin_kbrd(chat_id: int, pin: str) -> json:
 
 def userstat_kbr(bot_id, user_id: int, pin: str) -> json:
     """Кнопка Моя статистика.
+
     Args:
         user_id (int): id юзера.
         pin (str): pin-код для входа в статистику.

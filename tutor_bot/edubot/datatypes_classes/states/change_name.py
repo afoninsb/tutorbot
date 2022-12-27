@@ -6,6 +6,7 @@ def change_first_name(
         message: dict, bot: BotData, user: UserData, **kwargs
 ) -> None:
     """Редактирование имени юзера.
+
     Args:
         message (dict): объект message, полученный с вебхука.
     """
@@ -27,6 +28,7 @@ def change_last_name(
         message: dict, bot: BotData, user: UserData, **kwargs
 ) -> None:
     """Редактирование фамилии юзера.
+
     Args:
         message (dict): объект message, полученный с вебхука.
     """

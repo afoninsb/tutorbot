@@ -28,6 +28,7 @@ def reg_password(
         message: Dict[str, Any], bot: BotData, user: UserData, **kwargs
 ) -> None:
     """Получили пароль и обрабатываем его.
+
     Args:
         message (dict): объект message, полученный с вебхука.
     """
@@ -53,6 +54,7 @@ def reg_first_name(
         message: Dict[str, Any], bot: BotData, user: UserData, **kwargs
 ) -> None:
     """Получили Имя и обрабатываем его.
+
     Args:
         message (dict): объект message, полученный с вебхука.
     """
@@ -76,6 +78,7 @@ def reg_last_name(
         message: Dict[str, Any], bot: BotData, user: UserData, **kwargs
 ) -> None:
     """Получили Фамилию и обрабатываем её. Завершаем регистрацию.
+
     Args:
         message (dict): объект message, полученный с вебхука.
     """

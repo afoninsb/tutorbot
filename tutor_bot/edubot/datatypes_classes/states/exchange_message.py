@@ -7,6 +7,7 @@ def message_to_admin(
         message: dict, bot: BotData, user: UserData, **kwargs
 ) -> None:
     """Сообщение ученика учителю.
+
     Args:
         message (dict): объект message, полученный с вебхука.
     """
@@ -36,6 +37,7 @@ def message_to_admin(
 
 def reply(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
     """Ответ на сообщение при переписке.
+
     Args:
         message (dict): объект message, полученный с вебхука.
     """

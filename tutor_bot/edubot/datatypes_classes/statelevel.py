@@ -13,6 +13,7 @@ class StateDistributor(Observer):
     def update(
             self, subject: Subject, bot: BotData, user: UserData, **kwargs
     ) -> None:
+        """Направления при наличии состояния."""
         pathes = {
             'start': registration.reg_start,
             'password': registration.reg_password,

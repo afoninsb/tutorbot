@@ -28,6 +28,7 @@ class BotData(DataClass):
 
     def user_id(self, data: dict) -> int:
         """Получение chat id пользователя в Telegram.
+
         Args:
             data (dict): обновление, поступившее на вебхук.
         Returns:
@@ -42,11 +43,17 @@ class BotData(DataClass):
 
     @property
     def bot_id(self):
+        """Получение id бота в базе данных.
+
+        Returns:
+            int: id бота в базе данных.
+        """
         return self.token.split(':')[0]
 
     @staticmethod
     def get_message(data: dict) -> dict:
         """Получение объекта message.
+
         Args:
             data (dict): обновление, поступившее на вебхук.
         Returns:
@@ -60,6 +67,7 @@ class BotData(DataClass):
 
     def send_answer(self, answer: dict) -> None:
         """Отправка сообщения в бот.
+
         Args:
             data (dict): параметры команды sendMessage.
         """
@@ -71,6 +79,7 @@ class BotData(DataClass):
 
     def send_photo(self, data: dict) -> None:
         """Отправка изображения в бот.
+
         Args:
             data (dict): параметры команды sendPhoto.
         """
@@ -90,6 +99,7 @@ class BotData(DataClass):
 
     def set_webhook(self, data: dict) -> None:
         """Установка веб-хука бота.
+
         Args:
             data (dict): параметры метода setWebhook.
         """
@@ -112,6 +122,7 @@ class BotData(DataClass):
     @staticmethod
     def get_content_type(message: dict) -> str:
         """Получение типа контента, поступвшего на вебхук.
+
         Args:
             message (dict): message из поступившего вебхука.
         Returns:
@@ -124,6 +135,7 @@ class BotData(DataClass):
     @staticmethod
     def get_data_type(data: dict) -> str:
         """Получение типа обновления, поступвшего на вебхук.
+
         Args:
             data (dict): обновление, поступившее на вебхук.
         Returns:

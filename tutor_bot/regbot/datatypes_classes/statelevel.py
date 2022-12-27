@@ -8,6 +8,7 @@ from .states import exchange_message, registration
 
 
 class StateDistributor(Observer):
+    """Направления, если пользователь в каком-то состоянии."""
     def update(self, subject: Subject, bot, user, **kwargs) -> None:
         pathes_temp_admin = {
             'start': registration.reg_start,

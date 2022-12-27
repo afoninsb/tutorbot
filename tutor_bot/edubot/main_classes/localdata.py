@@ -15,7 +15,7 @@ from .dataclass import DataClass
 
 
 class UserData(DataClass):
-
+    """Общий класс пользователя."""
     def __init__(
             self,
             chat_id: int,
@@ -28,6 +28,7 @@ class UserData(DataClass):
     @property
     def is_in_base(self) -> bool:
         """Есть ли юзер в базе данных?
+
         Returns:
             bool: Истина, если есть,
                   Ложь, если нет.
@@ -40,6 +41,7 @@ class UserData(DataClass):
 
     def to_base(self, **kwargs) -> bool:
         """Открываем запись юзера в базе.
+
         Returns:
             bool: Истина, если админ новый,
                   Ложь, если этот chat_id уже админ.
@@ -53,13 +55,23 @@ class UserData(DataClass):
 
     @property
     def get_info(self):
+        """Информация об юзере в базе.
+
+        Returns:
+            obj: .
+        """
         try:
             return get_object_or_404(self.model, tgid=self.chat_id)
         except Exception:
             return False
 
     @property
-    def full_name(self):
+    def full_name(self) -> str:
+        """Полное имя юзера.
+
+        Returns:
+            str: полное имя пользователя.
+        """
         if cur_user := self.get_info:
             return f'{cur_user.last_name} {cur_user.first_name}'
 
@@ -69,6 +81,7 @@ class UserData(DataClass):
 
 
 class AdminUser(UserData):
+    """Класс администратора бота."""
     def __init__(
             self,
             chat_id: int,
@@ -79,6 +92,7 @@ class AdminUser(UserData):
     @property
     def admin_bots(self) -> set:
         """Получение списка токенов ботов админа.
+
         Returns:
             set: Список ботов (tokens).
         """
@@ -88,6 +102,7 @@ class AdminUser(UserData):
     @property
     def all_admins_bots(self) -> tuple:
         """Получение списка всех админов всех ботов.
+
         Returns:
             list: Список админов (chat_id).
         """
@@ -96,6 +111,7 @@ class AdminUser(UserData):
 
 
 class TempUser(UserData):
+    """Класс временного пользователя."""
     def __init__(
             self,
             chat_id: int,
@@ -105,6 +121,7 @@ class TempUser(UserData):
 
     def is_right_bot_password(self, bot, password) -> bool:
         """Сравнение введённого пародя с паролем бота.
+
         Returns:
             bool: равны?
         """
@@ -127,6 +144,7 @@ class TempUser(UserData):
 
 
 class StudentUser(UserData):
+    """Класс пользователя студента."""
     def __init__(
             self,
             chat_id: int,
@@ -138,7 +156,12 @@ class StudentUser(UserData):
         self.edit(pin='')
 
     @property
-    def user_id(self):
+    def user_id(self) -> int:
+        """ID юзера в базе.
+
+        Returns:
+            int: ID пользователя в базе данных.
+        """
         try:
             cur_user = get_object_or_404(
                 Student,
@@ -152,6 +175,7 @@ class StudentUser(UserData):
     @property
     def is_in_bot(self) -> bool:
         """Студент в этом боте?.
+
         Returns:
             bool: в боте?
         """
@@ -168,6 +192,7 @@ class StudentUser(UserData):
     @property
     def teacher(self) -> QuerySet:
         """tgid учителя.
+
         Returns:
             queryset: учитель
         """
@@ -179,24 +204,30 @@ class StudentUser(UserData):
 
     @property
     def to_bot(self):
+        """Заносим студента в базу данных."""
         try:
             cur_bot = get_object_or_404(Bot, token=self.token)
         except Exception:
-            return 0
+            return
         try:
             cur_student = get_object_or_404(Student, tgid=self.chat_id)
         except Exception:
-            return 0
+            return
         try:
             StudentBot.objects.create(
                 bot=cur_bot,
                 student=cur_student,
             )
         except Exception:
-            return 0
+            return
 
     @property
     def get_rating(self):
+        """Получаем данные о положении пользователя в рейтинге.
+
+        Returns:
+            list: .
+        """
         try:
             cur_bot = get_object_or_404(Bot, token=self.token)
         except Exception:
@@ -229,7 +260,7 @@ class StudentUser(UserData):
 
 
 class TaskData(DataClass):
-
+    """Класс по работе с заданием."""
     def __init__(
             self,
             task_id: int,
@@ -240,6 +271,7 @@ class TaskData(DataClass):
     @property
     def get_all_info(self):
         """Получаем всю инфу о задании.
+
         Returns:
             queryset: инфо о задании
         """
@@ -264,6 +296,7 @@ class TaskData(DataClass):
 
     def count_logs(self, user: StudentUser) -> int:
         """Получаем количество ответов на вопрос в логе.
+
         Args:
             student: StudentUser - объект модели Студента.
         Returns:
@@ -276,6 +309,7 @@ class TaskData(DataClass):
     @property
     def get_param(self) -> dict:
         """Получаем параметры ответа в боте.
+
         Returns:
             dict: словарь двух парамтеров.
         """
