@@ -9,6 +9,7 @@ from .datatypesclass import Observer, Subject
 
 
 class CallbackPush(Observer):
+    """Нажата кнопка 'Ответить' на задание."""
     def update(self, subject: Subject, bot, user, **kwargs) -> None:
         if (
             subject._state != 'answer'
@@ -34,6 +35,7 @@ class CallbackPush(Observer):
 
 
 class CallbackReply(Observer):
+    """Нажата кнопка 'Ответить' на сообщение."""
     def update(self, subject: Subject, bot, user, **kwargs) -> None:
         if (subject._state == 'reply'
                 and isinstance(user, (AdminUser, StudentUser))):

@@ -4,6 +4,7 @@ from edubot.main_classes.localdata import StudentUser, TaskData, UserData
 
 def answer(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
     """Сдача работ.
+
     Args:
         message (dict): объект message, полученный с вебхука.
     """

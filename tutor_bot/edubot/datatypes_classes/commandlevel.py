@@ -9,6 +9,7 @@ from .datatypesclass import Observer, Subject
 
 
 class CommandCancel(Observer):
+    """Команда 'Отменить текущую операцию'."""
     def update(self, subject: Subject, bot, user) -> None:
         if (subject._state == 'cancel'
                 and isinstance(user, (AdminUser, StudentUser))):
@@ -21,6 +22,7 @@ class CommandCancel(Observer):
 
 
 class CommandChangeName(Observer):
+    """Команда 'Изменить имя и фамилию'."""
     def update(self, subject: Subject, bot, user) -> None:
         if (subject._state == 'change_name'
                 and isinstance(user, (AdminUser, StudentUser))):

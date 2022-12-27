@@ -9,6 +9,7 @@ from .states import change_name, exchange_message, push, registration
 
 class StateDistributor(Observer):
     def update(self, subject: Subject, bot, user, **kwargs) -> None:
+        """Направления при наличии состояния."""
         pathes = {
             'start': registration.reg_start,
             'password': registration.reg_password,

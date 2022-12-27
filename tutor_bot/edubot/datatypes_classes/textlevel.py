@@ -12,6 +12,7 @@ from .datatypesclass import Observer, Subject
 
 
 class TextMessageToTeacher(Observer):
+    """Нажата кнопака 'Сообщение учителю'."""
     def update(
             self, subject: Subject, bot: BotData, user: UserData, **kwargs
     ) -> None:
@@ -30,6 +31,7 @@ class TextMessageToTeacher(Observer):
 
 
 class TextGoToPanel(Observer):
+    """Нажата кнопака 'Администрировать'."""
     def update(
             self, subject: Subject, bot: BotData, user: UserData, **kwargs
     ) -> None:
@@ -46,6 +48,7 @@ class TextGoToPanel(Observer):
 
 
 class TextMyStat(Observer):
+    """Нажата кнопака 'Моя статистика'."""
     def update(
             self, subject: Subject, bot: BotData, user: UserData, **kwargs
     ) -> None:
@@ -62,6 +65,7 @@ class TextMyStat(Observer):
 
 
 class TextRating(Observer):
+    """Нажата кнопака 'Рейтинг'."""
     def update(
             self, subject: Subject, bot: BotData, user: UserData, **kwargs
     ) -> None:
@@ -87,6 +91,7 @@ class TextRating(Observer):
 
 
 class TextHaHaHa(Observer):
+    """Пришёл произвольный текст."""
     def update(
             self, subject: Subject, bot: BotData, user: UserData, **kwargs
     ) -> None:

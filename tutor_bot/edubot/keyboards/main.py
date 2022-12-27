@@ -3,6 +3,7 @@ import json
 
 def main_kbrd(chat_id: int, is_admin: bool) -> json:
     """Главная клавиатура бота.
+
     Args:
         chat_id (int): Telegram chat_id юзера.
     Returns:
@@ -31,5 +32,5 @@ def main_kbrd(chat_id: int, is_admin: bool) -> json:
 
 
 def hide_kbrd() -> json:
-    """Скрываем клавиатуру"""
+    """Скрываем клавиатуру."""
     return json.dumps({'hide_keyboard': True})
