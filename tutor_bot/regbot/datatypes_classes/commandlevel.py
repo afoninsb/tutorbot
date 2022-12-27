@@ -9,6 +9,7 @@ from .datatypesclass import Observer, Subject
 
 
 class CommandCancel(Observer):
+    """Отменяем текущую операцию."""
     def update(self, subject: Subject, bot, user) -> None:
         if subject._state == 'cancel' and isinstance(user, AdminUser):
             user.edit(state='')

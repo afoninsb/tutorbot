@@ -5,6 +5,7 @@ from django.conf import settings
 
 def main_kbrd(chat_id: int) -> json:
     """Главная клавиатура бота.
+
     Args:
         chat_id (int): Telegram chat_id юзера.
     Returns:

@@ -12,6 +12,7 @@ from .datatypesclass import Observer, Subject
 
 
 class CallbackApprove(Observer):
+    """Одобряем заявку в админы."""
     def update(self, subject: Subject, bot, user, **kwargs) -> None:
         if subject._state == 'approve':
             data = kwargs['callback_query'].split(':')
@@ -42,6 +43,7 @@ class CallbackApprove(Observer):
 
 
 class CallbackReject(Observer):
+    """Отклоняем заявку в админы."""
     def update(self, subject: Subject, bot, user, **kwargs) -> None:
         if subject._state == 'reject':
             data = kwargs['callback_query'].split(':')
@@ -61,6 +63,7 @@ class CallbackReject(Observer):
 
 
 class CallbackReply(Observer):
+    """Отвечаем на сообщение."""
     def update(self, subject: Subject, bot, user, **kwargs) -> None:
         if subject._state == 'reply' and kwargs['is_admin']:
             data = kwargs['callback_query'].split(':')

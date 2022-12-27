@@ -5,6 +5,7 @@ from django.conf import settings
 
 def approve_admin(chat_id: int) -> json:
     """Клавиатура Одобрить/Отклонить для заявки в даины.
+
     Args:
         chat_id (int): Telegram chat_id юзера.
     Returns:
@@ -29,6 +30,7 @@ def approve_admin(chat_id: int) -> json:
 
 def reply_kbrd(chat_id: int) -> json:
     """Кнопка Ответить при переписке.
+
     Args:
         chat_id (int): Telegram chat_id юзера.
     Returns:
@@ -47,6 +49,7 @@ def reply_kbrd(chat_id: int) -> json:
 
 def admin_kbrd(chat_id: int, pin: str) -> json:
     """Кнопка Войти в административную панель.
+
     Args:
         chat_id (int): Telegram chat_id юзера.
         pin (str): pin-код для входа в админпанель.

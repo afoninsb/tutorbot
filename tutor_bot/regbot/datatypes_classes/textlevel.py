@@ -12,6 +12,7 @@ from .datatypesclass import Observer, Subject
 
 
 class TextMessageToAdmins(Observer):
+    """Нажата кнопка 'Сообщение админам'."""
     def update(self, subject: Subject, bot: BotData, user, **kwargs) -> None:
         if subject._state == 'Сообщение админам' and kwargs['is_admin']:
             user.edit(state='message_to_admins')
@@ -23,6 +24,7 @@ class TextMessageToAdmins(Observer):
 
 
 class TextSupport(Observer):
+    """Нажата кнопка 'Техподдержка'."""
     def update(self, subject: Subject, bot: BotData, user, **kwargs) -> None:
         if subject._state == 'Техподдержка' and kwargs['is_admin']:
             user.edit(state='support')
@@ -35,6 +37,7 @@ class TextSupport(Observer):
 
 
 class TextGoToPanel(Observer):
+    """Нажата кнопка 'Администрировать'."""
     def update(self, subject: Subject, bot: BotData, user, **kwargs) -> None:
         if subject._state == 'Администрировать' and kwargs['is_admin']:
             pin = str(uuid1())
@@ -48,6 +51,7 @@ class TextGoToPanel(Observer):
 
 
 class TextHaHaHa(Observer):
+    """Получили произвольный текст."""
     def update(self, subject: Subject, bot: BotData, user, **kwargs) -> None:
         if subject._state not in ['Администрировать', 'Сообщение админам',
                                   'Техподдержка']:
