@@ -3,14 +3,17 @@
     Идет перенаправление в зависимости от полученной комманды бота.
 """
 
-from edubot.main_classes.localdata import AdminUser
+from edubot.main_classes.localdata import AdminUser, UserData
+from edubot.main_classes.botdata import BotData
 
 from .datatypesclass import Observer, Subject
 
 
 class CommandCancel(Observer):
     """Отменяем текущую операцию."""
-    def update(self, subject: Subject, bot, user) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData
+    ) -> None:
         if subject._state == 'cancel' and isinstance(user, AdminUser):
             user.edit(state='')
             answer = {

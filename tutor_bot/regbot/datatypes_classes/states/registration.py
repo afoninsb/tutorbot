@@ -1,11 +1,13 @@
 from django.conf import settings
+from typing import Any, Dict
 
 from edubot.main_classes import BotData
+from edubot.main_classes.localdata import UserData
 from regbot.keyboards import hide_kbrd
 from regbot.keyboards.inline import approve_admin
 
 
-def reg_start(message: dict, bot: BotData, user) -> None:
+def reg_start(message: Dict[str, Any], bot: BotData, user: UserData) -> None:
     """Старт процедуры регистрации."""
     text = '''
     Добрый день!
@@ -22,11 +24,10 @@ def reg_start(message: dict, bot: BotData, user) -> None:
     bot.send_answer(answer)
 
 
-def reg_first_name(message: dict, bot: BotData, user) -> None:
-    """Получили Имя и обрабатываем его.
-    Args:
-        message (dict): объект message, полученный с вебхука.
-    """
+def reg_first_name(
+        message: Dict[str, Any], bot: BotData, user: UserData
+) -> None:
+    """Получили Имя и обрабатываем его."""
     if message.get('text'):
         text = f'''
         Отлично, {message['text']}!
@@ -43,11 +44,10 @@ def reg_first_name(message: dict, bot: BotData, user) -> None:
     bot.send_answer(answer)
 
 
-def reg_last_name(message: dict, bot: BotData, user) -> None:
-    """Получили Фамилию и обрабатываем её. Завершаем регистрацию.
-    Args:
-        message (dict): объект message, полученный с вебхука.
-    """
+def reg_last_name(
+        message: Dict[str, Any], bot: BotData, user: UserData
+) -> None:
+    """Получили Фамилию и обрабатываем её. Завершаем регистрацию."""
     if message.get('text'):
         user.edit(last_name=message['text'], state='get_admin_org')
         text = f'''Отлично, {user.full_name}!
@@ -63,11 +63,8 @@ def reg_last_name(message: dict, bot: BotData, user) -> None:
     bot.send_answer(answer)
 
 
-def reg_org(message: dict, bot: BotData, user) -> None:
-    """Получили организацию и обрабатываем её. Завершаем регистрацию.
-    Args:
-        message (dict): объект message, полученный с вебхука.
-    """
+def reg_org(message: Dict[str, Any], bot: BotData, user: UserData) -> None:
+    """Получили организацию и обрабатываем её. Завершаем регистрацию."""
     if message.get('text'):
         text = '''Ещё немного :)
 
@@ -83,11 +80,10 @@ def reg_org(message: dict, bot: BotData, user) -> None:
     bot.send_answer(answer)
 
 
-def reg_position(message: dict, bot: BotData, user) -> None:
-    """Получили позицию и обрабатываем её. Завершаем регистрацию.
-    Args:
-        message (dict): объект message, полученный с вебхука.
-    """
+def reg_position(
+        message: Dict[str, Any], bot: BotData, user: UserData
+) -> None:
+    """Получили позицию и обрабатываем её. Завершаем регистрацию."""
     if message.get('text'):
         text = '''И последнее....
 
@@ -105,29 +101,10 @@ def reg_position(message: dict, bot: BotData, user) -> None:
     bot.send_answer(answer)
 
 
-def reg_why(message: dict, bot: BotData, user) -> None:
-    """Получили объяснение и обрабатываем его. Завершаем регистрацию.
-    Args:
-        message (dict): объект message, полученный с вебхука.
-    """
+def reg_why(message: Dict[str, Any], bot: BotData, user: UserData) -> None:
+    """Получили объяснение и обрабатываем его. Завершаем регистрацию."""
     if message.get('text'):
-        text = '''Спасибо за информацию.
-            Данные были отправлены супербоссу :)
-            После его подтверждения, вы сможете работать на платформе.'''
-        user.edit(why=message['text'], state='')
-        temp_admin = user.get_info
-        text_to_boss = f'''Пришла заявка на нового админа.
-            Имя: {temp_admin.first_name}
-            Фамилия: {temp_admin.last_name}
-            Организация: {temp_admin.org}
-            Должность: {temp_admin.position}
-            Пояснение: {temp_admin.why}'''
-        answer_to_boss = {
-            'chat_id': settings.BIG_BOSS_ID,
-            'text': text_to_boss,
-            'reply_markup': approve_admin(user.chat_id),
-        }
-        bot.send_answer(answer_to_boss)
+        text = end_registration(message, bot, user)
     else:
         text = '''Объясните в 3-х предложениях, зачем вам этот бот,
         для чего будете его использовать:'''
@@ -137,3 +114,26 @@ def reg_why(message: dict, bot: BotData, user) -> None:
         'reply_markup': hide_kbrd()
     }
     bot.send_answer(answer)
+
+
+def end_registration(
+        message: Dict[str, Any], bot: BotData, user: UserData
+) -> str:
+    """Завершаем регистрацию."""
+    user.edit(why=message['text'], state='')
+    temp_admin = user.get_info
+    text_to_boss = f'''Пришла заявка на нового админа.
+            Имя: {temp_admin.first_name}
+            Фамилия: {temp_admin.last_name}
+            Организация: {temp_admin.org}
+            Должность: {temp_admin.position}
+            Пояснение: {temp_admin.why}'''
+    answer_to_boss = {
+        'chat_id': settings.BIG_BOSS_ID,
+        'text': text_to_boss,
+        'reply_markup': approve_admin(user.chat_id),
+    }
+    bot.send_answer(answer_to_boss)
+    return '''Спасибо за информацию.
+            Данные были отправлены супербоссу :)
+            После его подтверждения, вы сможете работать на платформе.'''

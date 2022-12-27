@@ -6,14 +6,17 @@
 
 from django.conf import settings
 
-from edubot.main_classes.localdata import AdminUser, TempUser
+from edubot.main_classes.botdata import BotData
+from edubot.main_classes.localdata import AdminUser, TempUser, UserData
 from regbot.keyboards.main import hide_kbrd, main_kbrd
 from .datatypesclass import Observer, Subject
 
 
 class CallbackApprove(Observer):
     """Одобряем заявку в админы."""
-    def update(self, subject: Subject, bot, user, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         if subject._state == 'approve':
             data = kwargs['callback_query'].split(':')
             temp_user = TempUser(data[1])
@@ -44,7 +47,9 @@ class CallbackApprove(Observer):
 
 class CallbackReject(Observer):
     """Отклоняем заявку в админы."""
-    def update(self, subject: Subject, bot, user, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         if subject._state == 'reject':
             data = kwargs['callback_query'].split(':')
             temp_user = TempUser(data[1])
@@ -64,7 +69,9 @@ class CallbackReject(Observer):
 
 class CallbackReply(Observer):
     """Отвечаем на сообщение."""
-    def update(self, subject: Subject, bot, user, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         if subject._state == 'reply' and kwargs['is_admin']:
             data = kwargs['callback_query'].split(':')
             user.edit(state=f'reply:{data[1]}')

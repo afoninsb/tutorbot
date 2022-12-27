@@ -3,13 +3,17 @@
     Идет перенаправление в зависимости от полученного состояния юзера.
 """
 
+from edubot.main_classes.botdata import BotData
+from edubot.main_classes.localdata import UserData
 from .datatypesclass import Observer, Subject
 from .states import exchange_message, registration
 
 
 class StateDistributor(Observer):
     """Направления, если пользователь в каком-то состоянии."""
-    def update(self, subject: Subject, bot, user, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         pathes_temp_admin = {
             'start': registration.reg_start,
             'get_admin_first_name': registration.reg_first_name,

@@ -7,10 +7,12 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from edubot.main_classes.botdata import BotData
+from edubot.main_classes.localdata import UserData
 
 
 class Subject(ABC):
-    """ Интферфейс издателя объявляет набор методов для управлениями подписчиками."""
+    """ Интферфейс издателя объявляет набор методов
+    для управлениями подписчиками."""
 
     @abstractmethod
     def attach(self, observer: 'Observer') -> None:
@@ -39,8 +41,8 @@ class Observer(ABC):
 
 
 class Road(Subject):
-    """Издатель владеет некоторым важным состоянием и оповещает наблюдателей о его
-    изменениях."""
+    """Издатель владеет некоторым важным состоянием и оповещает наблюдателей
+    о его изменениях."""
 
     _state: int = None
     """Для удобства в этой переменной хранится состояние Издателя, необходимое
@@ -55,14 +57,14 @@ class Road(Subject):
     def clean(self, observer: Observer) -> None:
         self._observers.clear()
 
-    def notify(self, bot: BotData, user, **kwargs) -> None:
+    def notify(self, bot: BotData, user: UserData, **kwargs) -> None:
         """Запуск обновления в каждом подписчике."""
         for observer in self._observers:
             observer.update(self, bot, user, **kwargs)
 
         self.clean(observer)
 
-    def go(self, state: str, bot: BotData, user, **kwargs) -> None:
+    def go(self, state: str, bot: BotData, user: UserData, **kwargs) -> None:
         """Получаем состояние state и запускаем оповещение всех
         прикреплённых на данный момент подписчиков."""
         self._state = state

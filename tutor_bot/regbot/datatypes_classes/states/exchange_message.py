@@ -1,14 +1,15 @@
 from django.conf import settings
+from typing import Any, Dict
 
 from edubot.main_classes import BotData
+from edubot.main_classes.localdata import UserData
 from regbot.keyboards.inline import reply_kbrd
 
 
-def message_to_admins(message: dict, bot: BotData, user) -> None:
-    """Сообщение Big_Boss`а всем админам.
-    Args:
-        message (dict): объект message, полученный с вебхука.
-    """
+def message_to_admins(
+        message: Dict[str, Any], bot: BotData, user: UserData
+) -> None:
+    """Сообщение Big_Boss`а всем админам."""
     if (bot.get_content_type(message) == 'text'
             and message['text'] != 'Сообщение админам'):
         text = 'Сообщение от СуперБосса:\n'
@@ -34,11 +35,10 @@ def message_to_admins(message: dict, bot: BotData, user) -> None:
         bot.send_answer(answer)
 
 
-def support(message: dict, bot: BotData, user) -> None:
-    """Сообщение Big_Boss`а всем админам.
-    Args:
-        message (dict): объект message, полученный с вебхука.
-    """
+def support(
+        message: Dict[str, Any], bot: BotData, user: UserData
+) -> None:
+    """Сообщение Big_Boss`а всем админам."""
     if (bot.get_content_type(message) == 'text'
             and message['text'] != 'Техподдержка'):
         text = ('Сообщение от админа: '
@@ -64,11 +64,10 @@ def support(message: dict, bot: BotData, user) -> None:
         bot.send_answer(answer)
 
 
-def reply(message: dict, bot: BotData, user) -> None:
-    """Ответ на сообщение при переписке.
-    Args:
-        message (dict): объект message, полученный с вебхука.
-    """
+def reply(
+        message: Dict[str, Any], bot: BotData, user: UserData
+) -> None:
+    """Ответ на сообщение при переписке."""
     if bot.get_content_type(message) == 'text':
         cur_user = user.get_info
         chat_id = cur_user.state.split(':')[1]
