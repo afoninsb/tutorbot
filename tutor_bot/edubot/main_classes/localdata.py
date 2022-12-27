@@ -76,6 +76,7 @@ class UserData(DataClass):
         """
         if cur_user := self.get_info:
             return f'{cur_user.last_name} {cur_user.first_name}'
+        return ''
 
     def edit(self, **kwargs) -> None:
         """Меняем информацию о юзере."""
@@ -201,7 +202,7 @@ class StudentUser(UserData):
         try:
             cur_bot = get_object_or_404(Bot, token=self.token)
         except Exception:
-            return 0
+            return
         return cur_bot.admin
 
     @property

@@ -49,7 +49,7 @@ class BotData(DataClass):
         Returns:
             int: id бота в базе данных.
         """
-        return self.token.split(':')[0]
+        return int(self.token.split(':')[0])
 
     @staticmethod
     def get_message(data: Dict[str, Any]) -> Dict[str, Any]:
@@ -76,7 +76,7 @@ class BotData(DataClass):
         try:
             requests.post(method, data=answer)
         except Exception:
-            return 0
+            return None
 
     def send_photo(self, data: Dict[str, Any]) -> None:
         """Отправка изображения в бот.
@@ -88,7 +88,7 @@ class BotData(DataClass):
         try:
             requests.post(method, data=data)
         except Exception:
-            return 0
+            return None
 
     def delete_webhook(self) -> None:
         """Удаление вебхука бота."""
@@ -96,7 +96,7 @@ class BotData(DataClass):
         try:
             requests.post(method)
         except Exception:
-            return 0
+            return None
 
     def set_webhook(self, data: Dict[str, Any]) -> None:
         """Установка веб-хука бота.
@@ -108,7 +108,7 @@ class BotData(DataClass):
         try:
             requests.post(method, data=data)
         except Exception:
-            return 0
+            return None
 
     def set_commands(self) -> None:
         """Установка комманд бота."""
@@ -118,7 +118,7 @@ class BotData(DataClass):
         try:
             requests.get(send_text)
         except Exception:
-            return 0
+            return None
 
     @staticmethod
     def get_content_type(message: Dict[str, Any]) -> str:
