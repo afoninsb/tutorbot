@@ -3,13 +3,15 @@
     Идет перенаправление в зависимости от полученной комманды бота.
 """
 
-from edubot.main_classes.localdata import AdminUser, StudentUser
-
+from edubot.main_classes.localdata import (
+    AdminUser, StudentUser, UserData
+)
+from edubot.main_classes.botdata import BotData
 from .datatypesclass import Observer, Subject
 
 
 class CommandCancel(Observer):
-    def update(self, subject: Subject, bot, user) -> None:
+    def update(self, subject: Subject, bot: BotData, user: UserData) -> None:
         if (subject._state == 'cancel'
                 and isinstance(user, (AdminUser, StudentUser))):
             user.edit(state='')
@@ -21,7 +23,7 @@ class CommandCancel(Observer):
 
 
 class CommandChangeName(Observer):
-    def update(self, subject: Subject, bot, user) -> None:
+    def update(self, subject: Subject, bot: BotData, user: UserData) -> None:
         if (subject._state == 'change_name'
                 and isinstance(user, (AdminUser, StudentUser))):
             user.edit(state='change_first_name')

@@ -3,12 +3,16 @@
     Идет перенаправление в зависимости от полученного состояния юзера.
 """
 
+from edubot.main_classes.botdata import BotData
+from edubot.main_classes.localdata import UserData
 from .datatypesclass import Observer, Subject
 from .states import change_name, exchange_message, push, registration
 
 
 class StateDistributor(Observer):
-    def update(self, subject: Subject, bot, user, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         pathes = {
             'start': registration.reg_start,
             'password': registration.reg_password,

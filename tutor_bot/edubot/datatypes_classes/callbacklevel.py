@@ -4,12 +4,17 @@
     ответа callback_query.
 """
 
-from edubot.main_classes.localdata import AdminUser, StudentUser, TaskData
+from edubot.main_classes.localdata import (
+    AdminUser, StudentUser, TaskData, UserData
+)
+from edubot.main_classes.botdata import BotData
 from .datatypesclass import Observer, Subject
 
 
 class CallbackPush(Observer):
-    def update(self, subject: Subject, bot, user, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         if (
             subject._state != 'answer'
             or not isinstance(user, (AdminUser, StudentUser))
@@ -34,7 +39,9 @@ class CallbackPush(Observer):
 
 
 class CallbackReply(Observer):
-    def update(self, subject: Subject, bot, user, **kwargs) -> None:
+    def update(
+            self, subject: Subject, bot: BotData, user: UserData, **kwargs
+    ) -> None:
         if (subject._state == 'reply'
                 and isinstance(user, (AdminUser, StudentUser))):
             user.edit(state=kwargs['callback_query'])

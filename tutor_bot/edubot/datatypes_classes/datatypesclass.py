@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from edubot.main_classes.botdata import BotData
+from edubot.main_classes.localdata import UserData
 
 
 class Subject(ABC):
@@ -71,7 +72,7 @@ class Road(Subject):
     def clean(self, observer: Observer) -> None:
         self._observers.clear()
 
-    def notify(self, bot: BotData, user, **kwargs) -> None:
+    def notify(self, bot: BotData, user: UserData, **kwargs) -> None:
         """
         Запуск обновления в каждом подписчике.
         """
@@ -80,7 +81,7 @@ class Road(Subject):
 
         self.clean(observer)
 
-    def go(self, state: str, bot: BotData, user, **kwargs) -> None:
+    def go(self, state: str, bot: BotData, user: UserData, **kwargs) -> None:
         """
         Получаем состояние state и запускаем оповещение всех
         прикреплённых на данный момент подписчиков.

@@ -3,12 +3,12 @@ import json
 from django.conf import settings
 
 
-def approve_admin(chat_id: int) -> json:
+def approve_admin(chat_id: int) -> str:
     """Клавиатура Одобрить/Отклонить для заявки в даины.
     Args:
         chat_id (int): Telegram chat_id юзера.
     Returns:
-        json: Клавиатура в формате json.
+        str: Клавиатура в формате json.
     """
     akbd = {}
     keyboard = []
@@ -27,12 +27,12 @@ def approve_admin(chat_id: int) -> json:
     return json.dumps(akbd)
 
 
-def reply_kbrd(chat_id: int) -> json:
+def reply_kbrd(chat_id: int) -> str:
     """Кнопка Ответить при переписке.
     Args:
         chat_id (int): Telegram chat_id юзера.
     Returns:
-        json: Клавиатура в формате json.
+        str: Клавиатура в формате json.
     """
     rkbd = {}
     keyboard = []
@@ -45,13 +45,13 @@ def reply_kbrd(chat_id: int) -> json:
     return json.dumps(rkbd)
 
 
-def admin_kbrd(chat_id: int, pin: str) -> json:
+def admin_kbrd(chat_id: int, pin: str) -> str:
     """Кнопка Войти в административную панель.
     Args:
         chat_id (int): Telegram chat_id юзера.
         pin (str): pin-код для входа в админпанель.
     Returns:
-        json: Клавиатура в формате json.
+        str: Клавиатура в формате json.
     """
     akbd = {}
     keyboard = []
