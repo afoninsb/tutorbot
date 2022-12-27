@@ -2,13 +2,15 @@
 
 import hashlib
 from datetime import datetime
-from django.db.models import QuerySet
+from typing import Dict, List, Tuple, Union
+from django.db.models.base import ModelBase
 from django.shortcuts import get_object_or_404
 
 from bots.models import Bot
 from content.models import Log, Task
 from regbot.models import Temp
 from stats.models import Rating
+from edubot.main_classes.botdata import BotData
 from users.models import AdminBot, Student, StudentBot
 
 from .dataclass import DataClass
@@ -19,7 +21,7 @@ class UserData(DataClass):
     def __init__(
             self,
             chat_id: int,
-            model,
+            model: ModelBase,
             **kwargs,
     ):
         self.chat_id = chat_id
@@ -54,16 +56,16 @@ class UserData(DataClass):
         return False
 
     @property
-    def get_info(self):
+    def get_info(self) -> Union[AdminBot, Student]:
         """Информация об юзере в базе.
 
         Returns:
-            obj: .
+            obj: объект одного из классов AdminBot, Student.
         """
         try:
             return get_object_or_404(self.model, tgid=self.chat_id)
         except Exception:
-            return False
+            return None
 
     @property
     def full_name(self) -> str:
@@ -90,24 +92,24 @@ class AdminUser(UserData):
         super().__init__(chat_id, model=AdminBot)
 
     @property
-    def admin_bots(self) -> set:
+    def admin_bots(self) -> List[str]:
         """Получение списка токенов ботов админа.
 
         Returns:
-            set: Список ботов (tokens).
+            List: Список токенов ботов.
         """
         bots = Bot.objects.filter(admin__tgid=self.chat_id)
-        return (bot.token for bot in bots)
+        return [bot.token for bot in bots]
 
     @property
-    def all_admins_bots(self) -> tuple:
+    def all_admins_bots(self) -> List[int]:
         """Получение списка всех админов всех ботов.
 
         Returns:
-            list: Список админов (chat_id).
+            List: Список админов (chat_id).
         """
         admins_all = AdminBot.objects.all()
-        return (admin.tgid for admin in admins_all)
+        return [admin.tgid for admin in admins_all]
 
 
 class TempUser(UserData):
@@ -119,7 +121,7 @@ class TempUser(UserData):
     ):
         super().__init__(chat_id, model=Temp)
 
-    def is_right_bot_password(self, bot, password) -> bool:
+    def is_right_bot_password(self, bot: BotData, password: str) -> bool:
         """Сравнение введённого пародя с паролем бота.
 
         Returns:
@@ -169,7 +171,7 @@ class StudentUser(UserData):
                 bot__token=self.token,
             )
         except Exception:
-            return None
+            return 0
         return cur_user.id
 
     @property
@@ -190,11 +192,11 @@ class StudentUser(UserData):
         return True
 
     @property
-    def teacher(self) -> QuerySet:
+    def teacher(self) -> AdminBot:
         """tgid учителя.
 
         Returns:
-            queryset: учитель
+            AdminBot: учитель
         """
         try:
             cur_bot = get_object_or_404(Bot, token=self.token)
@@ -222,11 +224,11 @@ class StudentUser(UserData):
             return
 
     @property
-    def get_rating(self):
+    def get_rating(self) -> List[Tuple[int, int, int]]:
         """Получаем данные о положении пользователя в рейтинге.
 
         Returns:
-            list: .
+            List: данные рейтинга для пользователя и ближайших вокруг.
         """
         try:
             cur_bot = get_object_or_404(Bot, token=self.token)
@@ -269,18 +271,18 @@ class TaskData(DataClass):
         self.task_id = task_id
 
     @property
-    def get_all_info(self):
+    def get_all_info(self) -> Task:
         """Получаем всю инфу о задании.
 
         Returns:
-            queryset: инфо о задании
+            Task: инфо о задании
         """
         task = Task.objects.filter(
             id=self.task_id).select_related('category', 'bot')
         return task[0]
 
     @staticmethod
-    def save_log(**kwargs):
+    def save_log(**kwargs) -> None:
         """Сохраняем лог о выполнении задания."""
         cur_student = get_object_or_404(
             Student, tgid=kwargs['student'].chat_id)
@@ -307,7 +309,7 @@ class TaskData(DataClass):
         ).count()
 
     @property
-    def get_param(self) -> dict:
+    def get_param(self) -> Dict[str, bool]:
         """Получаем параметры ответа в боте.
 
         Returns:

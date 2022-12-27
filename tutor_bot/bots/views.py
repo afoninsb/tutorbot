@@ -22,6 +22,7 @@ def index(request):
     except Exception:
         return HttpResponseForbidden()
     bots = cur_admin.bot.all()
+    print(type(bots))
     return render(request, 'index.html', {'bots': bots, })
 
 

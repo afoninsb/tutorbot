@@ -1,21 +1,14 @@
 import json
 
 
-def main_kbrd(chat_id: int, is_admin: bool) -> json:
+def main_kbrd(chat_id: int, is_admin: bool) -> str:
     """Главная клавиатура бота.
 
     Args:
         chat_id (int): Telegram chat_id юзера.
     Returns:
-        json: Клавиатура в формате json.
+        str: Клавиатура в формате json.
     """
-    mkbrd = {}
-    keyboard = [
-        [
-            {'text': 'Рейтинг'},
-            {'text': 'Моя статистика'},
-        ]
-    ]
     if is_admin:
         buttons_message = [
             {'text': 'Администрировать'},
@@ -24,13 +17,18 @@ def main_kbrd(chat_id: int, is_admin: bool) -> json:
         buttons_message = [
             {'text': 'Сообщение учителю'},
         ]
-    keyboard.append(buttons_message)
-    mkbrd['keyboard'] = keyboard
-    mkbrd['one_time_keyboard'] = True
-    mkbrd['resize_keyboard'] = True
+    keyboard = [
+        [{'text': 'Рейтинг'}, {'text': 'Моя статистика'}],
+        buttons_message
+    ]
+    mkbrd = {
+        'keyboard': keyboard,
+        'one_time_keyboard': True,
+        'resize_keyboard': True,
+    }
     return json.dumps(mkbrd)
 
 
-def hide_kbrd() -> json:
+def hide_kbrd() -> str:
     """Скрываем клавиатуру."""
     return json.dumps({'hide_keyboard': True})

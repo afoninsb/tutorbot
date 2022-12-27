@@ -75,7 +75,6 @@ def alerts_newuser(bots: QuerySet) -> Dict[str, Any]:
         if cur_count > 0:
             alerts_newuser += cur_count
             alerts_count_newuser.append((bot.id, bot.name, cur_count))
-    print(alerts_count_newuser)
     return {
         'alerts_count_newuser': alerts_count_newuser,
         'alerts_newuser': alerts_newuser,

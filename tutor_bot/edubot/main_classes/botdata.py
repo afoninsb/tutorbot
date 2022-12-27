@@ -2,6 +2,7 @@
 
 import json
 import requests
+from typing import Any, Dict
 
 from .dataclass import DataClass
 
@@ -26,7 +27,7 @@ class BotData(DataClass):
             },
         ]
 
-    def user_id(self, data: dict) -> int:
+    def user_id(self, data: Dict[str, Any]) -> int:
         """Получение chat id пользователя в Telegram.
 
         Args:
@@ -42,7 +43,7 @@ class BotData(DataClass):
         return 0
 
     @property
-    def bot_id(self):
+    def bot_id(self) -> int:
         """Получение id бота в базе данных.
 
         Returns:
@@ -51,7 +52,7 @@ class BotData(DataClass):
         return self.token.split(':')[0]
 
     @staticmethod
-    def get_message(data: dict) -> dict:
+    def get_message(data: Dict[str, Any]) -> Dict[str, Any]:
         """Получение объекта message.
 
         Args:
@@ -65,7 +66,7 @@ class BotData(DataClass):
             return data['callback_query'].get('message', {})
         return {}
 
-    def send_answer(self, answer: dict) -> None:
+    def send_answer(self, answer: Dict[str, Any]) -> None:
         """Отправка сообщения в бот.
 
         Args:
@@ -77,7 +78,7 @@ class BotData(DataClass):
         except Exception:
             return 0
 
-    def send_photo(self, data: dict) -> None:
+    def send_photo(self, data: Dict[str, Any]) -> None:
         """Отправка изображения в бот.
 
         Args:
@@ -97,7 +98,7 @@ class BotData(DataClass):
         except Exception:
             return 0
 
-    def set_webhook(self, data: dict) -> None:
+    def set_webhook(self, data: Dict[str, Any]) -> None:
         """Установка веб-хука бота.
 
         Args:
@@ -120,7 +121,7 @@ class BotData(DataClass):
             return 0
 
     @staticmethod
-    def get_content_type(message: dict) -> str:
+    def get_content_type(message: Dict[str, Any]) -> str:
         """Получение типа контента, поступвшего на вебхук.
 
         Args:
@@ -133,7 +134,7 @@ class BotData(DataClass):
             (content for content in contents if content in message), '')
 
     @staticmethod
-    def get_data_type(data: dict) -> str:
+    def get_data_type(data: Dict[str, Any]) -> str:
         """Получение типа обновления, поступвшего на вебхук.
 
         Args:
