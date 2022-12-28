@@ -2,8 +2,8 @@ import json
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from edubot.main_classes import BotData
-from edubot.main_classes.localdata import AdminUser, TempUser
+from core.main_classes import BotData
+from core.main_classes.localdata import AdminUser, TempUser
 from .datatypes_classes import (HighLevelCallback, HighLevelCommand,
                                 HighLevelState, HighLevelText, Road)
 
@@ -26,18 +26,20 @@ def webhook(request, bot_tg):
     is_admin = True
 
     # Если юзера нет в базе, добавляем в базу и запускаем регистрацию
-    if not user.is_in_base:
+    if not user.user_obj:
         is_admin = False
         user = TempUser(tgid)
-        user.to_base(
-            tgid=tgid,
-            first_name='fn',
-            last_name='ln',
-            org='org',
-            position='pos',
-            why='why',
-            state='start'
-        )
+        if not user.user_obj:
+            user.to_base(
+                tgid=tgid,
+                first_name='fn',
+                last_name='ln',
+                org='org',
+                position='pos',
+                why='why',
+                state='start'
+            )
+            user = TempUser(tgid)
 
     # Получаем объект message
     message = bot.get_message(from_tg)
@@ -47,10 +49,9 @@ def webhook(request, bot_tg):
 
     # Если у юзера есть состояние, в тип обонвления помещаем его,
     # Команды имеют приоритет - рассматриваются первыми
-    cur_user = user.get_info
     if (
         message['text'] == '/start'
-        or cur_user.state
+        or user.state
         and data_type != 'command'
     ):
         data_type = 'state'
@@ -72,6 +73,6 @@ def webhook(request, bot_tg):
     # Запускаем движения по выбранному направлению,
     # определяемому параметром data_type
     road.go(data_type, bot, user, message=message,
-            from_tg=from_tg, cur_user=cur_user, is_admin=is_admin)
+            from_tg=from_tg, cur_user=user.user_obj, is_admin=is_admin)
 
     return render(request, 'webhook/123.html')

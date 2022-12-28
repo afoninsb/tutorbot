@@ -2,7 +2,7 @@
 
 import hashlib
 from datetime import datetime
-from typing import Dict, List, Tuple, Union
+from typing import List, Tuple
 from django.db.models.base import ModelBase
 from django.shortcuts import get_object_or_404
 
@@ -10,7 +10,7 @@ from bots.models import Bot
 from content.models import Log, Task
 from regbot.models import Temp
 from stats.models import Rating
-from edubot.main_classes.botdata import BotData
+from core.main_classes.botdata import BotData
 from users.models import AdminBot, Student, StudentBot
 
 from .dataclass import DataClass
@@ -26,57 +26,50 @@ class UserData(DataClass):
     ):
         self.chat_id = chat_id
         self.model = model
+        try:
+            self.user_obj = get_object_or_404(self.model, tgid=self.chat_id)
+        except Exception:
+            self.user_obj = None
+
+    def to_base(self, **kwargs):
+        """Открываем запись юзера в базе."""
+        self.model.objects.create(**kwargs)
 
     @property
-    def is_in_base(self) -> bool:
-        """Есть ли юзер в базе данных?
+    def firstname(self) -> str:
+        """Полное имя юзера.
 
         Returns:
-            bool: Истина, если есть,
-                  Ложь, если нет.
+            str: имя пользователя.
         """
-        try:
-            get_object_or_404(self.model, tgid=self.chat_id)
-        except Exception:
-            return False
-        return True
-
-    def to_base(self, **kwargs) -> bool:
-        """Открываем запись юзера в базе.
-
-        Returns:
-            bool: Истина, если админ новый,
-                  Ложь, если этот chat_id уже админ.
-        """
-        try:
-            get_object_or_404(self.model, tgid=self.chat_id)
-        except Exception:
-            self.model.objects.create(**kwargs)
-            return True
-        return False
+        return self.user_obj.first_name
 
     @property
-    def get_info(self) -> Union[AdminBot, Student]:
-        """Информация об юзере в базе.
+    def lastname(self) -> str:
+        """Полное имя юзера.
 
         Returns:
-            obj: объект одного из классов AdminBot, Student.
+            str: фамилия пользователя.
         """
-        try:
-            return get_object_or_404(self.model, tgid=self.chat_id)
-        except Exception:
-            return None
+        return self.user_obj.last_name
 
     @property
-    def full_name(self) -> str:
+    def fullname(self) -> str:
         """Полное имя юзера.
 
         Returns:
             str: полное имя пользователя.
         """
-        if cur_user := self.get_info:
-            return f'{cur_user.last_name} {cur_user.first_name}'
-        return ''
+        return f'{self.user_obj.last_name} {self.user_obj.first_name}'
+
+    @property
+    def state(self) -> str:
+        """Полное имя юзера.
+
+        Returns:
+            str: состояние пользователя.
+        """
+        return self.user_obj.state if self.user_obj else ''
 
     def edit(self, **kwargs) -> None:
         """Меняем информацию о юзере."""
@@ -156,6 +149,12 @@ class StudentUser(UserData):
     ):
         super().__init__(chat_id, model=Student)
         self.token = token
+        self.bot_obj = get_object_or_404(Bot, token=self.token)
+        try:
+            self.user_obj = get_object_or_404(
+                self.model, tgid=self.chat_id, bot__token=self.token)
+        except Exception:
+            self.user_obj = None
         self.edit(pin='')
 
     @property
@@ -165,32 +164,7 @@ class StudentUser(UserData):
         Returns:
             int: ID пользователя в базе данных.
         """
-        try:
-            cur_user = get_object_or_404(
-                Student,
-                tgid=self.chat_id,
-                bot__token=self.token,
-            )
-        except Exception:
-            return 0
-        return cur_user.id
-
-    @property
-    def is_in_bot(self) -> bool:
-        """Студент в этом боте?.
-
-        Returns:
-            bool: в боте?
-        """
-        try:
-            get_object_or_404(
-                Student,
-                tgid=self.chat_id,
-                bot__token=self.token,
-            )
-        except Exception:
-            return False
-        return True
+        return self.user_obj.id
 
     @property
     def teacher(self) -> AdminBot:
@@ -199,26 +173,18 @@ class StudentUser(UserData):
         Returns:
             AdminBot: учитель
         """
-        try:
-            cur_bot = get_object_or_404(Bot, token=self.token)
-        except Exception:
-            return
-        return cur_bot.admin
+        return self.bot_obj.admin
 
     @property
     def to_bot(self):
         """Заносим студента в базу данных."""
-        try:
-            cur_bot = get_object_or_404(Bot, token=self.token)
-        except Exception:
-            return
         try:
             cur_student = get_object_or_404(Student, tgid=self.chat_id)
         except Exception:
             return
         try:
             StudentBot.objects.create(
-                bot=cur_bot,
+                bot=self.bot_obj,
                 student=cur_student,
             )
         except Exception:
@@ -232,11 +198,7 @@ class StudentUser(UserData):
             List: данные рейтинга для пользователя и ближайших вокруг.
         """
         try:
-            cur_bot = get_object_or_404(Bot, token=self.token)
-        except Exception:
-            return
-        try:
-            rating_data = Rating.objects.filter(bot=cur_bot).\
+            rating_data = Rating.objects.filter(bot=self.bot_obj).\
                 filter(time=datetime.now().strftime('%Y-%m-%d')).\
                 select_related('student')
         except Exception:
@@ -308,16 +270,3 @@ class TaskData(DataClass):
         return Log.objects.filter(
             student__tgid=user.chat_id, task__id=self.task_id
         ).count()
-
-    @property
-    def get_param(self) -> Dict[str, bool]:
-        """Получаем параметры ответа в боте.
-
-        Returns:
-            dict: словарь двух парамтеров.
-        """
-        cur_bot = self.get_all_info.bot
-        return {
-            'is_show_wrong_right': cur_bot.is_show_wrong_right,
-            'is_show_answer': cur_bot.is_show_answer,
-        }

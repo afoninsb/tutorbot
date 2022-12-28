@@ -51,9 +51,14 @@ def send_task(
         tokens_tasks: List[str],
         subprocess: ModuleType
 ):
-    path_python = os.path.join(
-        settings.BASE_DIR.parent, 'venv_django', 'bin', 'python3'
-    )
+    if settings.DEBUG:
+        path_python = os.path.join(
+            settings.BASE_DIR.parent, 'venv', 'bin', 'python3'
+        )
+    else:
+        path_python = os.path.join(
+            settings.BASE_DIR.parent, 'venv_django', 'bin', 'python3'
+        )
     path_script = os.path.join(
         settings.BASE_DIR, 'cron', 'sendtask.py'
     )

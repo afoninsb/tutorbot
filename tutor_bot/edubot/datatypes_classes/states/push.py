@@ -1,5 +1,5 @@
-from edubot.main_classes import BotData
-from edubot.main_classes.localdata import StudentUser, TaskData, UserData
+from core.main_classes import BotData
+from core.main_classes.localdata import StudentUser, TaskData, UserData
 
 
 def answer(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
@@ -8,7 +8,7 @@ def answer(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
     Args:
         message (dict): объект message, полученный с вебхука.
     """
-    task_id = user.get_info.state.split(':')[1]
+    task_id = user.state.split(':')[1]
     text = f'Я жду от вас <b>текстовый ответ</b> на задание {task_id}'
     if bot.get_content_type(message) == 'text':
         user.edit(state='')
@@ -30,11 +30,11 @@ def answer(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
             bot=cur_task.bot
         )
         text = 'Ваш ответ принят!'
-        param = task.get_param
-        if param['is_show_wrong_right']:
+        cur_bot = cur_task.bot
+        if cur_bot.is_show_wrong_right:
             text = f'{text}\nВаш ответ '
             text = f'{text}правильный.' if is_truth else f'{text}неправильный.'
-        if param['is_show_answer'] and not is_truth:
+        if cur_bot.is_show_answer and not is_truth:
             text = f'{text}\nПравильный ответ: {cur_task.answer}'
     answer = {
         'chat_id': user.chat_id,

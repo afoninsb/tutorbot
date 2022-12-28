@@ -3,8 +3,8 @@
     Идет перенаправление в зависимости от полученной комманды бота.
 """
 
-from edubot.main_classes.localdata import AdminUser, UserData
-from edubot.main_classes.botdata import BotData
+from core.main_classes.localdata import AdminUser, UserData
+from core.main_classes.botdata import BotData
 
 from .datatypesclass import Observer, Subject
 

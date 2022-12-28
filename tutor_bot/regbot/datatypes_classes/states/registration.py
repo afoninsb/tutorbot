@@ -1,8 +1,8 @@
 from django.conf import settings
 from typing import Any, Dict
 
-from edubot.main_classes import BotData
-from edubot.main_classes.localdata import UserData
+from core.main_classes import BotData
+from core.main_classes.localdata import UserData
 from regbot.keyboards import hide_kbrd
 from regbot.keyboards.inline import approve_admin
 
@@ -50,7 +50,7 @@ def reg_last_name(
     """Получили Фамилию и обрабатываем её. Завершаем регистрацию."""
     if message.get('text'):
         user.edit(last_name=message['text'], state='get_admin_org')
-        text = f'''Отлично, {user.full_name}!
+        text = f'''Отлично, {user.firstname} {message['text']}!
 
         Шаг 3. Ведите организацию, в которой вы работаете:'''
     else:
@@ -121,13 +121,12 @@ def end_registration(
 ) -> str:
     """Завершаем регистрацию."""
     user.edit(why=message['text'], state='')
-    temp_admin = user.get_info
     text_to_boss = f'''Пришла заявка на нового админа.
-            Имя: {temp_admin.first_name}
-            Фамилия: {temp_admin.last_name}
-            Организация: {temp_admin.org}
-            Должность: {temp_admin.position}
-            Пояснение: {temp_admin.why}'''
+            Имя: {user.firstname}
+            Фамилия: {user.lastname}
+            Организация: {user.user_obj.org}
+            Должность: {user.user_obj.position}
+            Пояснение: {message['text']}'''
     answer_to_boss = {
         'chat_id': settings.BIG_BOSS_ID,
         'text': text_to_boss,

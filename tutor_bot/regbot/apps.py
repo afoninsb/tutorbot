@@ -7,7 +7,7 @@ class RegbotConfig(AppConfig):
     name = 'regbot'
 
     def ready(self):
-        from edubot.main_classes import BotData
+        from core.main_classes import BotData
         bot = BotData(settings.REGBOT_TOKEN)
         url = f'/webhook/reg/{settings.REGBOT_TOKEN}/'
         if settings.DEBUG:
