@@ -6,8 +6,8 @@
 from uuid import uuid1
 
 from edubot.keyboards import admin_kbrd, hide_kbrd, main_kbrd, userstat_kbr
-from edubot.main_classes import BotData, UserData
-from edubot.main_classes.localdata import AdminUser, StudentUser, TempUser
+from core.main_classes import BotData, UserData
+from core.main_classes.localdata import AdminUser, StudentUser, TempUser
 from .datatypesclass import Observer, Subject
 
 

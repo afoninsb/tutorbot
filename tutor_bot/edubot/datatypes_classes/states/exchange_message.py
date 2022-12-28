@@ -1,6 +1,6 @@
 from edubot.keyboards.inline import reply_kbrd
-from edubot.main_classes import BotData
-from edubot.main_classes.localdata import UserData
+from core.main_classes import BotData
+from core.main_classes.localdata import UserData
 
 
 def message_to_admin(
@@ -42,24 +42,23 @@ def reply(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
         message (dict): объект message, полученный с вебхука.
     """
     if bot.get_content_type(message) == 'text':
-        cur_user = user.get_info
-        chat_id = cur_user.state.split(':')[1]
-        text = f'Сообщение от: {cur_user.last_name} {cur_user.first_name}\n\n'
+        chat_id = user.state.split(':')[1]
+        text = f'Сообщение от: {user.fullname}\n\n'
         answer = {
             'chat_id': chat_id,
             'text': f"{text}{message['text']}",
-            'reply_markup': reply_kbrd(cur_user.tgid),
+            'reply_markup': reply_kbrd(user.tgid),
         }
         bot.send_answer(answer)
         answer = {
-            'chat_id': cur_user.tgid,
+            'chat_id': user.tgid,
             'text': 'Сообщение отправлено',
         }
         bot.send_answer(answer)
         user.edit(state='')
     else:
         answer = {
-            'chat_id': cur_user.tgid,
+            'chat_id': user.tgid,
             'text': 'Сообщение не отправлено. Можно отправлять ТОЛЬКО тексты!',
         }
         bot.send_answer(answer)

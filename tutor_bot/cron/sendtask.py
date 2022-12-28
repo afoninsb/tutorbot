@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     from bots.models import Bot
     from content.models import Task
-    from edubot.main_classes import BotData
+    from core.main_classes import BotData
 
     send_task(sys.argv[1])
     sys.exit(0)

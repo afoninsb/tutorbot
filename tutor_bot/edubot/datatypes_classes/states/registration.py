@@ -1,7 +1,7 @@
 from typing import Any, Dict
 from edubot.keyboards.main import hide_kbrd
-from edubot.main_classes import BotData, UserData
-from edubot.main_classes.localdata import StudentUser
+from core.main_classes import BotData, UserData
+from core.main_classes.localdata import StudentUser
 
 
 def reg_start(
@@ -98,15 +98,14 @@ def end_registration(
     user: UserData, message: Dict[str, Any], bot: BotData
 ) -> str:
     user.edit(last_name=message['text'], state='')
-    cur_temp_user = user.get_info
     result = f'''
-        Отлично, {cur_temp_user.last_name} {cur_temp_user.first_name}!
+        Отлично, {message['text']} {user.firstname}!
         Теперь дождитесь, пока учитель вас одобрит для работы с ботом'''
     student_user = StudentUser(user.chat_id, bot.token)
     student_user.to_base(
         tgid=user.chat_id,
-        first_name=cur_temp_user.first_name,
-        last_name=cur_temp_user.last_name,
+        first_name=user.firstname,
+        last_name=message['text'],
     )
     student_user.to_bot
     return result

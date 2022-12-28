@@ -7,7 +7,7 @@
     - Текст.
 """
 
-from edubot.main_classes import BotData, UserData
+from core.main_classes import BotData, UserData
 from .datatypesclass import Observer, Road, Subject
 
 
@@ -81,7 +81,7 @@ class HighLevelState(Observer):
         """Направления, если юзер в каком-либо состоянии."""
         from .statelevel import StateDistributor
         if subject._state == 'state':
-            state = user.get_info.state
+            state = user.state
             road = Road()
             pathes = (
                 StateDistributor(),

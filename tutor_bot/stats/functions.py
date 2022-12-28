@@ -34,8 +34,6 @@ def get_stats(
         cat_id: int
 ) -> Dict[int, List[int]]:
     """Построение статистики в категории за указанный период."""
-    print(array)
-    print(type(array), type(dates), type(student), type(cat_id))
     stats = {}
     for element in array:
         stats[element.id] = [0, 0, 0]

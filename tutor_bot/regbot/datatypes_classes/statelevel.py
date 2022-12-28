@@ -3,8 +3,8 @@
     Идет перенаправление в зависимости от полученного состояния юзера.
 """
 
-from edubot.main_classes.botdata import BotData
-from edubot.main_classes.localdata import UserData
+from core.main_classes.botdata import BotData
+from core.main_classes.localdata import UserData
 from .datatypesclass import Observer, Subject
 from .states import exchange_message, registration
 

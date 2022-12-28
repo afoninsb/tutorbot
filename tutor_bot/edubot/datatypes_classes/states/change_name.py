@@ -1,5 +1,5 @@
-from edubot.main_classes import BotData
-from edubot.main_classes.localdata import UserData
+from core.main_classes import BotData
+from core.main_classes.localdata import UserData
 
 
 def change_first_name(

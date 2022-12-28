@@ -9,7 +9,7 @@ from bots.forms import BotForm, BotFormEdit, BotPass, BotSchedule
 from bots.models import Bot
 from bots.permissions import can_bot_run
 from core.utils import add_dir, del_dir
-from edubot.main_classes import BotData
+from core.main_classes import BotData
 from tarifs.models import Tarif
 from users.models import AdminBot, Student, StudentBot
 
@@ -22,7 +22,6 @@ def index(request):
     except Exception:
         return HttpResponseForbidden()
     bots = cur_admin.bot.all()
-    print(type(bots))
     return render(request, 'index.html', {'bots': bots, })
 
 

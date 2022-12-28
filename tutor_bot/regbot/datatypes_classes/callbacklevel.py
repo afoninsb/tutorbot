@@ -6,8 +6,8 @@
 
 from django.conf import settings
 
-from edubot.main_classes.botdata import BotData
-from edubot.main_classes.localdata import AdminUser, TempUser, UserData
+from core.main_classes.botdata import BotData
+from core.main_classes.localdata import AdminUser, TempUser, UserData
 from regbot.keyboards.main import hide_kbrd, main_kbrd
 from .datatypesclass import Observer, Subject
 
@@ -20,12 +20,11 @@ class CallbackApprove(Observer):
         if subject._state == 'approve':
             data = kwargs['callback_query'].split(':')
             temp_user = TempUser(data[1])
-            cur_temp_user = temp_user.get_info
             admin_user = AdminUser(data[1])
             admin_user.to_base(
                 tgid=data[1],
-                first_name=cur_temp_user.first_name,
-                last_name=cur_temp_user.last_name,
+                first_name=temp_user.firstname,
+                last_name=temp_user.lastname,
             )
             temp_user.delete()
             text = '''Ваша заявка одобрена.

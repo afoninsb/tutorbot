@@ -1,8 +1,8 @@
 from django.conf import settings
 from typing import Any, Dict
 
-from edubot.main_classes import BotData
-from edubot.main_classes.localdata import UserData
+from core.main_classes import BotData
+from core.main_classes.localdata import UserData
 from regbot.keyboards.inline import reply_kbrd
 
 
@@ -69,9 +69,8 @@ def reply(
 ) -> None:
     """Ответ на сообщение при переписке."""
     if bot.get_content_type(message) == 'text':
-        cur_user = user.get_info
-        chat_id = cur_user.state.split(':')[1]
-        text = f'Сообщение от: {cur_user.first_name} {cur_user.last_name}\n\n'
+        chat_id = user.state.split(':')[1]
+        text = f'Сообщение от: {user.fullname}\n\n'
         answer = {
             'chat_id': chat_id,
             'text': f"{text}{message['text']}",

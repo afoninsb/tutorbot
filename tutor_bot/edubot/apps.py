@@ -9,7 +9,7 @@ class EdubotConfig(AppConfig):
     def ready(self):
         from bots.models import Bot
 
-        from .main_classes import BotData
+        from core.main_classes import BotData
 
         if bots := Bot.objects.all():
             for bot in bots:

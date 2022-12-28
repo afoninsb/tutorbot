@@ -3,10 +3,10 @@ import json
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from .datatypes_classes import (HighLevelCallback, HighLevelCommand,
-                                HighLevelState, HighLevelText, Road)
-from .main_classes import BotData
-from .main_classes.localdata import AdminUser, StudentUser, TempUser
+from edubot.datatypes_classes import (HighLevelCallback, HighLevelCommand,
+                                      HighLevelState, HighLevelText, Road)
+from core.main_classes import BotData
+from core.main_classes.localdata import AdminUser, StudentUser, TempUser
 
 
 @csrf_exempt
@@ -24,13 +24,12 @@ def webhook(request, bot_tg):
 
     # Создаём один из объектов UserData для работы с базой данных
     user = AdminUser(tgid)
-    if user.is_in_base and bot_tg in user.admin_bots:
+    if user.user_obj and bot_tg in user.admin_bots:
         is_admin = True
     else:
         is_admin = False
         user = StudentUser(tgid, bot_tg)
-        if (user.is_in_base and not user.is_in_bot
-                or not user.is_in_base):
+        if not user.user_obj:
             user = TempUser(tgid)
             user.to_base(
                 tgid=tgid,
@@ -50,10 +49,9 @@ def webhook(request, bot_tg):
 
     # Если у юзера есть состояние, в тип обонвления помещаем его,
     # Команды имеют приоритет - рассматриваются первыми
-    cur_user = user.get_info
     if (
         message['text'] == '/start'
-        or cur_user.state
+        or user.state
         and data_type != 'command'
     ):
         data_type = 'state'
@@ -75,6 +73,6 @@ def webhook(request, bot_tg):
     # Запускаем движения по выбранному направлению,
     # определяемому параметром data_type
     road.go(data_type, bot, user, message=message,
-            from_tg=from_tg, cur_user=cur_user, is_admin=is_admin)
+            from_tg=from_tg, cur_user=user.user_obj, is_admin=is_admin)
 
     return render(request, 'webhook/123.html')
