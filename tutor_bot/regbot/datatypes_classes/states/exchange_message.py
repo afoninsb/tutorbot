@@ -38,11 +38,11 @@ def message_to_admins(
 def support(
         message: Dict[str, Any], bot: BotData, user: UserData
 ) -> None:
-    """Сообщение Big_Boss`а всем админам."""
+    """Сообщение администратора в техподдержку."""
     if (bot.get_content_type(message) == 'text'
             and message['text'] != 'Техподдержка'):
         text = ('Сообщение от админа: '
-                f'{user.full_name}\n'
+                f'{user.fullname}\n'
                 f'chatid: {user.chat_id}\n\n')
         answer = {
             'chat_id': settings.BIG_BOSS_ID,

@@ -29,15 +29,17 @@ def webhook(request, bot_tg):
     if not user.user_obj:
         is_admin = False
         user = TempUser(tgid)
-        user.to_base(
-            tgid=tgid,
-            first_name='fn',
-            last_name='ln',
-            org='org',
-            position='pos',
-            why='why',
-            state='start'
-        )
+        if not user.user_obj:
+            user.to_base(
+                tgid=tgid,
+                first_name='fn',
+                last_name='ln',
+                org='org',
+                position='pos',
+                why='why',
+                state='start'
+            )
+            user = TempUser(tgid)
 
     # Получаем объект message
     message = bot.get_message(from_tg)

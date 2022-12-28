@@ -50,7 +50,7 @@ def reg_last_name(
     """Получили Фамилию и обрабатываем её. Завершаем регистрацию."""
     if message.get('text'):
         user.edit(last_name=message['text'], state='get_admin_org')
-        text = f'''Отлично, {user.full_name}!
+        text = f'''Отлично, {user.firstname} {message['text']}!
 
         Шаг 3. Ведите организацию, в которой вы работаете:'''
     else:

@@ -74,7 +74,7 @@ class CallbackReply(Observer):
         if subject._state == 'reply' and kwargs['is_admin']:
             data = kwargs['callback_query'].split(':')
             user.edit(state=f'reply:{data[1]}')
-            send_user_name = AdminUser(data[1]).full_name
+            send_user_name = AdminUser(data[1]).fullname
             answer = {
                 'chat_id': user.chat_id,
                 'text':

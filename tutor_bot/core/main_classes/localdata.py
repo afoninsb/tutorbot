@@ -69,7 +69,7 @@ class UserData(DataClass):
         Returns:
             str: состояние пользователя.
         """
-        return self.user_obj.state
+        return self.user_obj.state if self.user_obj else ''
 
     def edit(self, **kwargs) -> None:
         """Меняем информацию о юзере."""
