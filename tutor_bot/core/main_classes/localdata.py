@@ -122,11 +122,7 @@ class TempUser(UserData):
             bool: равны?
         """
         password = hashlib.pbkdf2_hmac(
-            'sha256',
-            str(password).encode('utf-8'),
-            b'',
-            100000,
-            dklen=128
+            'sha256', password.encode('utf-8'), b'', 100000, dklen=128
         )
         try:
             cur_bot = get_object_or_404(Bot, token=bot.token)
