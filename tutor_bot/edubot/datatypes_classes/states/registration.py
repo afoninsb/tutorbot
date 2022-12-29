@@ -1,7 +1,6 @@
 from typing import Any, Dict
 from edubot.keyboards.main import hide_kbrd
-from core.main_classes import BotData, UserData
-from core.main_classes.localdata import StudentUser
+from core.main_classes import BotData, StudentUser, TempUser, UserData
 
 
 def reg_start(
@@ -108,4 +107,6 @@ def end_registration(
         last_name=message['text'],
     )
     student_user.to_bot
+    temp_user = TempUser(user.chat_id)
+    temp_user.delete()
     return result

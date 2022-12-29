@@ -134,7 +134,7 @@ class TempUser(UserData):
             return False
         return str(password) == str(cur_bot.password)
 
-    def delete(self, **kwargs) -> None:
+    def delete(self) -> None:
         """Удаляем временного юзера."""
         self.model.objects.filter(tgid=self.chat_id).delete()
 
