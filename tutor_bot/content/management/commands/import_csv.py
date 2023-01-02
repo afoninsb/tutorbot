@@ -40,12 +40,12 @@ class Command(BaseCommand):
 
             with open(path_to_file, newline='') as csvfile:
                 reader = csv.DictReader(csvfile)
-                bot_id = 5000765506
+                bot_id = 5529264374
                 for row in reader:
                     title = row['text'][:50]
                     text = row['text']
                     answer = row['answer']
-                    category_id = int(row['category_id']) - 1
+                    category_id = int(row['category_id']) + 14
                     task = current_model.objects.create(
                         title=title,
                         text=text,
@@ -57,7 +57,7 @@ class Command(BaseCommand):
                         name = row['img'].split('/')[-1]
                         exp = name.split('.')[-1]
                         new_name = f'{task.id}.{exp}'
-                        img = f'5000765506/cat{category_id}/{new_name}'
+                        img = f'{bot_id}/cat{category_id}/{new_name}'
                         current_model.objects.filter(id=task.id).\
                             update(img=img)
                         path_old = os.path.join(
@@ -65,7 +65,7 @@ class Command(BaseCommand):
                             'management', 'commands', 'uploads', name
                         )
                         path_new = os.path.join(
-                            settings.MEDIA_ROOT, '5000765506',
+                            settings.MEDIA_ROOT, str(bot_id),
                             f'cat{category_id}', new_name
                         )
                         os.replace(path_old, path_new)
