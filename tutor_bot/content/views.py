@@ -6,6 +6,7 @@ from content.forms import CategoryForm, TaskForm
 from content.functions import is_need_stop_bot
 from content.models import Category, Task
 from content.permissions import can_category_run
+from content.utils import get_paginator
 from core.utils import add_dir, del_dir, del_file, replace_from_temp
 
 
@@ -74,9 +75,10 @@ def categorytasks(request, botid, categoryid):
     """Задания текущей категории."""
     cur_category = get_object_or_404(Category, id=categoryid)
     tasks = cur_category.task.all()
+    page_obj = get_paginator(request, tasks)
     context = {
         'category_name': tasks.__dict__['_hints']['instance'],
-        'tasks': tasks,
+        'page_obj': page_obj,
         'category_id': categoryid,
         'widget': 'task',
     }

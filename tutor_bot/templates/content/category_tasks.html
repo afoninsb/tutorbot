@@ -7,7 +7,7 @@
 
 {% block content %}
     <ul class="list-group">
-        {% for task in tasks %}
+        {% for task in page_obj %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div class="ms-2 me-auto"><a href="{% url 'content:task' botid category_id task.id %}">{{ task.id }}. {{ task }}</a></div>
                 <span class="badge">
@@ -33,4 +33,5 @@
             </li>
         {% endfor %}
     </ul>
+    {% include 'includes/paginator.html' %}
 {% endblock  %}
