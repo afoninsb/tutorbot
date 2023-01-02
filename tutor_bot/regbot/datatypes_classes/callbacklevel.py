@@ -19,22 +19,15 @@ class CallbackApprove(Observer):
     ) -> None:
         if subject._state == 'approve':
             data = kwargs['callback_query'].split(':')
-            temp_user = TempUser(data[1])
-            admin_user = AdminUser(data[1])
-            admin_user.to_base(
-                tgid=data[1],
-                first_name=temp_user.firstname,
-                last_name=temp_user.lastname,
-            )
-            temp_user.delete()
+            chat_id = data[1]
             text = '''Ваша заявка одобрена.
 
                 На клавиатуре нажмите кнопу "Администрировать",
                 чтобы пройти в административную панель.'''
             answer = {
-                'chat_id': data[1],
+                'chat_id': chat_id,
                 'text': text,
-                'reply_markup': main_kbrd(data[1]),
+                'reply_markup': main_kbrd(chat_id),
             }
             bot.send_answer(answer)
             answer_to_boss = {
@@ -42,6 +35,14 @@ class CallbackApprove(Observer):
                 'text': 'Отправлено одобрение',
             }
             bot.send_answer(answer_to_boss)
+            temp_user = TempUser(chat_id)
+            admin_user = AdminUser(chat_id)
+            admin_user.to_base(
+                tgid=chat_id,
+                first_name=temp_user.firstname,
+                last_name=temp_user.lastname,
+            )
+            temp_user.delete()
 
 
 class CallbackReject(Observer):
