@@ -44,35 +44,33 @@ def webhook(request, bot_tg):
     # Получаем объект message
     message = bot.get_message(from_tg)
 
-    # Получаем тип обновления
-    data_type = bot.get_data_type(from_tg)
+    if data_type := bot.get_data_type(from_tg):
+        # Если у юзера есть состояние, в тип обонвления помещаем его,
+        # Команды имеют приоритет - рассматриваются первыми
+        if (
+            message['text'] == '/start'
+            or user.state
+            and data_type != 'command'
+        ):
+            data_type = 'state'
+        # Создаём объект Road, определяющий направление движения
+        road = Road()
 
-    # Если у юзера есть состояние, в тип обонвления помещаем его,
-    # Команды имеют приоритет - рассматриваются первыми
-    if (
-        message['text'] == '/start'
-        or user.state
-        and data_type != 'command'
-    ):
-        data_type = 'state'
-    # Создаём объект Road, определяющий направление движения
-    road = Road()
+        # Набор возможных направлений движения
+        pathes = (
+            HighLevelCommand(),
+            HighLevelState(),
+            HighLevelCallback(),
+            HighLevelText()
+        )
 
-    # Набор возможных направлений движения
-    pathes = (
-        HighLevelCommand(),
-        HighLevelState(),
-        HighLevelCallback(),
-        HighLevelText()
-    )
+        # Добавляем направления к нашему объекту Road
+        for path in pathes:
+            road.attach(path)
 
-    # Добавляем направления к нашему объекту Road
-    for path in pathes:
-        road.attach(path)
-
-    # Запускаем движения по выбранному направлению,
-    # определяемому параметром data_type
-    road.go(data_type, bot, user, message=message,
-            from_tg=from_tg, cur_user=user.user_obj, is_admin=is_admin)
+        # Запускаем движения по выбранному направлению,
+        # определяемому параметром data_type
+        road.go(data_type, bot, user, message=message,
+                from_tg=from_tg, cur_user=user.user_obj, is_admin=is_admin)
 
     return render(request, 'webhook/123.html')
