@@ -11,6 +11,7 @@ public
 .mypy.ini
 tutor_bot/.env
 .htaccess
+.pylintrc
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

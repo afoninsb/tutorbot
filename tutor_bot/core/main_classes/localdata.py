@@ -148,7 +148,7 @@ class StudentUser(UserData):
         self.bot_obj = get_object_or_404(Bot, token=self.token)
         try:
             self.user_obj = get_object_or_404(
-                self.model, tgid=self.chat_id, bot__token=self.token)
+                Student, tgid=self.chat_id, bot__token=self.token)
         except Exception:
             self.user_obj = None
         self.edit(pin='')
@@ -160,7 +160,8 @@ class StudentUser(UserData):
         Returns:
             int: ID пользователя в базе данных.
         """
-        return self.user_obj.id
+        if self.user_obj:
+            return self.user_obj.id
 
     @property
     def teacher(self) -> AdminBot:

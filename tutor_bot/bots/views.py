@@ -33,8 +33,8 @@ def bot(request, botid):
 def botdel(request, botid):
     """Удаляем бота."""
     cur_bot = get_object_or_404(Bot, id=botid)
-    bot = BotData(cur_bot.token)
-    bot.delete_webhook()
+    tg_bot = BotData(cur_bot.token)
+    tg_bot.delete_webhook()
     cur_bot.delete()
     del_dir(botid=botid, type_dir='bot')
     messages.success(request, 'Бот удалён')
