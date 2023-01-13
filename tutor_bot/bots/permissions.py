@@ -64,7 +64,7 @@ def stop_bot(botid: int):
     now = datetime.now(pytz.timezone(cur_bot.tz))
     if (
         num_students > settings.STUDENT_FREE_TARIF
-        and cur_bot.tarif != Tarif.objects.filter(
+        and cur_bot.tarif == Tarif.objects.filter(
             duration=Tarif.TarifsTypes.FREE)[0]
         or now >= cur_bot.end_time
     ):
