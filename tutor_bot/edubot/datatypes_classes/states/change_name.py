@@ -34,7 +34,7 @@ def change_last_name(
     """
     if message.get('text'):
         user.edit(last_name=message['text'], state='')
-        text = f'Итак, теперь вы - {user.fullname} {message["text"]}!'
+        text = f'Итак, теперь вы - {user.fullname}!'
     else:
         text = 'Введите вашу Фамилию (только Фамилию):'
     answer = {
