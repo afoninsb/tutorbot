@@ -47,18 +47,18 @@ def reply(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
         answer = {
             'chat_id': chat_id,
             'text': f"{text}{message['text']}",
-            'reply_markup': reply_kbrd(user.tgid),
+            'reply_markup': reply_kbrd(user.chat_id),
         }
         bot.send_answer(answer)
         answer = {
-            'chat_id': user.tgid,
+            'chat_id': user.chat_id,
             'text': 'Сообщение отправлено',
         }
         bot.send_answer(answer)
         user.edit(state='')
     else:
         answer = {
-            'chat_id': user.tgid,
+            'chat_id': user.chat_id,
             'text': 'Сообщение не отправлено. Можно отправлять ТОЛЬКО тексты!',
         }
         bot.send_answer(answer)
