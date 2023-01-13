@@ -13,7 +13,7 @@ def message_to_admin(
     """
     if (bot.get_content_type(message) == 'text'
             and message['text'] != 'Сообщение учителю'):
-        text = (f'Сообщение от ученика: {user.full_name}\n\n')
+        text = (f'Сообщение от ученика: {user.fullname}\n\n')
         teacher = user.teacher
         answer = {
             'chat_id': teacher.tgid,

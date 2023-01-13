@@ -53,6 +53,6 @@ class CallbackReply(Observer):
                 'chat_id': user.chat_id,
                 'text':
                 (f'Отправьте ваш ответ (только текст). Его получит '
-                 f'{send_user.full_name}'),
+                 f'{send_user.fullname}'),
             }
             bot.send_answer(answer)
