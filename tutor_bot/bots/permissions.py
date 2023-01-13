@@ -20,7 +20,7 @@ def can_bot_run(bot: Bot) -> Tuple[int, str]:
     num_students = StudentBot.objects.filter(bot=bot).count()
     if (
         num_students > settings.STUDENT_FREE_TARIF
-        and bot.tarif != Tarif.objects.filter(
+        and bot.tarif == Tarif.objects.filter(
             duration=Tarif.TarifsTypes.FREE)[0]
     ):
         permission = (
