@@ -33,7 +33,7 @@ if DEBUG:
 else:
     REGBOT_TOKEN = str(os.getenv('REGBOT_TOKEN'))
 
-    ALLOWED_HOSTS = ['tutor.studybot.fun']
+    ALLOWED_HOSTS = ['tutor.studybot.fun', 'www.tutor.studybot.fun']
 
     BASE_URL = 'https://tutor.studybot.fun'
 
