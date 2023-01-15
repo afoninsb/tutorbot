@@ -47,12 +47,12 @@ else:
             'PORT': '3306',
         }
     }
-    
+
     sentry_sdk.init(
-        dsn = str(os.getenv('SENTRY_DSN')),
-        integrations = [DjangoIntegration()],
-        traces_sample_rate = 1.0,
-        send_default_pii = True
+        dsn=str(os.getenv('SENTRY_DSN')),
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+        send_default_pii=True
     )
 
 INSTALLED_APPS = [
@@ -135,14 +135,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 if DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 
 else:
 
-    STATIC_ROOT = os.path.join(BASE_DIR, "static") # Изначально пустой каталог, куда Django соберёт всё при выполнении manage.py collectstatic
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
     STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "static_dev"), # Каталог, куда вам нужно складывать статику проекта, не относящуюся к конкретному приложению
+        os.path.join(BASE_DIR, "static_dev"),
     ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
