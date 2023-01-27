@@ -8,11 +8,14 @@ def get_task(bot):
     for category in categories:
         if tasks := category.task.filter(time__isnull=True):
             all_tasks[-1:-1:] = list(tasks)
-    return choice(all_tasks)
+    task = choice(all_tasks)
+    Task.objects.filter(id=task.id).update(time=datetime.now(pytz.timezone('UTC')))
+    return task
 
 
 def get_students_tgids(bot):
     """Получаем список Telegram ID студентов для рассылки."""
+
     return list(
         bot.student_set.filter(
             studentbot__is_activated=True).values_list('tgid', flat=True)
@@ -25,6 +28,7 @@ def send_task(bot_tg: str):
 
     cur_bot = get_object_or_404(Bot, token=bot_tg)
     task = get_task(cur_bot)
+    
     message_text = {
         'text': f'<b>Задание № {task.id}</b>\n\n{task.text}',
         'parse_mode': 'HTML'
@@ -56,9 +60,6 @@ def send_task(bot_tg: str):
 
         sleep(0.5)
 
-    Task.objects.filter(id=task.id).update(
-        time=datetime.now(pytz.timezone('UTC')))
-
 
 if __name__ == '__main__':
     import os
@@ -83,4 +84,4 @@ if __name__ == '__main__':
     from core.main_classes import BotData
 
     send_task(sys.argv[1])
-    sys.exit(0)
+    # sys.exit(0)

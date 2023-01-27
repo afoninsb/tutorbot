@@ -7,11 +7,13 @@ from content.models import Category, Log, Task
 from stats.models import Rating
 
 
-def rating(tokens: List[str], now: datetime):
+def rating(tokens):
     """Обновляем рейтинг."""
-    today = datetime(now.year, now.month, now.day)
-    yesterday = (today - timedelta(days=1))
-    for token in tokens:
+    for data in tokens:
+        token = data[0]
+        now = data[1]
+        today = datetime(now.year, now.month, now.day)
+        yesterday = (today - timedelta(days=1))
         bot = Bot.objects.get(token=token)
         objs = []
         from_log = Log.objects.\

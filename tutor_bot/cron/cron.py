@@ -14,8 +14,6 @@ def cron_task():
     from django.conf import settings
 
     from bots.models import Bot
-    from bots.permissions import stop_bot
-    from functions import disable_categories_bots
 
     bots = Bot.objects.filter(is_active=True)
     if not bots:
@@ -34,15 +32,9 @@ def cron_task():
         ):
             tokens_tasks.append(bot.token)
 
-        # Надо ли остановить бота?
-        stop_bot(bot.id)
-
     # Если есть боты для рассылки заданий, рассылаем.
     if tokens_tasks:
         send_task(os, settings, tokens_tasks, subprocess)
-
-    # Может надо остановить отдельные категории в каких-то ботах?
-    disable_categories_bots(bots)
 
 
 def send_task(
@@ -70,27 +62,6 @@ def send_task(
         stdout_byte, stderr_byte = proc[i].communicate()
 
 
-def cron_rating():
-    """Обновление рейтинга."""
-    import pytz
-    from datetime import datetime
-
-    from bots.models import Bot
-    from functions import rating
-
-    bots = Bot.objects.all()
-    tokens_rating = []
-    for bot in bots:
-        now = datetime.now(pytz.timezone(bot.tz))
-        hour = str(now.hour)
-        if hour == '6':
-            tokens_rating.append(bot.token)
-    if tokens_rating:
-
-        # Если есть боты для обновления, обновляем
-        rating(tokens_rating, now)
-
-
 if __name__ == '__main__':
     import os
     import sys
@@ -102,4 +73,3 @@ if __name__ == '__main__':
 
     django.setup()
     cron_task()
-    cron_rating()
