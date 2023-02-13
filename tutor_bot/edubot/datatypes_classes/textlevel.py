@@ -79,10 +79,8 @@ class TextRating(Observer):
                     text = f'{text}\n{rtng[1]}. Вы - {rtng[2]}'
                 else:
                     text = f'{text}\n{rtng[1]}. Ученик - {rtng[2]}'
-            text = (f'{text}\n\nРейтинг обновляется в 3 часа '
-                    'по местному времени.')
         else:
-            text = 'Рейтинг сформируется в 3 часа'
+            text = 'Для вас рейтинг не определён'
         answer = {
             'chat_id': user.chat_id,
             'text': text,
