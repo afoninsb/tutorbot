@@ -28,6 +28,11 @@ def rating(tokens):
                 log_scores[log.student] = log.score
         from_rating = Rating.objects.\
             filter(bot=bot).\
+            filter(time=today)
+        if from_rating.exists():
+            from_rating.delete()
+        from_rating = Rating.objects.\
+            filter(bot=bot).\
             filter(time=yesterday).\
             select_related('student')
         for rating in from_rating:
