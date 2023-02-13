@@ -10,6 +10,7 @@ from users.models import AdminBot
 def is_yours(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable:
 
     def middleware(request: HttpRequest) -> HttpResponse:
+        print(request.path)
         if (request.path in ('/', '/bots/add/')
                 or '/favicon.ico' in request.path
                 or '/admin/' in request.path

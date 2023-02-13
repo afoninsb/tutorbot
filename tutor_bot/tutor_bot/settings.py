@@ -19,7 +19,7 @@ if DEBUG:
 
     NGROK = str(os.getenv('NGROK'))
 
-    ALLOWED_HOSTS = ['127.0.0.1', NGROK]
+    ALLOWED_HOSTS = ['127.0.0.1', NGROK, 'localhost']
 
     BASE_URL = 'http://127.0.0.1:8000'
 

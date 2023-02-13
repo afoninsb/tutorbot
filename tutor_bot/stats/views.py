@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from django.shortcuts import get_object_or_404, render
 
 from bots.models import Bot
@@ -227,19 +227,27 @@ def rating(request, botid):
             int(request.POST['date_year']),
             int(request.POST['date_month']),
             int(request.POST['date_day'])
-        ).strftime('%Y-%m-%d')
+        )
     else:
         cur_date = datetime.now()
         data = {
             'date': date(cur_date.year, cur_date.month, cur_date.day),
         }
         form = DateForm(initial=data)
-        cur_date = cur_date.strftime('%Y-%m-%d')
+    delta_date = (cur_date - timedelta(days=7)).strftime('%Y-%m-%d')
+    cur_date = cur_date.strftime('%Y-%m-%d')
     cur_bot = get_object_or_404(Bot, id=botid)
     rating_data = Rating.objects.filter(bot=cur_bot).\
         filter(time=cur_date).select_related('student')
-    rating = [(rtng.student, rtng.student.id, rtng.score)
-              for rtng in rating_data]
+    rating_data_delta = Rating.objects.filter(bot=cur_bot).\
+        filter(time=delta_date).select_related('student')
+    rating = {rtng.student: [rtng.score, 0] for rtng in rating_data}
+    for rtng in rating_data_delta:
+        if rtng.student in rating:
+            rating[rtng.student][1] = rating[rtng.student][0] - rtng.score
+
+    # rating = [(rtng.student, rtng.student.id, rtng.score)
+    #           for rtng in rating_data]
     context = {
         'rating': rating,
         'form': form,

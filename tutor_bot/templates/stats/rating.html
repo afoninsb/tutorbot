@@ -21,11 +21,12 @@
   </form>
   <div style='padding-left: 100px; padding-right: 100px;'>
   <ul class="list-group">
-        {% for rtng in rating %}
+        {% for key, value in rating.items %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{% url 'stats:all_categories' botid rtng.1 %}">{{rtng.0}}</a>
-            <span class="badge bg-primary rounded-pill">{{rtng.2}}</span>
-            </li>
+              <div class="ms-2 me-auto"><a href="{% url 'stats:all_categories' botid key.id %}">{{key}}</a></div>
+                <h5><span class="badge bg-primary">{{value.0}}</span></h5>&nbsp;&nbsp;
+                <h5><span class="badge bg-info  text-dark">+ {{value.1}} за 7 дней</span></h5>
+              </li>
         {% endfor %}
   </ul>
 </div>
