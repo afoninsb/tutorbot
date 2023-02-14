@@ -1,5 +1,4 @@
-from datetime import datetime, timedelta
-from typing import List
+from datetime import timedelta
 from django.db.models.query import QuerySet
 
 from bots.models import Bot
