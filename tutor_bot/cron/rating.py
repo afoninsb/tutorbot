@@ -13,9 +13,11 @@ def cron_rating():
     tokens_rating = []
     for bot in bots:
         now = datetime.now(pytz.timezone(bot.tz))
-        hour = str(now.hour)
-        if hour in {'2', '14'}:
-            tokens_rating.append((bot.token, now))
+        today = datetime(now.year, now.month, now.day)
+        if bot.last_rating < today:
+        # hour = str(now.hour)
+        # if hour in {'2', '8', '14', 20', '02', '08'}:
+            tokens_rating.append((bot.token, today))
     if tokens_rating:
 
         # Если есть боты для обновления, обновляем

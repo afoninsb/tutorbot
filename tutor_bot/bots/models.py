@@ -98,6 +98,10 @@ class Bot(models.Model):
         verbose_name='Оплачено?',
         default=False
     )
+    last_rating = models.DateTimeField(
+        verbose_name='Дата последнего рейтинга',
+        default=timezone.now,
+    )
 
     class Meta:
         verbose_name = 'Бот'

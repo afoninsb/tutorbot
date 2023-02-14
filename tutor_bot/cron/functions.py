@@ -11,8 +11,7 @@ def rating(tokens):
     """Обновляем рейтинг."""
     for data in tokens:
         token = data[0]
-        now = data[1]
-        today = datetime(now.year, now.month, now.day)
+        today = data[1]
         yesterday = (today - timedelta(days=1))
         bot = Bot.objects.get(token=token)
         objs = []
@@ -26,11 +25,6 @@ def rating(tokens):
                 log_scores[log.student] += log.score
             else:
                 log_scores[log.student] = log.score
-        from_rating = Rating.objects.\
-            filter(bot=bot).\
-            filter(time=today)
-        if from_rating.exists():
-            from_rating.delete()
         from_rating = Rating.objects.\
             filter(bot=bot).\
             filter(time=yesterday).\
@@ -52,6 +46,8 @@ def rating(tokens):
                         for student, score in log_scores.items())
 
         Rating.objects.bulk_create(objs)
+
+        bot.update(last_rating=today)
 
 
 def disable_categories_bots(bots: QuerySet):
