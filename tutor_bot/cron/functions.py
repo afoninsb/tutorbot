@@ -47,7 +47,7 @@ def rating(tokens):
 
         Rating.objects.bulk_create(objs)
 
-        bot['last_rating'] = today
+        Bot.objects.filter(token=token).update(last_rating=today)
 
 
 def disable_categories_bots(bots: QuerySet):
