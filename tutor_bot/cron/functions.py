@@ -42,8 +42,13 @@ def rating(tokens):
                 )
             )
         if log_scores:
-            objs.extend(Rating(bot=bot, student=student, score=score)
-                        for student, score in log_scores.items())
+            objs.extend(Rating(
+                bot=bot,
+                student=student,
+                score=score,
+                time=today
+            )
+                for student, score in log_scores.items())
 
         Rating.objects.bulk_create(objs)
 
