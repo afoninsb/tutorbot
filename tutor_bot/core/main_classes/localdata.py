@@ -206,7 +206,10 @@ class StudentUser(UserData):
         for number, rtng in enumerate(rating_data):
             tgids.append(rtng.student.tgid)
             rating.append((rtng.student.tgid, number+1, rtng.score))
-        number = tgids.index(str(self.chat_id))
+        try:
+            number = tgids.index(str(self.chat_id))
+        except ValueError:
+            return
         user_rating = []
         if number > 1:
             user_rating.append(rating[number-2])
