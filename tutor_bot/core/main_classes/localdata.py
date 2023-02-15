@@ -196,7 +196,7 @@ class StudentUser(UserData):
         """
         try:
             rating_data = Rating.objects.filter(bot=self.bot_obj).\
-                filter(time=datetime.now().strftime('%Y-%m-%d')).\
+                filter(time=self.bot_obj.last_rating).\
                 select_related('student')
         except Exception:
             return
