@@ -1,7 +1,6 @@
 """Класс для работы с базой данных."""
 
 import hashlib
-from datetime import datetime
 from typing import List, Tuple
 from django.db.models.base import ModelBase
 from django.shortcuts import get_object_or_404
