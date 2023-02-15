@@ -37,7 +37,8 @@ def rating(tokens):
                 Rating(
                     bot=bot,
                     student=rating.student,
-                    score=scores
+                    score=scores,
+                    time=today
                 )
             )
         if log_scores:
