@@ -8,7 +8,7 @@ def rating(tokens):
 
     for token in tokens:
         bot = Bot.objects.get(id=token)
-        for plus_day in range(35):
+        for plus_day in range(68):
             today = (datetime(2023, 1, 13) + timedelta(days=plus_day))
             yesterday = (today - timedelta(days=1))
             objs = []
@@ -61,4 +61,4 @@ if __name__ == '__main__':
     from tutor_bot import asgi
 
     django.setup()
-    rating((5529264374, 5653938367))
+    rating((1900288220,))
