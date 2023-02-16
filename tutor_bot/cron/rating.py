@@ -14,7 +14,7 @@ def cron_rating():
     for bot in bots:
         now = datetime.now(pytz.timezone(bot.tz))
         today = datetime(now.year, now.month, now.day)
-        if str(bot.last_rating) < str(today):
+        if bot.last_rating < str(today):
             tokens_rating.append((bot.token, today))
     if tokens_rating:
 

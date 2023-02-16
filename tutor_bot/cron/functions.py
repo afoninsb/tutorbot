@@ -38,7 +38,7 @@ def rating(tokens):
                     bot=bot,
                     student=rating.student,
                     score=scores,
-                    time=today
+                    time=str(today)
                 )
             )
         if log_scores:
@@ -46,13 +46,13 @@ def rating(tokens):
                 bot=bot,
                 student=student,
                 score=score,
-                time=today
+                time=str(today)
             )
                 for student, score in log_scores.items())
 
         Rating.objects.bulk_create(objs)
 
-        Bot.objects.filter(token=token).update(last_rating=today)
+        Bot.objects.filter(token=token).update(last_rating=str(today))
 
 
 def disable_categories_bots(bots: QuerySet):
