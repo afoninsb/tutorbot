@@ -50,3 +50,30 @@ class Alert(models.Model):
     attribute = models.PositiveIntegerField(
         verbose_name='ID объекта алерта',
     )
+
+
+class ReRating(models.Model):
+    """Модель рейтинга."""
+    bot = models.ForeignKey(
+        Bot,
+        verbose_name='Бот',
+        on_delete=models.CASCADE,
+        related_name='rating'
+    )
+    student = models.ForeignKey(
+        Student,
+        verbose_name='Учащийся',
+        on_delete=models.CASCADE,
+        related_name='rating'
+    )
+    time = models.DateField(
+        verbose_name='Дата',
+        )
+    score = models.PositiveSmallIntegerField(
+        verbose_name='Балл',
+    )
+
+    class Meta:
+        verbose_name = 'Рейтинг'
+        verbose_name_plural = 'Рейтинги'
+        ordering = ('-score',)
