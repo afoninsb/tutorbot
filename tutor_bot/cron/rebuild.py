@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from bots.models import Bot
 from content.models import Log
-from stats.models import Rating
+from stats.models import ReRating
 
 
 def rating(tokens):
@@ -24,7 +24,7 @@ def rating(tokens):
                     log_scores[log.student] += log.score
                 else:
                     log_scores[log.student] = log.score
-            from_rating = Rating.objects.\
+            from_rating = ReRating.objects.\
                 filter(bot=bot).\
                 filter(time=yesterday).\
                 select_related('student')
@@ -34,7 +34,7 @@ def rating(tokens):
                     scores += log_scores[rating.student]
                     del log_scores[rating.student]
                 objs.append(
-                    Rating(
+                    ReRating(
                         bot=bot,
                         student=rating.student,
                         score=scores,
@@ -42,7 +42,7 @@ def rating(tokens):
                     )
                 )
             if log_scores:
-                objs.extend(Rating(
+                objs.extend(ReRating(
                     bot=bot,
                     student=student,
                     score=score,
@@ -50,7 +50,7 @@ def rating(tokens):
                 )
                     for student, score in log_scores.items())
 
-            Rating.objects.bulk_create(objs)
+            ReRating.objects.bulk_create(objs)
 
             plus_day += 1
 
