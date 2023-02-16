@@ -98,9 +98,8 @@ class Bot(models.Model):
         verbose_name='Оплачено?',
         default=False
     )
-    last_rating = models.CharField(
+    last_rating = models.DateTimeField(
         verbose_name='Дата последнего рейтинга',
-        max_length=10,
     )
 
     class Meta:

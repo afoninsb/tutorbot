@@ -238,9 +238,9 @@ def rating(request, botid):
     cur_date = cur_date.strftime('%Y-%m-%d')
     cur_bot = get_object_or_404(Bot, id=botid)
     rating_data = Rating.objects.filter(bot=cur_bot).\
-        filter(time=str(cur_date)).select_related('student')
+        filter(time=cur_date).select_related('student')
     rating_data_delta = Rating.objects.filter(bot=cur_bot).\
-        filter(time=str(delta_date)).select_related('student')
+        filter(time=delta_date).select_related('student')
     rating = {rtng.student: [rtng.score, 0] for rtng in rating_data}
     for rtng in rating_data_delta:
         if rtng.student in rating:
