@@ -9,7 +9,7 @@ def rating(tokens):
     for token in tokens:
         bot = Bot.objects.get(id=token)
         for plus_day in range(68):
-            today = (datetime(2023, 1, 13) + timedelta(days=plus_day))
+            today = (datetime(2022, 12, 11) + timedelta(days=plus_day))
             yesterday = (today - timedelta(days=1))
             objs = []
             from_log = Log.objects.\
