@@ -10,15 +10,17 @@ class Rating(models.Model):
         Bot,
         verbose_name='Бот',
         on_delete=models.CASCADE,
-        related_name='rating')
+        related_name='rating'
+    )
     student = models.ForeignKey(
         Student,
         verbose_name='Учащийся',
         on_delete=models.CASCADE,
-        related_name='rating')
+        related_name='rating'
+    )
     time = models.DateField(
         verbose_name='Дата',
-        auto_now=True,)
+        )
     score = models.PositiveSmallIntegerField(
         verbose_name='Балл',
     )

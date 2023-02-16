@@ -245,9 +245,6 @@ def rating(request, botid):
     for rtng in rating_data_delta:
         if rtng.student in rating:
             rating[rtng.student][1] = rating[rtng.student][0] - rtng.score
-
-    # rating = [(rtng.student, rtng.student.id, rtng.score)
-    #           for rtng in rating_data]
     context = {
         'rating': rating,
         'form': form,
