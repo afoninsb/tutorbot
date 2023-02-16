@@ -29,7 +29,7 @@ def answer(message: dict, bot: BotData, user: UserData, **kwargs) -> None:
             score=score,
             bot=cur_task.bot
         )
-        text = 'Ваш ответ принят!'
+        text = f'Ваш ответ на задание <b>{task_id}</b> принят!'
         cur_bot = cur_task.bot
         if cur_bot.is_show_wrong_right:
             text = f'{text}\nВаш ответ '
