@@ -4,7 +4,7 @@ def rating(tokens):
 
     from bots.models import Bot
     from content.models import Log
-    from stats.models import ReRating
+    from stats.models import Rating
 
     for token in tokens:
         bot = Bot.objects.get(id=token)
@@ -22,7 +22,7 @@ def rating(tokens):
                     log_scores[log.student] += log.score
                 else:
                     log_scores[log.student] = log.score
-            from_rating = ReRating.objects.\
+            from_rating = Rating.objects.\
                 filter(bot=bot).\
                 filter(time=yesterday).\
                 select_related('student')
@@ -32,7 +32,7 @@ def rating(tokens):
                     scores += log_scores[rating.student]
                     del log_scores[rating.student]
                 objs.append(
-                    ReRating(
+                    Rating(
                         bot=bot,
                         student=rating.student,
                         score=scores,
@@ -40,7 +40,7 @@ def rating(tokens):
                     )
                 )
             if log_scores:
-                objs.extend(ReRating(
+                objs.extend(Rating(
                     bot=bot,
                     student=student,
                     score=score,
@@ -48,7 +48,7 @@ def rating(tokens):
                 )
                     for student, score in log_scores.items())
 
-            ReRating.objects.bulk_create(objs)
+            Rating.objects.bulk_create(objs)
 
 
 if __name__ == '__main__':
