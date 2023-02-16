@@ -58,13 +58,13 @@ class ReRating(models.Model):
         Bot,
         verbose_name='Бот',
         on_delete=models.CASCADE,
-        related_name='rating'
+        related_name='rerating'
     )
     student = models.ForeignKey(
         Student,
         verbose_name='Учащийся',
         on_delete=models.CASCADE,
-        related_name='rating'
+        related_name='rerating'
     )
     time = models.DateField(
         verbose_name='Дата',
