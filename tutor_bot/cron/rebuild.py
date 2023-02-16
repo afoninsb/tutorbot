@@ -1,16 +1,14 @@
-from datetime import datetime, timedelta
-
-from bots.models import Bot
-from content.models import Log
-from stats.models import ReRating
-
-
 def rating(tokens):
     """Обновляем рейтинг."""
+    from datetime import datetime, timedelta
+
+    from bots.models import Bot
+    from content.models import Log
+    from stats.models import ReRating
+
     for token in tokens:
         bot = Bot.objects.get(token=token)
-        plus_day = 0
-        while plus_day < 35:
+        for plus_day in range(35):
             today = (datetime(2023, 1, 13) + timedelta(days=plus_day))
             yesterday = (today - timedelta(days=1))
             objs = []
@@ -52,8 +50,15 @@ def rating(tokens):
 
             ReRating.objects.bulk_create(objs)
 
-            plus_day += 1
-
 
 if __name__ == '__main__':
+    import os
+    import sys
+    sys.path.append(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    import django
+
+    from tutor_bot import asgi
+
+    django.setup()
     rating((5529264374, 5653938367))
