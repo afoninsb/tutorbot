@@ -18,9 +18,10 @@ class Rating(models.Model):
         on_delete=models.CASCADE,
         related_name='rating'
     )
-    time = models.DateField(
+    time = models.CharField(
         verbose_name='Дата',
-        )
+        max_length=10,
+       )
     score = models.PositiveSmallIntegerField(
         verbose_name='Балл',
     )
