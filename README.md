@@ -8,6 +8,7 @@
 - [Стек технологий](#tech)
 - [Инсталляция](#install)
 - [Начало работы](#use)
+- [Галерея](#gallery)
 
 
 <a name="start"></a> 
@@ -121,7 +122,7 @@ STUDENT_FREE_TARIF = 4
 4. Учитель в административной панели одобрит ученика
 5. Получать задания и давать правильные ответы
 
-<a name="use"></a> 
+<a name="gallery"></a> 
 ## Галерея: админ. панель
 <img src="http://studybot.fun/wp-content/uploads/2023/02/42b7c9cc-5178-40fc-b44b-c69d58003719.jpeg" width="400px">
 <img src="http://studybot.fun/wp-content/uploads/2023/02/6ba71a4c-5d65-4ab9-9cec-f09fddfd1b31.jpeg" width="400px">
