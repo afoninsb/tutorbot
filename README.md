@@ -123,4 +123,15 @@ STUDENT_FREE_TARIF = 4
 
 <a name="use"></a> 
 ## Галерея: админ. панель
-<img src="http://studybot.fun/wp-content/uploads/2023/02/42b7c9cc-5178-40fc-b44b-c69d58003719.jpeg" width="300px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/42b7c9cc-5178-40fc-b44b-c69d58003719.jpeg" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/6ba71a4c-5d65-4ab9-9cec-f09fddfd1b31.jpeg" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/8e20f8b5-8b54-44e0-90e9-d6c66caf68be.png" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/678c58a1-f6ad-4476-aa4e-6b6592a11195.png" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/e586811d-40a1-4355-aa45-063403e83a60.png" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/beba6d70-7c8b-4af0-b957-7e4b52a33adb.png" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/904ba376-c422-46ba-a280-0d5c21e89aba.png" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/73146825-0b57-47d0-b4d1-7c6636636ae9.png" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/1204b05a-1f6e-46e0-b398-c7841d422195.png" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/a3f48c88-98d5-4e48-915a-1212ce1df3df.png" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/bc7f97da-17c8-44ae-807c-6abed30c9883.png" width="400px">
+<img src="http://studybot.fun/wp-content/uploads/2023/02/d1b84d31-16a1-4809-9610-133b3ae7eddb.png" width="400px">
