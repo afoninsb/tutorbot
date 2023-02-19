@@ -18,16 +18,9 @@ def userchart(request, botid, user_id):
         bot_id=botid, student_id=user_id).order_by(
             'time').select_related('student')[:30]
     title = f'Баллы посуточно за месяц: {queryset.first().student}'
-    chart = {
-        'chart': {
-            'type': 'pie',
-            'title': title,
-            'data': list(queryset.values('time', 'score')),
-            'container': 'container'
-        }
-    }
     context = {
-        'chartData': json.dumps(list(queryset.values_list('time', 'score')), default=str),
+        'chartData': json.dumps(list(queryset.values_list('time', 'score')),
+                                default=str),
         'title': title,
     }
     return render(request, 'stats/userchart.html', context)
