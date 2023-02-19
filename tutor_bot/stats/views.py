@@ -1,3 +1,5 @@
+import json
+
 from datetime import date, datetime, timedelta
 from django.shortcuts import get_object_or_404, render
 
@@ -9,6 +11,26 @@ from stats.forms import DateForm, SelectDateForm_disabled
 from stats.functions import compare_logs, get_stats
 from stats.models import Rating
 from users.models import Student
+
+
+def userchart(request, botid, user_id):
+    queryset = Rating.objects.filter(
+        bot_id=botid, student_id=user_id).order_by(
+            'time').select_related('student')[:30]
+    title = f'Баллы посуточно за месяц: {queryset.first().student}'
+    chart = {
+        'chart': {
+            'type': 'pie',
+            'title': title,
+            'data': list(queryset.values('time', 'score')),
+            'container': 'container'
+        }
+    }
+    context = {
+        'chartData': json.dumps(list(queryset.values_list('time', 'score')), default=str),
+        'title': title,
+    }
+    return render(request, 'stats/userchart.html', context)
 
 
 def task(request, botid, task_id):

@@ -26,6 +26,11 @@
               <div class="ms-2 me-auto"><a href="{% url 'stats:all_categories' botid key.id %}">{{key}}</a></div>
                 <h5><span class="badge bg-primary">{{value.0}}</span></h5>&nbsp;&nbsp;
                 <h5><span class="badge bg-info  text-dark">+ {{value.1}} за 7 дней</span></h5>
+                <h5>
+                  <a href="{% url 'stats:userchart' botid key.id %}" target="popup"
+                    onclick="window.open('{% url 'stats:userchart' botid key.id %}', 'Chart', 'width=1000,height=600,resizable=no,scrollbars=no'); return false;">
+                    &nbsp;&nbsp;<i class="ri-bar-chart-2-fill  ri-lg"></i></a>
+                </h5>
               </li>
         {% endfor %}
   </ul>
