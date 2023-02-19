@@ -17,7 +17,7 @@ def userchart(request, botid, user_id):
     queryset = Rating.objects.filter(
         bot_id=botid, student_id=user_id).order_by(
             'time').select_related('student')[:30]
-    title = f'Баллы посуточно за месяц: {queryset.first().student}'
+    title = f'Прирост баллов посуточно за месяц: {queryset.first().student}'
     context = {
         'chartData': json.dumps(list(queryset.values_list('time', 'score')),
                                 default=str),
